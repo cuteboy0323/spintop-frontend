@@ -35,7 +35,7 @@ const Header = () => {
                                 <span>Home</span>
                             </div>
                         </a>
-                        <a href="farm">
+                        <a href="farms">
                             <div className="pages-btn">
                                 <img src="./assets/images/tractor_icon.svg" alt="" />
                                 <img src="./assets/images/tractor_icon_active.svg" alt="" />
@@ -97,7 +97,7 @@ const Header = () => {
             {/* <button className="connect">Connect</button> */}
             {
                 active ?
-                    <button className="connect"><img src="https://app.automatic.network/static/media/meta-mask.fa91a1cb.svg" style={{ paddingRight: "15px" }} />{account.substring(0, 5)} ... {account.substring(account.length - 3)}</button>
+                    <button className="connect" onMouseDown={onConnectWallet}><img src="/static/media/meta-mask.9d774d68.svg" style={{ paddingRight: "15px" }} />{account.substring(0, 5)} ... {account.substring(account.length - 3)}</button>
                     :
                     <button className="connect" onMouseDown={onConnectWallet}>Connect <img src="./assets/images/exit_icon.svg" style={{ paddingLeft: "15px" }} /></button>
             }

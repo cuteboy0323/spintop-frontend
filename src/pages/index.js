@@ -1,8 +1,28 @@
 import React from 'react'
 import { Row, Col, Button } from 'reactstrap'
 import SiderBar from "./siderbar"
+import config from "./../config/app";
 
 const Home = () => {
+
+  const addToken = () => {
+    if (window.ethereum) {
+      window.ethereum
+        .request({
+          method: 'wallet_watchAsset',
+          params: {
+            type: 'ERC20', // Initially only supports ERC20, but eventually more!
+            options: {
+              address: config.aumi.address, // The address that the token is at.
+              symbol: config.aumi.symbol, // A ticker symbol or shorthand, up to 5 chars.
+              decimals: 18,
+              image: config.aumi.img
+            },
+          },
+        });
+    }
+  }
+
   return (
     <div>
       <div className="main-container">
@@ -22,7 +42,7 @@ const Home = () => {
                 <p className="main-heading">Farms & Staking</p>
                 <div className="meta-mask">
                   <img src="./assets/images/Spintoken.svg" alt="" className="spintoken" />
-                  <Button className="metamask">Add to metaMask <img src="./assets/images/plus_icon.svg" alt="" /></Button>
+                  <Button className="metamask" onClick={() => addToken()}>Add to metaMask <img src="./assets/images/plus_icon.svg" alt="" /></Button>
                 </div>
                 <div className="spin-text">SPINTOP to harvest</div>
                 <p className="locked">Locked</p>

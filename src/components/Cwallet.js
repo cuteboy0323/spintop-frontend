@@ -272,7 +272,7 @@ const Cwallet = ({ isOpen, setIsOpen }) => {
                 }
             </DialogContent>
             {active && (
-                <Alert severity="info">
+                <Alert severity="info" style={{background:"rgb(64 37 110)",color:"#B8C5EC"}}>
                     Your transaction detail will appear here.
                 </Alert>
             )}

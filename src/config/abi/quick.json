@@ -4,7 +4,7 @@
         "stateMutability": "nonpayable",
         "payable": false,
         "inputs": [
-            { "type": "address", "name": "account", "internalType": "address" }
+            { "type": "address", "name": "gateway_", "internalType": "address" }
         ]
     },
     {
@@ -257,6 +257,29 @@
     },
     {
         "type": "function",
+        "stateMutability": "nonpayable",
+        "payable": false,
+        "outputs": [],
+        "name": "deposit",
+        "inputs": [
+            { "type": "address", "name": "user", "internalType": "address" },
+            { "type": "bytes", "name": "depositData", "internalType": "bytes" }
+        ],
+        "constant": false
+    },
+    {
+        "type": "function",
+        "stateMutability": "view",
+        "payable": false,
+        "outputs": [
+            { "type": "address", "name": "", "internalType": "address" }
+        ],
+        "name": "gateway",
+        "inputs": [],
+        "constant": true
+    },
+    {
+        "type": "function",
         "stateMutability": "view",
         "payable": false,
         "outputs": [{ "type": "uint96", "name": "", "internalType": "uint96" }],
@@ -385,6 +408,21 @@
         "inputs": [
             { "type": "address", "name": "src", "internalType": "address" },
             { "type": "address", "name": "dst", "internalType": "address" },
+            {
+                "type": "uint256",
+                "name": "rawAmount",
+                "internalType": "uint256"
+            }
+        ],
+        "constant": false
+    },
+    {
+        "type": "function",
+        "stateMutability": "nonpayable",
+        "payable": false,
+        "outputs": [],
+        "name": "withdraw",
+        "inputs": [
             {
                 "type": "uint256",
                 "name": "rawAmount",

@@ -7,7 +7,7 @@ const useStyles = makeStyles((theme) => {
             "& .cwallet-paper": {
                 padding: theme.spacing(2),
                 width: theme.spacing(45),
-                background:'#1d0b3c',
+                background: '#1d0b3c',
                 "& .title": {
                     borderRadius: theme.shape.borderRadius,
                     display: "flex",
@@ -20,10 +20,15 @@ const useStyles = makeStyles((theme) => {
                             padding: theme.spacing(1, 2),
                             marginRight: theme.spacing(0.625),
                             borderRadius: theme.shape.borderRadius,
+                            color: "#B8C5EC",
                         }
                     },
-                    "& > button": {
-                    }
+                    "& button": {
+                        color: "#B8C5EC",
+                    },
+                    "& h2": {
+                        color: "#B8C5EC",
+                    },
                 },
                 "& .content": {
                     padding: theme.spacing(1, 0, 0, 0),
