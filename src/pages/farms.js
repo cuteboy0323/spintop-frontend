@@ -47,6 +47,7 @@ const Farms = () => {
             $('#exampleModal').hide()
             $('.one.active').html('Harvest')
             $('.last-show-hide').show()
+            $('.modal-backdrop').hide()
             $('.harvest button.one.active').hide()
             $('.harvest button.one.stake-lp.act').show()
         }, 2500)
@@ -186,7 +187,7 @@ const Farms = () => {
                                             <div className="card-content">
                                                 <span>0.5241654651</span>
                                                 <span>MAX</span>
-                                                <span>BUSD -BNB LP</span>
+                                                <span style={{color:"rgba(184, 197, 236, 0.65)"}}>BUSD -BNB LP</span>
                                             </div>
                                         </div>
                                         <img src="./assets/images/alert-octagon-16px.svg" alt="" />

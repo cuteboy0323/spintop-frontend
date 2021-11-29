@@ -29,7 +29,7 @@
     padding: 4px;
 }
 .modal-backdrop{
-    z-index: -1!important;
+    z-index: 1!important;
 }
 .main-container .cust-card.steak-only .switch{
     margin-right: auto;

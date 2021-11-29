@@ -28,7 +28,7 @@ const Header = () => {
                 <img src="./assets/images/close.svg" alt="" className="close" onClick={() => close()} />
                 <div className="menu-btns">
                     <div className="menu-btns">
-                        <a href="index">
+                        <a href="home">
                             <div className="pages-btn active">
                                 <img src="./assets/images/home.svg" alt="" />
                                 <img src="./assets/images/home_active.svg" alt="" />
@@ -87,6 +87,7 @@ const Header = () => {
                     <img src="./assets/images/certik_logo.svg" alt="" className="certik-logo" />
                 </div>
             </div>
+
             <img src="./assets/images/logo.png" alt="" className="logo-mob" />
             <div className="head-title">
                 <span>Network</span>
@@ -94,7 +95,6 @@ const Header = () => {
                 <span>Gamepedia</span>
             </div>
             <img src="./assets/images/settings_icon.svg" alt="" />
-            {/* <button className="connect">Connect</button> */}
             {
                 active ?
                     <button className="connect" onMouseDown={onConnectWallet}><img src="/static/media/meta-mask.9d774d68.svg" style={{ paddingRight: "15px" }} />{account.substring(0, 5)} ... {account.substring(account.length - 3)}</button>
@@ -102,6 +102,8 @@ const Header = () => {
                     <button className="connect" onMouseDown={onConnectWallet}>Connect <img src="./assets/images/exit_icon.svg" style={{ paddingLeft: "15px" }} /></button>
             }
             <Cwallet isOpen={isOpenDialog} setIsOpen={setIsOpenDialog} />
+
+
         </header>
     )
 }
