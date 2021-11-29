@@ -1099,6 +1099,9 @@ body a:hover{
   header{
     padding: 15px;
   }
+  .parent-pool{
+    margin-top: 350px;
+  }
   header .head-title{
     display: none;
   }

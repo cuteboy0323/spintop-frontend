@@ -17,7 +17,6 @@ const SiderBar = ({Params}) => {
     }
 
     const load = () => {
-        console.log(Params)
         $(`#${Params}`).addClass("active")
     }
     

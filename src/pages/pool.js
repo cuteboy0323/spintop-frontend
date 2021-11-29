@@ -2,6 +2,7 @@ import React from 'react'
 import { Row, Col } from 'reactstrap'
 import SiderBar from "./siderbar"
 import $ from "jquery"
+import { FormControlLabel, FormGroup, Switch } from '@mui/material'
 
 const Pool = () => {
     const finish = () => {
@@ -24,13 +25,10 @@ const Pool = () => {
             <div className="main-container">
                 <SiderBar Params="pools" />
                 <div className="right-side">
-                    <div className="cust-card steak-only mobile">
-                        <input type="text" placeholder="Search" />
-                        <span className="magnify"></span>
-                        <img src="./assets/images/filter.svg" alt="" className="filter" />
-                    </div>
+
+
                     <Row>
-                        <Col>
+                        <Col md={12}>
                             <div className="big-announc pools-main-card">
                                 <p>Spintop Pools</p>
                                 <p>Just stake some tokens to earn.</p>
@@ -48,14 +46,23 @@ const Pool = () => {
                             </div>
                         </Col>
                     </Row>
+
                     <Row className="mobile-margin">
-                        <Col>
+                        <Col md={12}>
                             <div className="cust-card steak-only">
-                                <span className="switch-span">Steaked only</span>
+                                <FormGroup>
+                                    <FormControlLabel
+                                        label="Staked only"
+                                        control={
+                                            <Switch color="secondary" defaultChecked />
+                                        }
+                                    />
+                                </FormGroup>
+                                {/* <span className="switch-span">Steaked only</span>
                                 <label className="switch">
                                     <input type="checkbox" defaultChecked />
                                     <span className="slider round"></span>
-                                </label>
+                                </label> */}
                                 <div className="live-buttons">
                                     <div className="btns-lf active" id="live" onClick={() => live()}>
                                         <span>Live</span>
@@ -68,12 +75,18 @@ const Pool = () => {
                                     <option value="">Hot ones</option>
                                     <option value="">Hot ones</option>
                                 </select>
+
                                 <input type="text" placeholder="Search" />
                                 <span className="magnify"></span>
                             </div>
                         </Col>
                     </Row>
-                    <Row>
+                    <div className="cust-card steak-only mobile" style={{ marginTop: "375px" }}>
+                        <input type="text" placeholder="Search" />
+                        <span className="magnify"></span>
+                        <img src="./assets/images/filter.svg" alt="" className="filter" />
+                    </div>
+                    <Row className="parent-pool">
                         <Col md={4}>
                             <div className="cust-card contract pools">
                                 <div className="blue-contain"></div>
