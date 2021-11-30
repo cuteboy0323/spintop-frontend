@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Row, Col } from 'reactstrap'
 import SiderBar from "./siderbar"
 import config from "./../config/app";
@@ -13,6 +13,7 @@ const Home = () => {
   // eslint-disable-next-line
   const { activate, active, account, deactivate, connector, error, setError } = useWeb3React();
   const [isOpenDialog, setIsOpenDialog] = useState(false);
+  // eslint-disable-next-line
   const [harvestSpintop, setHarvestSpintop] = useState();
 
   const onConnectWallet = async () => {
@@ -47,6 +48,14 @@ const Home = () => {
     }
   }
 
+  const load = () => {
+
+  }
+
+  useEffect(() => {
+    load()
+    // eslint-disable-next-line
+  }, [])
   return (
     <div>
       <div className="main-container">
