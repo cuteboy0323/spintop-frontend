@@ -1,9 +1,23 @@
-import React from 'react'
-import { Row, Col, Button } from 'reactstrap'
+import React, { useState } from 'react'
+import { Row, Col } from 'reactstrap'
 import SiderBar from "./siderbar"
 import config from "./../config/app";
+import { Button } from "@mui/material"
+import { useWeb3React } from "@web3-react/core";
+import Cwallet from "../components/Cwallet";
+import LockIcon from '@mui/icons-material/Lock';
+import LockOpenIcon from '@mui/icons-material/LockOpen';
+import AddIcon from '@mui/icons-material/Add';
 
 const Home = () => {
+
+  const [isOpenDialog, setIsOpenDialog] = useState(false);
+  // eslint-disable-next-line
+  const { activate, active, account, deactivate, connector, error, setError } = useWeb3React();
+
+  const onConnectWallet = async () => {
+    setIsOpenDialog(true);
+  }
 
   const addToken = () => {
     if (window.ethereum) {
@@ -40,9 +54,9 @@ const Home = () => {
             <Col md={6}>
               <div className="cust-card main_card">
                 <p className="main-heading">Farms & Staking</p>
-                <div className="meta-mask">
+                <div className="meta-mask" style={{ justifyContent: "space-between" }}>
                   <img src="./assets/images/Spintoken.svg" alt="" className="spintoken" />
-                  <Button className="metamask" onClick={() => addToken()}>Add to metaMask <img src="./assets/images/plus_icon.svg" alt="" /></Button>
+                  <Button variant="outlined" startIcon={<AddIcon />} className="metamask" style={{ color: "white", borderColor: "#630BF1" }} onClick={() => addToken()}>Add to metaMask </Button>
                 </div>
                 <div className="spin-text">SPINTOP to harvest</div>
                 <p className="locked">Locked</p>
@@ -50,7 +64,32 @@ const Home = () => {
                 <div className="spin-text">SPINTOP in wallet</div>
                 <p className="locked">Locked</p>
                 <p className="money">~$0.00</p>
-                <Button className="unlock-btn">Unlock wallet</Button>
+
+                {
+                  active ?
+                    <Button
+                      variant="contained"
+                      className="contract-btn2"
+                      startIcon={<LockOpenIcon />}
+                      color="secondary"
+                      onClick={onConnectWallet}
+                      style={{ background: "#630BF1", width: "100%" }}
+                    >
+                      {account.substring(0, 10)} ... {account.substring(account.length - 5)}
+                    </Button>
+                    :
+                    <Button
+                      variant="contained"
+                      className="contract-btn2"
+                      startIcon={<LockIcon />}
+                      color="secondary"
+                      onClick={onConnectWallet}
+                      style={{ background: "#630BF1", width: "100%" }}
+                    >
+                      Unlock wallet
+                    </Button>
+                }
+                <Cwallet isOpen={isOpenDialog} setIsOpen={setIsOpenDialog} />
               </div>
             </Col>
             <Col md={6}>
@@ -98,7 +137,7 @@ const Home = () => {
           </Row>
         </div>
       </div>
-    </div>
+    </div >
   )
 }
 

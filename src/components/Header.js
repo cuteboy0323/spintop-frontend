@@ -135,7 +135,7 @@ const Header = () => {
             <Button
                 variant="contained"
                 startIcon={
-                    <img width={22} src="https://firebasestorage.googleapis.com/v0/b/gitbook-28427.appspot.com/o/spaces%2F-MbaC5cDQY6glrXLXj4B%2Favatar-1633197511393.png?generation=1633197512121772&alt=media" alt="Net" />
+                    <img width={22} style={{ borderRadius: "10px", background: "white" }} src="https://firebasestorage.googleapis.com/v0/b/gitbook-28427.appspot.com/o/spaces%2F-MbaC5cDQY6glrXLXj4B%2Favatar-1633197511393.png?generation=1633197512121772&alt=media" alt="Net" />
                 }
                 onClick={swn}
                 color="secondary"

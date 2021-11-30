@@ -319,7 +319,7 @@ header .connect{
   letter-spacing: -0.6px;
   color: var(--white);
   background: transparent;
-  border-radius: 12px;
+  border-radius: 5px;
 }
 .main-container .cust-card .meta-mask img{
   margin-left: 12px;

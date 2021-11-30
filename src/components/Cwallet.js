@@ -255,14 +255,14 @@ const Cwallet = ({ isOpen, setIsOpen }) => {
                                     >
                                         <ListItemIcon className="symbol">
                                             <img
-                                                src={activating.logo}
-                                                alt={activating.logo}
+                                                src={activating?activating.logo:""}
+                                                alt={activating?activating.logo:""}
                                             />
                                         </ListItemIcon>
                                         <ListItemText
                                             className="activating-description"
-                                            primary={activating.title}
-                                            secondary={activating.description}
+                                            primary={activating?activating.title:""}
+                                            secondary={activating?activating.description:""}
                                         />
                                     </ListItem>
                                 </List>
