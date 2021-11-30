@@ -404,8 +404,10 @@ header .connect {
   font-size: 20px;
   line-height: 24px;
   color: var(--header-span-pink);
-  margin-top: 15px;
+  margin-top: 20px;
   font-weight: bolder;
+  justify-content: center;
+  display: flex;
 }
 
 .main-container .cust-card .unlock-btn {
@@ -854,7 +856,7 @@ body {
   display: flex;
   flex-direction: column;
   justify-content: flex-end;
-  height: 180px;
+  text-align: center;
 }
 
 .main-container .cust-card.small-card>p {

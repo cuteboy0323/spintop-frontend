@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
 import { Row, Col } from 'reactstrap'
 import SiderBar from "./siderbar"
 import config from "./../config/app";
@@ -6,7 +6,7 @@ import { Button, Skeleton, Typography } from "@mui/material"
 import LockIcon from '@mui/icons-material/Lock';
 import LockOpenIcon from '@mui/icons-material/LockOpen';
 import AddIcon from '@mui/icons-material/Add';
-
+import axios from "axios"
 import Web3 from "web3";
 import { useWeb3React } from "@web3-react/core";
 import Cwallet from "../components/Cwallet";
@@ -16,22 +16,24 @@ const Home = () => {
   // eslint-disable-next-line
   const { activate, active, account, deactivate, connector, error, setError, library, chainId } = useWeb3React();
   const [isOpenDialog, setIsOpenDialog] = useState(false);
-  // eslint-disable-next-line
-  const [harvestSpintop, setHarvestSpintop] = useState("No");
-  const [walletBalance, setWalletBalance] = useState("No");
+  const [harvestSpintop, setHarvestSpintop] = useState(false);
+  const [walletBalance, setWalletBalance] = useState(false);
+  const [marketCap, setMarketCap] = useState(false);
+  const [totalMinted, setTotalMinted] = useState(false);
+  const [totalBurned, setTotalBurned] = useState(false);
+  const [TVL, setTVL] = useState(false);
+
+  const fromWei = useCallback((web3, val) => {
+    if (val) {
+      val = val.toString();
+      return web3.utils.fromWei(val);
+    } else {
+      return "0"
+    }
+  }, []);
 
   const onConnectWallet = async () => {
     setIsOpenDialog(true);
-  }
-
-  const fn = (val, decimal = 4) => {
-    if (!isNaN(Number(val))) {
-      const trimVal = Number(Number(val).toFixed(decimal));
-      const decimalVal = trimVal.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,');
-      return decimalVal;
-    } else {
-      return Number(0);
-    }
   }
 
   const addToken = () => {
@@ -54,16 +56,38 @@ const Home = () => {
 
   const load = async () => {
     if (active) {
-      const web3 = new Web3(library.provider);
-      const spinC = new web3.eth.Contract(
-        ABI.token,
-        Token.spin.address
-      );
-      const walletB = await spinC.methods.balanceOf(account).call();
-      console.log(walletB)
-      setWalletBalance(walletB)
+      try {
+        const web3 = new Web3(library.provider);
+        const spinT = new web3.eth.Contract(
+          ABI.token,
+          Token.spin.address
+        );
+        const spinC = new web3.eth.Contract(
+          ABI.spin,
+          Token.spin.address
+        );
+        const walletB = await spinT.methods.balanceOf(account).call();
+        const totalMint = await spinT.methods.CirculatingSupply().call();
+        // const HarvestB = await spinC.methods.pendingSpintop(Pid, account).call();
+        setWalletBalance(fromWei(web3, walletB))
+        setTotalMinted(fromWei(web3, totalMint))
+        // setHarvestSpintop(HarvestB)
+        await axios.get('https://api.pancakeswap.info/api/v2/tokens/0x4691F60c894d3f16047824004420542E4674E621').then(res => {
+          const val = 1000000000
+          // const CurrentP = res.data.data.price * val
+          const CurrentP = 0.010012 * val
+          const marketcap = Math.floor(CurrentP) * fromWei(web3, totalMint);
+          setMarketCap(marketcap / val)
+        })
+
+      } catch (err) {
+        console.log(err)
+      }
     } else {
-      setWalletBalance("No")
+      setWalletBalance(false)
+      setHarvestSpintop(false)
+      setTotalMinted(false)
+      setMarketCap(false)
     }
   }
 
@@ -94,10 +118,10 @@ const Home = () => {
                 </div>
                 <div className="spin-text">SPINTOP to harvest</div>
                 {(() => {
-                  if (harvestSpintop != "No") {
+                  if (harvestSpintop != false) {
                     return (
                       <Typography className="value big" color="primary">
-                        <p className="money">${harvestSpintop}</p>
+                        <span className="money">${harvestSpintop}</span>
                       </Typography>
                     )
                   } else {
@@ -106,10 +130,10 @@ const Home = () => {
                 })()}
                 <div className="spin-text">SPINTOP in wallet</div>
                 {(() => {
-                  if (walletBalance != "No") {
+                  if (walletBalance != false) {
                     return (
                       <Typography className="value big" color="primary">
-                        <p className="money">${walletBalance}</p>
+                        <span className="money">{walletBalance}&nbsp;SPIN</span>
                       </Typography>
                     )
                   } else {
@@ -161,28 +185,70 @@ const Home = () => {
             </Col>
           </Row>
           <Row>
-            <Col md={3}>
+            <Col md={6}>
               <div className="cust-card main_card small-card">
                 <p className="small-p">Market Cap</p>
-                <p className="sub-txt">$4,613,089</p>
+                {(() => {
+                  if (marketCap != false) {
+                    return (
+                      <Typography className="value big" color="primary">
+                        <span className="money">$&nbsp;{marketCap}</span>
+                      </Typography>
+                    )
+                  } else {
+                    return <Typography><Skeleton animation="wave" className="skelton" /></Typography>
+                  }
+                })()}
               </div>
             </Col>
-            <Col md={3}>
+            <Col md={6}>
               <div className="cust-card main_card small-card">
                 <p className="small-p">Total Minted</p>
-                <p className="sub-txt">221,703,757</p>
+                {(() => {
+                  if (totalMinted != false) {
+                    return (
+                      <Typography className="value big" color="primary">
+                        <span className="money">$&nbsp;{totalMinted}</span>
+                      </Typography>
+                    )
+                  } else {
+                    return <Typography><Skeleton animation="wave" className="skelton" /></Typography>
+                  }
+                })()}
               </div>
             </Col>
-            <Col md={3}>
+            <Col md={6}>
               <div className="cust-card main_card small-card">
                 <p className="small-p">Total Burned</p>
-                <p className="sub-txt">22,608,221</p>
+                {/* <p className="sub-txt">22,608,221</p> */}
+                {(() => {
+                  if (totalBurned != false) {
+                    return (
+                      <Typography className="value big" color="primary">
+                        <span className="money">{totalBurned}&nbsp;</span>
+                      </Typography>
+                    )
+                  } else {
+                    return <Typography><Skeleton animation="wave" className="skelton" /></Typography>
+                  }
+                })()}
               </div>
             </Col>
-            <Col md={3}>
+            <Col md={6}>
               <div className="cust-card main_card small-card">
                 <p className="small-p">TVL</p>
-                <p className="sub-txt">46,582,901</p>
+                {/* <p className="sub-txt">46,582,901</p> */}
+                {(() => {
+                  if (TVL != false) {
+                    return (
+                      <Typography className="value big" color="primary">
+                        <span className="money">{TVL}&nbsp;</span>
+                      </Typography>
+                    )
+                  } else {
+                    return <Typography><Skeleton animation="wave" className="skelton" /></Typography>
+                  }
+                })()}
               </div>
             </Col>
           </Row>
