@@ -12,12 +12,22 @@ code {
         monospace;
 }
 
-// .css-1yjjitx-MuiSwitch-track{
-//     background-color: #630BF1!important;
-// }
-// .css-jsexje-MuiSwitch-thumb {
-//     background-color: #630BF1!important;
-// }
 .css-ahj2mt-MuiTypography-root{
     color: #B8C5EC;
+}
+.meta-mask{
+    justify-content: space-between;
+}
+.metamask{
+    border-color: #630BF1;
+    color: white;
+}
+.skelton{
+    background-color: #1d1131!important;
+    height: 50px!important;
+    margin-top: 15px!important;
+}
+
+.css-1dk1h2u-MuiSkeleton-root::after{
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.08), transparent)!important;
 }

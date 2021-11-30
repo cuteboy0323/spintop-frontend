@@ -187,7 +187,7 @@ const Farms = () => {
                                             <div className="card-content">
                                                 <span>0.5241654651</span>
                                                 <span>MAX</span>
-                                                <span style={{color:"rgba(184, 197, 236, 0.65)"}}>BUSD -BNB LP</span>
+                                                <span style={{ color: "rgba(184, 197, 236, 0.65)" }}>BUSD -BNB LP</span>
                                             </div>
                                         </div>
                                         <img src="./assets/images/alert-octagon-16px.svg" alt="" />
@@ -237,7 +237,6 @@ const Farms = () => {
                                 </div>
                             </div>
                         </div>
-
                     </div>
                 </div>
             </div>

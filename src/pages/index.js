@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import { Row, Col } from 'reactstrap'
 import SiderBar from "./siderbar"
 import config from "./../config/app";
-import { Button } from "@mui/material"
+import { Button, Skeleton, Typography } from "@mui/material"
 import { useWeb3React } from "@web3-react/core";
 import Cwallet from "../components/Cwallet";
 import LockIcon from '@mui/icons-material/Lock';
@@ -10,13 +10,23 @@ import LockOpenIcon from '@mui/icons-material/LockOpen';
 import AddIcon from '@mui/icons-material/Add';
 
 const Home = () => {
-
-  const [isOpenDialog, setIsOpenDialog] = useState(false);
   // eslint-disable-next-line
   const { activate, active, account, deactivate, connector, error, setError } = useWeb3React();
+  const [isOpenDialog, setIsOpenDialog] = useState(false);
+  const [harvestSpintop, setHarvestSpintop] = useState();
 
   const onConnectWallet = async () => {
     setIsOpenDialog(true);
+  }
+
+  const fn = (val, decimal = 4) => {
+    if (!isNaN(Number(val))) {
+      const trimVal = Number(Number(val).toFixed(decimal));
+      const decimalVal = trimVal.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,');
+      return decimalVal;
+    } else {
+      return Number(0);
+    }
   }
 
   const addToken = () => {
@@ -27,10 +37,10 @@ const Home = () => {
           params: {
             type: 'ERC20', // Initially only supports ERC20, but eventually more!
             options: {
-              address: config.aumi.address, // The address that the token is at.
-              symbol: config.aumi.symbol, // A ticker symbol or shorthand, up to 5 chars.
+              address: config.spin.address, // The address that the token is at.
+              symbol: config.spin.symbol, // A ticker symbol or shorthand, up to 5 chars.
               decimals: 18,
-              image: config.aumi.img
+              image: config.spin.img
             },
           },
         });
@@ -54,16 +64,38 @@ const Home = () => {
             <Col md={6}>
               <div className="cust-card main_card">
                 <p className="main-heading">Farms & Staking</p>
-                <div className="meta-mask" style={{ justifyContent: "space-between" }}>
+                <div className="meta-mask">
                   <img src="./assets/images/Spintoken.svg" alt="" className="spintoken" />
-                  <Button variant="outlined" startIcon={<AddIcon />} className="metamask" style={{ color: "white", borderColor: "#630BF1" }} onClick={() => addToken()}>Add to metaMask </Button>
+                  <Button variant="outlined" startIcon={<AddIcon />} className="metamask" onClick={() => addToken()}>Add to metaMask </Button>
                 </div>
                 <div className="spin-text">SPINTOP to harvest</div>
-                <p className="locked">Locked</p>
-                <p className="money">~$0.00</p>
+                {(() => {
+                  if (harvestSpintop) {
+                    return (
+                      <Typography className="value big" color="primary">
+                        ${fn(harvestSpintop, 2)}
+                      </Typography>
+                    )
+                  } else {
+                    return <Typography><Skeleton animation="wave" className="skelton" /></Typography>
+                  }
+                })()}
+                {/* <p className="locked">Locked</p>
+                <p className="money">~$0.00</p> */}
                 <div className="spin-text">SPINTOP in wallet</div>
-                <p className="locked">Locked</p>
-                <p className="money">~$0.00</p>
+                {(() => {
+                  if (harvestSpintop) {
+                    return (
+                      <Typography className="value big" color="primary">
+                        ${fn(harvestSpintop, 2)}
+                      </Typography>
+                    )
+                  } else {
+                    return <Typography><Skeleton animation="wave" className="skelton" /></Typography>
+                  }
+                })()}
+                {/* <p className="locked">Locked</p>
+                <p className="money">~$0.00</p> */}
 
                 {
                   active ?
@@ -73,7 +105,7 @@ const Home = () => {
                       startIcon={<LockOpenIcon />}
                       color="secondary"
                       onClick={onConnectWallet}
-                      style={{ background: "#630BF1", width: "100%" }}
+                      style={{ background: "#630BF1", width: "100%", marginTop: "20px" }}
                     >
                       {account.substring(0, 10)} ... {account.substring(account.length - 5)}
                     </Button>
@@ -84,7 +116,7 @@ const Home = () => {
                       startIcon={<LockIcon />}
                       color="secondary"
                       onClick={onConnectWallet}
-                      style={{ background: "#630BF1", width: "100%" }}
+                      style={{ background: "#630BF1", width: "100%", marginTop: "20px" }}
                     >
                       Unlock wallet
                     </Button>

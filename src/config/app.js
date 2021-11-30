@@ -10,11 +10,11 @@ export default {
         },
         reward: {
             address: {
-                "SPIN": "0x2688Dffeb7EFE3C30D26acbac86419748a1D5f0A",
+                "SPIN": "0xaB537Adc71f1a2A535b39b8847d4E9cA93AF7958",
             },
             abi: {
                 reward: {
-                    aumi: abi.spin,
+                    spin: abi.spin,
                 }
             }
         },
@@ -23,9 +23,9 @@ export default {
             aumi_lock: 200
         },
     },
-    aumi: {
+    spin: {
         price: 70,
-        address: "0x2688Dffeb7EFE3C30D26acbac86419748a1D5f0A",
+        address: "0xaB537Adc71f1a2A535b39b8847d4E9cA93AF7958",
         abi: abi.spin,
         symbol: "SPIN",
         img: "https://firebasestorage.googleapis.com/v0/b/gitbook-28427.appspot.com/o/spaces%2F-MbaC5cDQY6glrXLXj4B%2Favatar-1633197511393.png?generation=1633197512121772&alt=media"
