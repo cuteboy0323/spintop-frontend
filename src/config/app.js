@@ -1,7 +1,7 @@
 import abi from "./abi";
 
 export default {
-    netId: 137,
+    netId: 97,
     updateTime: 35000,
     swapFee: 0.0025,
     base: {

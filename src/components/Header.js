@@ -2,6 +2,8 @@ import React, { useState } from 'react'
 import $ from 'jquery'
 import { useWeb3React } from "@web3-react/core";
 import Cwallet from "./Cwallet";
+import { Button } from "@mui/material"
+import config from "../config/app";
 
 const Header = () => {
     const close = () => {
@@ -19,6 +21,41 @@ const Header = () => {
     const onConnectWallet = async () => {
         setIsOpenDialog(true);
     }
+
+    const swn = () => {
+        if (window.ethereum) {
+            window.ethereum
+                .request({
+                    method: "wallet_addEthereumChain",
+                    params: [
+                        {
+                            chainId: `0x${config.netId.toString(16)}`,
+                            chainName: "SPIN Network",
+                            rpcUrls: [
+                                "https://data-seed-prebsc-1-s1.binance.org:8545"
+                            ],
+                            nativeCurrency: {
+                                name: "SPIN",
+                                symbol: "SPIN",
+                                decimals: 18,
+                            },
+                            blockExplorerUrls: [
+                                "https://testnet.bscscan.com"
+                            ],
+                        },
+                    ],
+                })
+                .then(() => {
+                    alert(
+                        "You have successfully changed to Spin Test Network.",
+                        "info"
+                    );
+                })
+                .catch((error) => {
+                    alert(error.toString(), "error");
+                });
+        }
+    };
 
 
     return (
@@ -95,15 +132,44 @@ const Header = () => {
                 <span>Gamepedia</span>
             </div>
             <img src="./assets/images/settings_icon.svg" alt="" />
+            <Button
+                variant="contained"
+                startIcon={
+                    <img width={22} src="https://firebasestorage.googleapis.com/v0/b/gitbook-28427.appspot.com/o/spaces%2F-MbaC5cDQY6glrXLXj4B%2Favatar-1633197511393.png?generation=1633197512121772&alt=media" alt="Net" />
+                }
+                onClick={swn}
+                color="secondary"
+                style={{ background: "#f10088", marginRight: "10px" }}
+            >
+                SPIN
+            </Button>
             {
                 active ?
-                    <button className="connect" onMouseDown={onConnectWallet}><img src="/static/media/meta-mask.9d774d68.svg" style={{ paddingRight: "15px" }} />{account.substring(0, 5)} ... {account.substring(account.length - 3)}</button>
+                    <Button
+                        variant="contained"
+                        startIcon={
+                            <img width={22} src="/static/media/meta-mask.9d774d68.svg" alt="connected" />
+                        }
+                        onClick={onConnectWallet}
+                        style={{ background: "#f10088" }}
+                        color="secondary"
+                    >
+                        {account.substring(0, 5)} ... {account.substring(account.length - 3)}
+                    </Button>
                     :
-                    <button className="connect" onMouseDown={onConnectWallet}>Connect <img src="./assets/images/exit_icon.svg" style={{ paddingLeft: "15px" }} /></button>
+                    <Button
+                        variant="contained"
+                        startIcon={
+                            <img width={22} src="./assets/images/exit_icon.svg" alt="connect" />
+                        }
+                        onClick={onConnectWallet}
+                        style={{ background: "#f10088" }}
+                        color="secondary"
+                    >
+                        Connect
+                    </Button>
             }
             <Cwallet isOpen={isOpenDialog} setIsOpen={setIsOpenDialog} />
-
-
         </header>
     )
 }
