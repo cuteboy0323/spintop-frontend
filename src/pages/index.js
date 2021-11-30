@@ -3,18 +3,22 @@ import { Row, Col } from 'reactstrap'
 import SiderBar from "./siderbar"
 import config from "./../config/app";
 import { Button, Skeleton, Typography } from "@mui/material"
-import { useWeb3React } from "@web3-react/core";
-import Cwallet from "../components/Cwallet";
 import LockIcon from '@mui/icons-material/Lock';
 import LockOpenIcon from '@mui/icons-material/LockOpen';
 import AddIcon from '@mui/icons-material/Add';
 
+import Web3 from "web3";
+import { useWeb3React } from "@web3-react/core";
+import Cwallet from "../components/Cwallet";
+import ABI from "../config/abi"
+import Token from "../config/app"
 const Home = () => {
   // eslint-disable-next-line
-  const { activate, active, account, deactivate, connector, error, setError } = useWeb3React();
+  const { activate, active, account, deactivate, connector, error, setError, library, chainId } = useWeb3React();
   const [isOpenDialog, setIsOpenDialog] = useState(false);
   // eslint-disable-next-line
-  const [harvestSpintop, setHarvestSpintop] = useState();
+  const [harvestSpintop, setHarvestSpintop] = useState("No");
+  const [walletBalance, setWalletBalance] = useState("No");
 
   const onConnectWallet = async () => {
     setIsOpenDialog(true);
@@ -48,14 +52,25 @@ const Home = () => {
     }
   }
 
-  const load = () => {
-
+  const load = async () => {
+    if (active) {
+      const web3 = new Web3(library.provider);
+      const spinC = new web3.eth.Contract(
+        ABI.token,
+        Token.spin.address
+      );
+      const walletB = await spinC.methods.balanceOf(account).call();
+      console.log(walletB)
+      setWalletBalance(walletB)
+    } else {
+      setWalletBalance("No")
+    }
   }
 
   useEffect(() => {
     load()
     // eslint-disable-next-line
-  }, [])
+  }, [active])
   return (
     <div>
       <div className="main-container">
@@ -79,33 +94,28 @@ const Home = () => {
                 </div>
                 <div className="spin-text">SPINTOP to harvest</div>
                 {(() => {
-                  if (harvestSpintop) {
+                  if (harvestSpintop != "No") {
                     return (
                       <Typography className="value big" color="primary">
-                        ${fn(harvestSpintop, 2)}
+                        <p className="money">${harvestSpintop}</p>
                       </Typography>
                     )
                   } else {
                     return <Typography><Skeleton animation="wave" className="skelton" /></Typography>
                   }
                 })()}
-                {/* <p className="locked">Locked</p>
-                <p className="money">~$0.00</p> */}
                 <div className="spin-text">SPINTOP in wallet</div>
                 {(() => {
-                  if (harvestSpintop) {
+                  if (walletBalance != "No") {
                     return (
                       <Typography className="value big" color="primary">
-                        ${fn(harvestSpintop, 2)}
+                        <p className="money">${walletBalance}</p>
                       </Typography>
                     )
                   } else {
                     return <Typography><Skeleton animation="wave" className="skelton" /></Typography>
                   }
                 })()}
-                {/* <p className="locked">Locked</p>
-                <p className="money">~$0.00</p> */}
-
                 {
                   active ?
                     <Button
