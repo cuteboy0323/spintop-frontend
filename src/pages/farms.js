@@ -153,7 +153,7 @@ const Farms = () => {
                                 <p className="line"></p>
                                 <div className="hide-show" data-bs-toggle="collapse" href="#collapseExample1" role="button" aria-expanded="false" aria-controls="collapseExample1">
                                     <span>Hide</span>
-                                    <span>Details</span>
+                                    <span style={{ marginBottom: "15px" }}>Details</span>
                                     <img src="./assets/images/dropup.svg" alt="" />
                                     <img src="./assets/images/drop_hover.svg" alt="" />
                                 </div>

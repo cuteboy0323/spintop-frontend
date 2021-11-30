@@ -408,6 +408,7 @@ header .connect {
   font-weight: bolder;
   justify-content: center;
   display: flex;
+  text-shadow: 0px 0px 16px #e55370;
 }
 
 .main-container .cust-card .unlock-btn {

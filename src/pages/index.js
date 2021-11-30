@@ -64,18 +64,20 @@ const Home = () => {
         );
         const spinC = new web3.eth.Contract(
           ABI.spin,
-          Token.spin.address
+          Token.staking.address
         );
         const walletB = await spinT.methods.balanceOf(account).call();
-        const totalMint = await spinT.methods.CirculatingSupply().call();
-        // const HarvestB = await spinC.methods.pendingSpintop(Pid, account).call();
-        setWalletBalance(fromWei(web3, walletB))
+        const totalMint = await spinT.methods.totalSupply().call();
+        const totalstaked = await spinC.methods.totalStaked().call();
+        const totalburned = await spinT.methods.totalBurned().call();
+        setWalletBalance(fromWei(web3, walletB).toString())
+        console.log(typeof (false))
         setTotalMinted(fromWei(web3, totalMint))
-        // setHarvestSpintop(HarvestB)
+        setTVL(totalstaked)
+        setTotalBurned(fromWei(web3, totalburned))
         await axios.get('https://api.pancakeswap.info/api/v2/tokens/0x4691F60c894d3f16047824004420542E4674E621').then(res => {
           const val = 1000000000
-          // const CurrentP = res.data.data.price * val
-          const CurrentP = 0.010012 * val
+          const CurrentP = res.data.data.price * val
           const marketcap = Math.floor(CurrentP) * fromWei(web3, totalMint);
           setMarketCap(marketcap / val)
         })
@@ -83,17 +85,31 @@ const Home = () => {
       } catch (err) {
         console.log(err)
       }
-    } else {
-      setWalletBalance(false)
-      setHarvestSpintop(false)
-      setTotalMinted(false)
-      setMarketCap(false)
     }
   }
 
+  const clear = () => {
+    setWalletBalance(false)
+    setHarvestSpintop(false)
+    setTotalMinted(false)
+    setMarketCap(false)
+    setTVL(false)
+    setTotalBurned(false)
+  }
+
   useEffect(() => {
-    load()
-    // eslint-disable-next-line
+    let interval = null;
+    if (active) {
+      load();
+      interval = setInterval(async () => {
+        await load();
+        console.clear();
+      }, config.updateTime);
+    } else {
+      clear();
+      return () => clearInterval(interval);
+    }
+
   }, [active])
   return (
     <div>
@@ -118,7 +134,7 @@ const Home = () => {
                 </div>
                 <div className="spin-text">SPINTOP to harvest</div>
                 {(() => {
-                  if (harvestSpintop != false) {
+                  if (harvestSpintop != false || typeof (harvestSpintop) == "string") {
                     return (
                       <Typography className="value big" color="primary">
                         <span className="money">${harvestSpintop}</span>
@@ -130,7 +146,7 @@ const Home = () => {
                 })()}
                 <div className="spin-text">SPINTOP in wallet</div>
                 {(() => {
-                  if (walletBalance != false) {
+                  if (walletBalance != false || typeof (walletBalance) == "string") {
                     return (
                       <Typography className="value big" color="primary">
                         <span className="money">{walletBalance}&nbsp;SPIN</span>
@@ -189,7 +205,7 @@ const Home = () => {
               <div className="cust-card main_card small-card">
                 <p className="small-p">Market Cap</p>
                 {(() => {
-                  if (marketCap != false) {
+                  if (marketCap != false  || typeof (marketCap) == "string") {
                     return (
                       <Typography className="value big" color="primary">
                         <span className="money">$&nbsp;{marketCap}</span>
@@ -205,7 +221,7 @@ const Home = () => {
               <div className="cust-card main_card small-card">
                 <p className="small-p">Total Minted</p>
                 {(() => {
-                  if (totalMinted != false) {
+                  if (totalMinted != false  || typeof (totalMinted) == "string") {
                     return (
                       <Typography className="value big" color="primary">
                         <span className="money">$&nbsp;{totalMinted}</span>
@@ -222,10 +238,10 @@ const Home = () => {
                 <p className="small-p">Total Burned</p>
                 {/* <p className="sub-txt">22,608,221</p> */}
                 {(() => {
-                  if (totalBurned != false) {
+                  if (totalBurned != false  || typeof (totalBurned) == "string") {
                     return (
                       <Typography className="value big" color="primary">
-                        <span className="money">{totalBurned}&nbsp;</span>
+                        <span className="money">$&nbsp;{totalBurned}</span>
                       </Typography>
                     )
                   } else {
@@ -236,13 +252,13 @@ const Home = () => {
             </Col>
             <Col md={6}>
               <div className="cust-card main_card small-card">
-                <p className="small-p">TVL</p>
+                <p className="small-p">Total Value &nbsp;Locked</p>
                 {/* <p className="sub-txt">46,582,901</p> */}
                 {(() => {
-                  if (TVL != false) {
+                  if (TVL != false || typeof (TVL) == "string") {
                     return (
                       <Typography className="value big" color="primary">
-                        <span className="money">{TVL}&nbsp;</span>
+                        <span className="money">$&nbsp;{TVL}</span>
                       </Typography>
                     )
                   } else {

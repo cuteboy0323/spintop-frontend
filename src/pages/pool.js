@@ -58,11 +58,6 @@ const Pool = () => {
                                         }
                                     />
                                 </FormGroup>
-                                {/* <span className="switch-span">Steaked only</span>
-                                <label className="switch">
-                                    <input type="checkbox" defaultChecked />
-                                    <span className="slider round"></span>
-                                </label> */}
                                 <div className="live-buttons">
                                     <div className="btns-lf active" id="live" onClick={() => live()}>
                                         <span>Live</span>

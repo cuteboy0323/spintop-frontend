@@ -31,3 +31,9 @@ code {
 .css-1dk1h2u-MuiSkeleton-root::after{
     background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.08), transparent)!important;
 }
+.css-priqlz-MuiButtonBase-root-MuiSwitch-switchBase.Mui-checked{
+    color: #630BF1!important;
+}
+.css-priqlz-MuiButtonBase-root-MuiSwitch-switchBase.Mui-checked+.MuiSwitch-track{
+    background-color: #630BF1!important;
+}
