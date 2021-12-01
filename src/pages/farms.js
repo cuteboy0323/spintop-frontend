@@ -3,7 +3,6 @@ import SiderBar from "./siderbar"
 import $ from "jquery"
 import { Col, Row } from 'reactstrap'
 import { FormControlLabel, FormGroup, Switch } from '@mui/material'
-
 const Farms = () => {
 
     const finish = () => {
@@ -104,7 +103,7 @@ const Farms = () => {
                                         <span>Finished</span>
                                     </div>
                                 </div>
-                                
+
                                 {/* <select name="" id="">
                                     <option value="">Hot ones</option>
                                     <option value="">Hot ones</option>
@@ -115,6 +114,7 @@ const Farms = () => {
                             </div>
                         </Col>
                     </Row>
+
                     <div className="row">
                         <div className="col-sm-6 col-md-6 col-lg-4 col-xl-4">
                             <div className="cust-card contract">
