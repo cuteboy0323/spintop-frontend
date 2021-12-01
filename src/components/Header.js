@@ -131,17 +131,17 @@ const Header = () => {
                 <span>DEX</span>
                 <span>Gamepedia</span>
             </div>
-            <img src="./assets/images/settings_icon.svg" alt="" />
+            {/* <img src="./assets/images/settings_icon.svg" alt="" /> */}
             <Button
                 variant="contained"
                 startIcon={
-                    <img width={22} style={{ borderRadius: "10px", background: "white" }} src="https://firebasestorage.googleapis.com/v0/b/gitbook-28427.appspot.com/o/spaces%2F-MbaC5cDQY6glrXLXj4B%2Favatar-1633197511393.png?generation=1633197512121772&alt=media" alt="Net" />
+                    <img width={22} style={{ borderRadius: "10px", background: "#16092b" }} src="https://firebasestorage.googleapis.com/v0/b/gitbook-28427.appspot.com/o/spaces%2F-MbaC5cDQY6glrXLXj4B%2Favatar-1633197511393.png?generation=1633197512121772&alt=media" alt="Net" />
                 }
                 onClick={swn}
                 color="secondary"
                 style={{ background: "#f10088", marginRight: "10px" }}
             >
-                SPIN
+                NetWork
             </Button>
             {
                 active ?

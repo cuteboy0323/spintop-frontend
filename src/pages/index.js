@@ -71,7 +71,6 @@ const Home = () => {
         const totalstaked = await spinC.methods.totalStaked().call();
         const totalburned = await spinT.methods.totalBurned().call();
         setWalletBalance(fromWei(web3, walletB).toString())
-        console.log(typeof (false))
         setTotalMinted(fromWei(web3, totalMint))
         setTVL(totalstaked)
         setTotalBurned(fromWei(web3, totalburned))
@@ -164,7 +163,7 @@ const Home = () => {
                       startIcon={<LockOpenIcon />}
                       color="secondary"
                       onClick={onConnectWallet}
-                      style={{ background: "#630BF1", width: "100%", marginTop: "20px" }}
+                      style={{ background: "#630BF1", width: "100%", marginTop: "70px" }}
                     >
                       {account.substring(0, 10)} ... {account.substring(account.length - 5)}
                     </Button>
@@ -175,7 +174,7 @@ const Home = () => {
                       startIcon={<LockIcon />}
                       color="secondary"
                       onClick={onConnectWallet}
-                      style={{ background: "#630BF1", width: "100%", marginTop: "20px" }}
+                      style={{ background: "#630BF1", width: "100%", marginTop: "70px" }}
                     >
                       Unlock wallet
                     </Button>

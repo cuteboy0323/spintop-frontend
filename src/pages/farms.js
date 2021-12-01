@@ -1,6 +1,8 @@
 import React from 'react'
 import SiderBar from "./siderbar"
 import $ from "jquery"
+import { Col, Row } from 'reactstrap'
+import { FormControlLabel, FormGroup, Switch } from '@mui/material'
 
 const Farms = () => {
 
@@ -83,14 +85,17 @@ const Farms = () => {
                         <span className="magnify"></span>
                         <img src="./assets/images/filter.svg" alt="" className="filter" />
                     </div>
-                    <div className="row mobile-margin">
-                        <div className="col-sm-12 col-md-12 cold-lg-12 col-xl-12">
+                    <Row className="mobile-margin">
+                        <Col md={12}>
                             <div className="cust-card steak-only">
-                                <span className="switch-span">Staked only</span>
-                                <label className="switch">
-                                    <input type="checkbox" defaultChecked />
-                                    <span className="slider round"></span>
-                                </label>
+                                <FormGroup>
+                                    <FormControlLabel
+                                        label="Staked only"
+                                        control={
+                                            <Switch color="secondary" defaultChecked />
+                                        }
+                                    />
+                                </FormGroup>
                                 <div className="live-buttons">
                                     <div className="btns-lf active" id="live" onClick={() => live()}>
                                         <span>Live</span>
@@ -103,11 +108,12 @@ const Farms = () => {
                                     <option value="">Hot ones</option>
                                     <option value="">Hot ones</option>
                                 </select>
+
                                 <input type="text" placeholder="Search" />
                                 <span className="magnify"></span>
                             </div>
-                        </div>
-                    </div>
+                        </Col>
+                    </Row>
                     <div className="row">
                         <div className="col-sm-6 col-md-6 col-lg-4 col-xl-4">
                             <div className="cust-card contract">
@@ -131,7 +137,7 @@ const Farms = () => {
                                 <p className="spin-earned">Spin Earned</p>
                                 <div className="d-flex harvest">
                                     <span>0.0</span>
-                                    <button className="one" onClick={() => harvest()}>Harvest</button>
+                                    <button className="one" onClick={() => harvest()} disabled>Harvest</button>
                                     <button className="one active stake-lp" data-bs-toggle="modal" data-bs-target="#exampleModal">Stake LP</button>
                                     <button className="one active stake-lp act" onClick={() => harvested()}>Harvested</button>
                                 </div>

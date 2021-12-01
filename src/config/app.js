@@ -13,7 +13,7 @@ export default {
     },
     farms: {
         lp: {
-            address: "",
+            address: "0xa25512Ae68d21CC104Ed3481eCF6706f1bD918fC",
             abi: abi.lp,
         },
     },

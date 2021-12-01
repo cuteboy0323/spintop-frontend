@@ -88,7 +88,7 @@ const Cwallet = ({ isOpen, setIsOpen }) => {
     };
     const onDeactiveWallet = () => {
         setIsSelectingWallet(true);
-        deactivate();
+        deactivate(true);
     };
     const retryConnect = (activating) => {
         setError(null);
@@ -155,7 +155,7 @@ const Cwallet = ({ isOpen, setIsOpen }) => {
                                 primary={`Connected to ${cWallet.name}`}
                             />
                             <ListItemSecondaryAction className="action">
-                                <Tooltip arrow title="Change wallet">
+                                <Tooltip arrow title="Disconnect wallet">
                                     <IconButton size="small" onClick={onDeactiveWallet}>
                                         <LowPriorityRoundedIcon />
                                     </IconButton>
