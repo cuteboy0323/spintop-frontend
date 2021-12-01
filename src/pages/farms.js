@@ -103,12 +103,6 @@ const Farms = () => {
                                         <span>Finished</span>
                                     </div>
                                 </div>
-
-                                {/* <select name="" id="">
-                                    <option value="">Hot ones</option>
-                                    <option value="">Hot ones</option>
-                                </select> */}
-
                                 <input type="text" placeholder="Search" />
                                 <span className="magnify"></span>
                             </div>
@@ -178,6 +172,7 @@ const Farms = () => {
                                 </div>
                             </div>
                         </div>
+
                         <div className="modal fade" id="exampleModal" style={{ zIndex: "2" }} tabIndex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
                             <div className="modal-dialog modal-dialog-centered">
                                 <div className="modal-content">

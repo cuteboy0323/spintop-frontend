@@ -67,15 +67,21 @@ const Home = () => {
           ABI.spin,
           Token.staking.address
         );
+        const spinF = new web3.eth.Contract(
+          ABI.farms,
+          Token.farms.address
+        );
         const walletB = await spinT.methods.balanceOf(account).call();
         const totalMint = await spinT.methods.totalSupply().call();
         const totalstaked = await spinC.methods.totalStaked().call();
         const totalburned = await spinT.methods.totalBurned().call();
         const circulating = await spinT.methods.CirculatingSupply().call();
+        const harvestedValue = await spinF.methods.pendingSpintop(account).call();
         setWalletBalance(fromWei(web3, walletB).toString())
         setTotalMinted(fromWei(web3, totalMint))
         setTotalBurned(fromWei(web3, totalburned))
         setCirculatingSupply(fromWei(web3, circulating))
+        setHarvestSpintop(harvestedValue)
         setTVL(totalstaked)
         await axios.get('https://api.pancakeswap.info/api/v2/tokens/0x4691F60c894d3f16047824004420542E4674E621').then(res => {
           const val = 1000000000

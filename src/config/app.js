@@ -12,19 +12,10 @@ export default {
         img: "https://firebasestorage.googleapis.com/v0/b/gitbook-28427.appspot.com/o/spaces%2F-MbaC5cDQY6glrXLXj4B%2Favatar-1633197511393.png?generation=1633197512121772&alt=media"
     },
     farms: {
-        lp: {
-            address: "0xa25512Ae68d21CC104Ed3481eCF6706f1bD918fC",
-            abi: abi.lp,
-        },
+        address: "0x68ad4067b8c9e98C8c63bE5B34c84c1627EE1164",
+        abi: abi.lp,
     },
-    tokens: [
-        "binance-testnet",
-        "spin-network",
-        "quick",
-        "wrapped-bitcoin",
-        "weth"
-    ],
-    staking:{
-        address:"0x6969b346Ee8b378dc0fF02f929cf5473760dA866"
+    staking: {
+        address: "0x6969b346Ee8b378dc0fF02f929cf5473760dA866"
     }
 }
