@@ -25,8 +25,6 @@ const Pool = () => {
             <div className="main-container">
                 <SiderBar Params="pools" />
                 <div className="right-side">
-
-
                     <Row>
                         <Col md={12}>
                             <div className="big-announc pools-main-card">
@@ -66,10 +64,10 @@ const Pool = () => {
                                         <span>Finished</span>
                                     </div>
                                 </div>
-                                <select name="" id="">
+                                {/* <select name="" id="">
                                     <option value="">Hot ones</option>
                                     <option value="">Hot ones</option>
-                                </select>
+                                </select> */}
 
                                 <input type="text" placeholder="Search" />
                                 <span className="magnify"></span>

@@ -104,13 +104,13 @@ const Home = () => {
     let interval = null;
     if (active) {
       load();
-      interval = setInterval(async () => {
-        await load();
-        console.clear();
-      }, config.updateTime);
+      // load();
+      // interval = setInterval(async () => {
+      //   console.clear();
+      // }, config.updateTime);
     } else {
       clear();
-      return () => clearInterval(interval);
+      // return () => clearInterval(interval);
     }
 
   }, [active])

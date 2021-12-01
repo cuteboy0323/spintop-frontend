@@ -147,7 +147,7 @@ const Header = () => {
                     <Button
                         variant="contained"
                         startIcon={
-                            <img width={22} src="/static/media/meta-mask.9d774d68.svg" alt="connected" />
+                            <img width={22} src="./assets/images/meta-mask.svg" alt="connected" />
                         }
                         onClick={onConnectWallet}
                         style={{ background: "#f10088" }}
