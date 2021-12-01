@@ -21,6 +21,7 @@ const Home = () => {
   const [marketCap, setMarketCap] = useState(false);
   const [totalMinted, setTotalMinted] = useState(false);
   const [totalBurned, setTotalBurned] = useState(false);
+  const [circulatingSupply, setCirculatingSupply] = useState(false);
   const [TVL, setTVL] = useState(false);
 
   const fromWei = useCallback((web3, val) => {
@@ -70,10 +71,12 @@ const Home = () => {
         const totalMint = await spinT.methods.totalSupply().call();
         const totalstaked = await spinC.methods.totalStaked().call();
         const totalburned = await spinT.methods.totalBurned().call();
+        const circulating = await spinT.methods.CirculatingSupply().call();
         setWalletBalance(fromWei(web3, walletB).toString())
         setTotalMinted(fromWei(web3, totalMint))
-        setTVL(totalstaked)
         setTotalBurned(fromWei(web3, totalburned))
+        setCirculatingSupply(fromWei(web3, circulating))
+        setTVL(totalstaked)
         await axios.get('https://api.pancakeswap.info/api/v2/tokens/0x4691F60c894d3f16047824004420542E4674E621').then(res => {
           const val = 1000000000
           const CurrentP = res.data.data.price * val
@@ -88,12 +91,13 @@ const Home = () => {
   }
 
   const clear = () => {
+    setCirculatingSupply(false)
     setWalletBalance(false)
     setHarvestSpintop(false)
     setTotalMinted(false)
     setMarketCap(false)
-    setTVL(false)
     setTotalBurned(false)
+    setTVL(false)
   }
 
   useEffect(() => {
@@ -204,7 +208,7 @@ const Home = () => {
               <div className="cust-card main_card small-card">
                 <p className="small-p">Market Place</p>
                 {(() => {
-                  if (marketCap != false  || typeof (marketCap) == "string") {
+                  if (marketCap != false || typeof (marketCap) == "string") {
                     return (
                       <Typography className="value big" color="primary">
                         <span className="money">$&nbsp;{Math.floor(marketCap)}</span>
@@ -220,7 +224,7 @@ const Home = () => {
               <div className="cust-card main_card small-card">
                 <p className="small-p">Total Minted</p>
                 {(() => {
-                  if (totalMinted != false  || typeof (totalMinted) == "string") {
+                  if (totalMinted != false || typeof (totalMinted) == "string") {
                     return (
                       <Typography className="value big" color="primary">
                         <span className="money">$&nbsp;{totalMinted}</span>
@@ -237,7 +241,7 @@ const Home = () => {
                 <p className="small-p">Total Burned</p>
                 {/* <p className="sub-txt">22,608,221</p> */}
                 {(() => {
-                  if (totalBurned != false  || typeof (totalBurned) == "string") {
+                  if (totalBurned != false || typeof (totalBurned) == "string") {
                     return (
                       <Typography className="value big" color="primary">
                         <span className="money">$&nbsp;{totalBurned}</span>
@@ -266,15 +270,14 @@ const Home = () => {
                 })()}
               </div>
             </Col>
-            <Col md={3}>
+            {/* <Col md={3}>
               <div className="cust-card main_card small-card">
                 <p className="small-p">Circulating Supply</p>
-                {/* <p className="sub-txt">46,582,901</p> */}
                 {(() => {
-                  if (TVL != false || typeof (TVL) == "string") {
+                  if (circulatingSupply != false || typeof (circulatingSupply) == "string") {
                     return (
                       <Typography className="value big" color="primary">
-                        <span className="money">$&nbsp;{TVL}</span>
+                        <span className="money">$&nbsp;{circulatingSupply}</span>
                       </Typography>
                     )
                   } else {
@@ -286,7 +289,6 @@ const Home = () => {
             <Col md={3}>
               <div className="cust-card main_card small-card">
                 <p className="small-p">Max Tx Amount</p>
-                {/* <p className="sub-txt">46,582,901</p> */}
                 {(() => {
                   if (TVL != false || typeof (TVL) == "string") {
                     return (
@@ -303,7 +305,6 @@ const Home = () => {
             <Col md={3}>
               <div className="cust-card main_card small-card">
                 <p className="small-p">New Spin/Block</p>
-                {/* <p className="sub-txt">46,582,901</p> */}
                 {(() => {
                   if (TVL != false || typeof (TVL) == "string") {
                     return (
@@ -320,7 +321,6 @@ const Home = () => {
             <Col md={3}>
               <div className="cust-card main_card small-card">
                 <p className="small-p">Transfer Tax</p>
-                {/* <p className="sub-txt">46,582,901</p> */}
                 {(() => {
                   if (TVL != false || typeof (TVL) == "string") {
                     return (
@@ -333,7 +333,7 @@ const Home = () => {
                   }
                 })()}
               </div>
-            </Col>
+            </Col> */}
           </Row>
         </div>
       </div>
