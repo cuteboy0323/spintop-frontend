@@ -104,10 +104,11 @@ const Farms = () => {
                                         <span>Finished</span>
                                     </div>
                                 </div>
-                                <select name="" id="">
+                                
+                                {/* <select name="" id="">
                                     <option value="">Hot ones</option>
                                     <option value="">Hot ones</option>
-                                </select>
+                                </select> */}
 
                                 <input type="text" placeholder="Search" />
                                 <span className="magnify"></span>

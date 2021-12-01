@@ -57,7 +57,6 @@ const Header = () => {
         }
     };
 
-
     return (
         <header>
             <img src="./assets/images/menu.svg" alt="" className="menu-icon" onClick={() => menutoggle()} />

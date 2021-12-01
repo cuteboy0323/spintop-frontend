@@ -136,7 +136,7 @@ const Home = () => {
                   if (harvestSpintop != false || typeof (harvestSpintop) == "string") {
                     return (
                       <Typography className="value big" color="primary">
-                        <span className="money">${harvestSpintop}</span>
+                        <span className="money">$&nbsp;{harvestSpintop}</span>
                       </Typography>
                     )
                   } else {
@@ -148,7 +148,7 @@ const Home = () => {
                   if (walletBalance != false || typeof (walletBalance) == "string") {
                     return (
                       <Typography className="value big" color="primary">
-                        <span className="money">{walletBalance}&nbsp;SPIN</span>
+                        <span className="money">$&nbsp;{walletBalance}</span>
                       </Typography>
                     )
                   } else {
@@ -163,7 +163,7 @@ const Home = () => {
                       startIcon={<LockOpenIcon />}
                       color="secondary"
                       onClick={onConnectWallet}
-                      style={{ background: "#630BF1", width: "100%", marginTop: "70px" }}
+                      style={{ background: "#630BF1", width: "100%", marginTop: "75px" }}
                     >
                       {account.substring(0, 10)} ... {account.substring(account.length - 5)}
                     </Button>
@@ -174,7 +174,7 @@ const Home = () => {
                       startIcon={<LockIcon />}
                       color="secondary"
                       onClick={onConnectWallet}
-                      style={{ background: "#630BF1", width: "100%", marginTop: "70px" }}
+                      style={{ background: "#630BF1", width: "100%", marginTop: "75px" }}
                     >
                       Unlock wallet
                     </Button>
@@ -200,14 +200,14 @@ const Home = () => {
             </Col>
           </Row>
           <Row>
-            <Col md={6}>
+            <Col md={3}>
               <div className="cust-card main_card small-card">
-                <p className="small-p">Market Cap</p>
+                <p className="small-p">Market Place</p>
                 {(() => {
                   if (marketCap != false  || typeof (marketCap) == "string") {
                     return (
                       <Typography className="value big" color="primary">
-                        <span className="money">$&nbsp;{marketCap}</span>
+                        <span className="money">$&nbsp;{Math.floor(marketCap)}</span>
                       </Typography>
                     )
                   } else {
@@ -216,7 +216,7 @@ const Home = () => {
                 })()}
               </div>
             </Col>
-            <Col md={6}>
+            <Col md={3}>
               <div className="cust-card main_card small-card">
                 <p className="small-p">Total Minted</p>
                 {(() => {
@@ -232,7 +232,7 @@ const Home = () => {
                 })()}
               </div>
             </Col>
-            <Col md={6}>
+            <Col md={3}>
               <div className="cust-card main_card small-card">
                 <p className="small-p">Total Burned</p>
                 {/* <p className="sub-txt">22,608,221</p> */}
@@ -249,9 +249,77 @@ const Home = () => {
                 })()}
               </div>
             </Col>
-            <Col md={6}>
+            <Col md={3}>
               <div className="cust-card main_card small-card">
-                <p className="small-p">Total Value &nbsp;Locked</p>
+                <p className="small-p">Total Locked Rewards</p>
+                {/* <p className="sub-txt">46,582,901</p> */}
+                {(() => {
+                  if (TVL != false || typeof (TVL) == "string") {
+                    return (
+                      <Typography className="value big" color="primary">
+                        <span className="money">$&nbsp;{TVL}</span>
+                      </Typography>
+                    )
+                  } else {
+                    return <Typography><Skeleton animation="wave" className="skelton" /></Typography>
+                  }
+                })()}
+              </div>
+            </Col>
+            <Col md={3}>
+              <div className="cust-card main_card small-card">
+                <p className="small-p">Circulating Supply</p>
+                {/* <p className="sub-txt">46,582,901</p> */}
+                {(() => {
+                  if (TVL != false || typeof (TVL) == "string") {
+                    return (
+                      <Typography className="value big" color="primary">
+                        <span className="money">$&nbsp;{TVL}</span>
+                      </Typography>
+                    )
+                  } else {
+                    return <Typography><Skeleton animation="wave" className="skelton" /></Typography>
+                  }
+                })()}
+              </div>
+            </Col>
+            <Col md={3}>
+              <div className="cust-card main_card small-card">
+                <p className="small-p">Max Tx Amount</p>
+                {/* <p className="sub-txt">46,582,901</p> */}
+                {(() => {
+                  if (TVL != false || typeof (TVL) == "string") {
+                    return (
+                      <Typography className="value big" color="primary">
+                        <span className="money">$&nbsp;{TVL}</span>
+                      </Typography>
+                    )
+                  } else {
+                    return <Typography><Skeleton animation="wave" className="skelton" /></Typography>
+                  }
+                })()}
+              </div>
+            </Col>
+            <Col md={3}>
+              <div className="cust-card main_card small-card">
+                <p className="small-p">New Spin/Block</p>
+                {/* <p className="sub-txt">46,582,901</p> */}
+                {(() => {
+                  if (TVL != false || typeof (TVL) == "string") {
+                    return (
+                      <Typography className="value big" color="primary">
+                        <span className="money">$&nbsp;{TVL}</span>
+                      </Typography>
+                    )
+                  } else {
+                    return <Typography><Skeleton animation="wave" className="skelton" /></Typography>
+                  }
+                })()}
+              </div>
+            </Col>
+            <Col md={3}>
+              <div className="cust-card main_card small-card">
+                <p className="small-p">Transfer Tax</p>
                 {/* <p className="sub-txt">46,582,901</p> */}
                 {(() => {
                   if (TVL != false || typeof (TVL) == "string") {
