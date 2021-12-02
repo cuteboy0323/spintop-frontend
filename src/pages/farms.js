@@ -131,6 +131,7 @@ const Farms = () => {
     const clear = () => {
         setEarned(false)
         setAPR(false)
+        setLiquidity(false)
         setMultiplier(false)
     }
 
@@ -282,10 +283,12 @@ const Farms = () => {
                                                 }
                                             })()}
                                         </div>
-                                        <div className="d-flex cursor-pointer">
-                                            <p className="links first">Get SPINTOP-BNB LP</p>
-                                            <img src="./assets/images/link_open.svg" alt="" className="link-open first" />
-                                        </div>
+                                        <a href="https://pancakeswap.finance/add/BNB/0xF9d52aeA6097c2064964F8A59EDD4F3AAA7CE895" target="_blank" rel="noreferrer">
+                                            <div className="d-flex cursor-pointer">
+                                                <p className="links first">Get SPINTOP-BNB LP</p>
+                                                <img src="./assets/images/link_open.svg" alt="" className="link-open first" />
+                                            </div>
+                                        </a>
                                         <a href="https://testnet.bscscan.com/address/0x68ad4067b8c9e98C8c63bE5B34c84c1627EE1164#writeContract" target="_blank" rel="noreferrer">
                                             <div className="d-flex cursor-pointer">
                                                 <p className="links first">View Contract</p>
@@ -411,11 +414,11 @@ const Farms = () => {
                                             <div className="card-content">
                                                 <span>0.5241654651</span>
                                                 <span>MAX</span>
-                                                <span style={{ color: "rgba(184, 197, 236, 0.65)" }}>BUSD -BNB LP</span>
+                                                <span style={{ color: "rgba(184, 197, 236, 0.65)" }}>SPINTOP - BNB LP</span>
                                             </div>
                                         </div>
-                                        <img src="./assets/images/alert-octagon-16px.svg" alt="" />
-                                        <span className="alert-span">No token to stake. Get BUSD-BNB LP</span>
+                                        {/* <img src="./assets/images/alert-octagon-16px.svg" alt="" /> */}
+                                        {/* <span className="alert-span">No token to stake. Get BUSD-BNB LP</span> */}
                                         <div className="btn-contain">
                                             <button className="cancel" data-bs-dismiss="modal" aria-label="Close">Cancel</button>
                                             <button className="confirm" onClick={() => confirm()}>Confirm</button>
