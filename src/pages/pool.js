@@ -95,7 +95,7 @@ const Pool = () => {
                                     <img src="./assets/images/Form.png" alt="" className="me-2 form-p" />
                                     <span>APR</span>
                                     <span>54.85%</span>
-                                    <img src="./assets/images/calculator-alt.svg" alt="" data-bs-toggle="modal" data-bs-target="#exampleModal" />
+                                    <img src="./assets/images/calculator-alt.svg" alt="" data-bs-toggle="modal" data-bs-target="#calmodal" />
                                 </div>
                                 <p className="spin-earned active">Recent SPINTOP profit</p>
                                 <div className="small-box">

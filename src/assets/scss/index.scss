@@ -25,9 +25,11 @@ code {
 .skelton{
     background-color: #1d1131!important;
     height: 50px!important;
-    // margin-top: 15px!important;
 }
-
+.smallskelton{
+    background-color: #1d1131!important;
+    height: 35px!important;
+}
 .css-1dk1h2u-MuiSkeleton-root::after{
     background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.08), transparent)!important;
 }

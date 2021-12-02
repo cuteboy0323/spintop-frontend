@@ -1,9 +1,23 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import SiderBar from "./siderbar"
 import $ from "jquery"
 import { Col, Row } from 'reactstrap'
-import { FormControlLabel, FormGroup, Switch } from '@mui/material'
+import { FormControlLabel, FormGroup, Skeleton, Switch, Typography } from '@mui/material'
+
+import Web3 from "web3";
+import { useWeb3React } from "@web3-react/core";
+import Cwallet from "../components/Cwallet";
+import ABI from "../config/abi"
+import Token from "../config/app"
 const Farms = () => {
+    // eslint-disable-next-line
+    const { activate, active, account, deactivate, connector, error, setError, library, chainId } = useWeb3React();
+    const [CalUsdValue, setCalUsdValue] = useState(0.00)
+    const [CalSpinValue, setCalSpinValue] = useState(0.00)
+    const [Multiplier, setMultiplier] = useState(false)
+    const [APR, setAPR] = useState(false)
+    const [Liquidity, setLiquidity] = useState(false)
+    const [Earned, setEarned] = useState(false)
 
     const finish = () => {
         $('#live').removeClass('active')
@@ -70,9 +84,35 @@ const Farms = () => {
         }, 2500)
     }
 
-    // const cancel = () => {
+    const load = async () => {
+        try {
+            const web3 = new Web3(library.provider);
+            const spinF = new web3.eth.Contract(
+                ABI.farms,
+                Token.farms.address
+            );
+            const earnValue = await spinF.methods.earned(account).call();
+            const APRValue = await spinF.methods.totalStaked().call();
+            setEarned(earnValue)
+            setAPR(APRValue)
+            setMultiplier("40X")
+        } catch (err) {
+            console.log(err)
+        }
+    }
 
-    // }
+    const clear = (params) => {
+        setEarned(false)
+        setAPR(false)
+    }
+
+    useEffect(() => {
+        if (active) {
+            load()
+        } else {
+            clear()
+        }
+    }, [active])
 
     return (
         <div>
@@ -117,21 +157,67 @@ const Farms = () => {
                                     <img src="./assets/images/two-logos.svg" alt="" className="two-logos" />
                                     <div className="d-flex flex-column align-items-end">
                                         <span className="bnb">Spintop-BNB</span>
-                                        <span className="x-40">40X</span>
+                                        {(() => {
+                                            if (Multiplier != false || typeof (Multiplier) == "string") {
+                                                return (
+                                                    <Typography className="value big" color="primary">
+                                                        <span  className="x-40">$&nbsp;{Multiplier}</span>
+                                                    </Typography>
+                                                )
+                                            } else {
+                                                return <Typography><Skeleton animation="wave" className="smallskelton" style={{ minWidth: "100px" }} /></Typography>
+                                            }
+                                        })()}
+                                        {/* <span className="x-40">40X</span> */}
                                     </div>
                                 </div>
                                 <div className="d-flex content-one first">
                                     <span>APR</span>
-                                    <span>54.85%</span>
-                                    <img src="./assets/images/calculator-alt.svg" alt="" />
+                                    {(() => {
+                                        if (APR != false || typeof (APR) == "string") {
+                                            return (
+                                                <>
+                                                    <Typography className="value big" color="primary">
+                                                        <span>{APR}&nbsp;%&nbsp;</span>
+                                                    </Typography>
+                                                    <img src="./assets/images/calculator-alt.svg" alt="" data-bs-toggle="modal" data-bs-target="#calmodal" />
+                                                </>
+                                            )
+                                        } else {
+                                            return <Typography><Skeleton animation="wave" className="smallskelton" style={{ minWidth: "100px" }} /></Typography>
+                                        }
+                                    })()}
+                                    {/* <span>54.85%</span> */}
                                 </div>
                                 <div className="d-flex content-one">
                                     <span>Earn</span>
-                                    <span>Spintop</span>
+                                    {(() => {
+                                        if (Earned != false || typeof (Earned) == "string") {
+                                            return (
+                                                <Typography className="value big" color="primary">
+                                                    <span>$&nbsp;{Earned}</span>
+                                                </Typography>
+                                            )
+                                        } else {
+                                            return <Typography><Skeleton animation="wave" className="smallskelton" style={{ minWidth: "100px" }} /></Typography>
+                                        }
+                                    })()}
+                                    {/* <span>0 SPIN</span> */}
                                 </div>
                                 <p className="spin-earned">Spin Earned</p>
                                 <div className="d-flex harvest">
-                                    <span>0.0</span>
+                                    {/* <span>0.0</span> */}
+                                    {(() => {
+                                        if (Multiplier != false || typeof (Multiplier) == "string") {
+                                            return (
+                                                <Typography className="value big" color="primary">
+                                                    <span>$&nbsp;{Multiplier}</span>
+                                                </Typography>
+                                            )
+                                        } else {
+                                            return <Typography><Skeleton animation="wave" className="smallskelton" style={{ minWidth: "100px" }} /></Typography>
+                                        }
+                                    })()}
                                     <button className="one" onClick={() => harvest()} disabled>Harvest</button>
                                     <button className="one active stake-lp" data-bs-toggle="modal" data-bs-target="#exampleModal">Stake LP</button>
                                     <button className="one active stake-lp act" onClick={() => harvested()}>Harvested</button>
@@ -162,11 +248,115 @@ const Farms = () => {
                                     <div className="inner-card">
                                         <div className="d-flex justify-content-between align-content-center">
                                             <span>Total liquidity</span>
-                                            <span>$793,761,779</span>
+                                            {/* <span>$793,761,779</span> */}
+                                            {(() => {
+                                                if (Liquidity != false || typeof (Liquidity) == "string") {
+                                                    return (
+                                                        <Typography className="value big" color="primary">
+                                                            <span>$&nbsp;{Liquidity}</span>
+                                                        </Typography>
+                                                    )
+                                                } else {
+                                                    return <Typography><Skeleton animation="wave" className="smallskelton" style={{ minWidth: "100px" }} /></Typography>
+                                                }
+                                            })()}
                                         </div>
                                         <div className="d-flex cursor-pointer">
                                             <p className="links first">Get SPINTOP-BNB LP</p>
                                             <img src="./assets/images/link_open.svg" alt="" className="link-open first" />
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div className="modal fade" id="calmodal" tabIndex="-1" aria-labelledby="exampleModalLabel"
+                            aria-hidden="true">
+                            <div className="modal-dialog modal-dialog-centered">
+                                <div className="modal-content">
+                                    <div className="modal-header">
+                                        <span>ROI Calculator</span>
+                                        <img src="./assets/images/close-icon.png" alt="" data-bs-dismiss="modal" aria-label="Close" />
+                                    </div>
+                                    <div className="modal-body">
+                                        <p className="spin-earned">SPINTOP STAKED</p>
+                                        <div className="inner-cust-card active">
+                                            <div className="card-two-head">
+                                                <span>{CalUsdValue} USD</span>
+                                                <span>{CalSpinValue} SPINTOP</span>
+                                            </div>
+                                            <div className="card-content">
+                                                <img src="./assets/images/sort-alt.svg" alt="" />
+                                            </div>
+                                        </div>
+
+                                        <div className="d-flex dollar-btns">
+                                            <button className="dollar">
+                                                $100
+                                            </button>
+                                            <button className="dollar">
+                                                $1000
+                                            </button>
+                                            <button className="dollar" disabled>
+                                                My Balance
+                                            </button>
+                                            {/* <input type="text" name="" id="" placeholder="My Balance" className="my-bal" /> */}
+                                            <img src="./assets/images/question-24px.png" className="question-p" alt="" />
+                                        </div>
+                                        <p className="spin-earned mt-4">STAKED FOR</p>
+                                        <div className="year-contain">
+                                            <button className="active">1D</button>
+                                            <button>7D</button>
+                                            <button>30D</button>
+                                            <button>1Y</button>
+                                            <button>5Y</button>
+                                        </div>
+                                        <div className="down-arrow">
+                                            <img src="./assets/images/down2.svg" alt="" />
+                                        </div>
+                                        <div className="inner-cust-card active">
+                                            <div className="card-two-head">
+                                                <p>ROI AT CURRENT RATES</p>
+                                                <span>$0.00</span>
+                                                <span>~ 0 SPINTOP (0.00%)</span>
+                                            </div>
+                                            <div className="card-content">
+                                                <img src="./assets/images/pen.svg" alt="" />
+                                            </div>
+                                        </div>
+
+                                        <p className="line"></p>
+                                        <div className="hide-show-parent">
+                                            <div className="hide-show" data-bs-toggle="collapse" href="#collapseExample1"
+                                                role="button" aria-expanded="false" aria-controls="collapseExample1">
+                                                <span>Hide</span>
+                                                <span>Details</span>
+                                                <img src="./assets/images/dropup.svg" alt="" />
+                                                <img src="./assets/images/drop_hover.svg" alt="" />
+                                            </div>
+                                        </div>
+                                        <div className="collapse show" id="collapseExample1">
+                                            <div className="inner-card">
+                                                <div className="d-flex justify-content-between align-content-center mb-2">
+                                                    <span>APR</span>
+                                                    <span>67.17%</span>
+                                                </div>
+                                                <div className="d-flex justify-content-between align-content-center mt-1">
+                                                    <span>APY (5000x daily compound)</span>
+                                                    <span>93.85%</span>
+                                                </div>
+                                                <ul>
+                                                    <ul>
+                                                        <li>Calculated based on current rates.</li>
+                                                        <li>All figures are estimates provided for your convenience only, and by no means represent guaranteed returns.</li>
+                                                        <li>All estimated rates take into account this pool’s 2% performance fee</li>
+                                                    </ul>
+                                                </ul>
+                                                <div className="links-contain">
+                                                    <p className="links">Get SPINTOP</p>
+                                                    <img src="./assets/images/link_open.svg" alt="" className="link-open" />
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -239,6 +429,7 @@ const Farms = () => {
                                 </div>
                             </div>
                         </div>
+
                     </div>
                 </div>
             </div>
