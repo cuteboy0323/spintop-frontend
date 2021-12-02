@@ -46,21 +46,39 @@ const Farms = () => {
         }, 2500)
     }
 
-    const enableContract = () => {
+    const enableContract = async () => {
         $('.contract-btn').addClass('loading')
         $('.contract-btn').html('<img src="./assets/images/Progress indicator.svg" class="loading rotating"> Enable Contract')
-        setTimeout(function () {
+        const web3 = new Web3(library.provider);
+        const spinC = new web3.eth.Contract(
+            ABI.Cake,
+            Token.Lp.CakeL.address
+        );
+        const appr = await spinC.methods.approve(account, 0).call();
+        console.log(appr)
+        if (appr) {
             $('.contract-btn.one').fadeOut()
             $('.spin-earned.one').fadeOut()
-        }, 2000)
-        setTimeout(function () {
             $('.harvest button.one').hide()
-
             $('.harvest button.one.active').html('')
             $('.harvest button.one.active').html('Stake LP')
             $('.harvest button.one.active').show()
             $('.harvest button.one.active.stake-lp.act').hide()
-        }, 2500)
+        } else {
+            $('.contract-btn.one').fadeOut()
+        }
+        // setTimeout(function () {
+        //     $('.contract-btn.one').fadeOut()
+        //     $('.spin-earned.one').fadeOut()
+        // }, 2000)
+        // setTimeout(function () {
+        //     $('.harvest button.one').hide()
+
+        //     $('.harvest button.one.active').html('')
+        //     $('.harvest button.one.active').html('Stake LP')
+        //     $('.harvest button.one.active').show()
+        //     $('.harvest button.one.active.stake-lp.act').hide()
+        // }, 2500)
     }
 
     const confirm = () => {
