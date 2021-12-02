@@ -208,7 +208,7 @@ const Home = () => {
           <Row>
             <Col md={3}>
               <div className="cust-card main_card small-card">
-                <p className="small-p">Market Place</p>
+                <p className="small-p">Market Cap</p>
                 {(() => {
                   if (marketCap != false || typeof (marketCap) == "string") {
                     return (

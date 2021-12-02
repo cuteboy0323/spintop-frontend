@@ -442,7 +442,7 @@ const Farms = () => {
                                             </div>
                                             <div className="card-content">
                                                 <input type="number" style={{ border: "none", background: "#240e48", color: "white" }} value={StakingValue} onChange={(e) => setStakingValue(e.target.value)} />
-                                                <button className="max-button" onClick={(e) => setStakingValue(LpToken)}>Max</button>
+                                                <button className="max-button" onClick={() => setStakingValue(LpToken)}>Max</button>
                                                 <span style={{ color: "rgba(184, 197, 236, 0.65)" }}>SPINTOP - BNB LP</span>
                                             </div>
                                         </div>
