@@ -116,6 +116,7 @@ const Home = () => {
     }
 
   }, [active])
+
   return (
     <div>
       <div className="main-container">

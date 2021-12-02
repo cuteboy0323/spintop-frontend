@@ -2,7 +2,7 @@ import React, { useCallback, useEffect, useState } from 'react'
 import SiderBar from "./siderbar"
 import $ from "jquery"
 import { Col, Row } from 'reactstrap'
-import { FormControlLabel, FormGroup, Skeleton, Switch, Typography } from '@mui/material'
+import { FormControlLabel, FormGroup, Skeleton, Switch, Typography, Tooltip } from '@mui/material'
 
 import Web3 from "web3";
 import { useWeb3React } from "@web3-react/core";
@@ -13,7 +13,6 @@ const Farms = () => {
     // eslint-disable-next-line
     const { activate, active, account, deactivate, connector, error, setError, library, chainId } = useWeb3React();
     const [isOpenDialog, setIsOpenDialog] = useState(false);
-    // eslint-disable-next-line
     const [CalUsdValue, setCalUsdValue] = useState(0.00)
     // eslint-disable-next-line
     const [CalSpinValue, setCalSpinValue] = useState(0.00)
@@ -25,6 +24,8 @@ const Farms = () => {
     const [StakingValue, setStakingValue] = useState(0)
     const TotalTokens = 3250000
     const myNotification = window.createNotification({})
+    const [TotalValue, setTotalValue] = useState(0)
+    const [selDate, setselDate] = useState(1)
     const onConnectWallet = async () => {
         setIsOpenDialog(true);
     }
@@ -121,6 +122,23 @@ const Farms = () => {
             })
         }, 2500)
     }
+
+    const calStake = (val) => {
+        setCalUsdValue(val)
+        setCalSpinValue(val * 100)
+        setTotalValue(val * 10 * selDate)
+    }
+
+    const selectD = (id) => {
+        $('.datebutton').removeClass('active')
+        $(`#${id}`).addClass('active')
+        setselDate(id)
+    }
+
+
+    useEffect(() => {
+        calStake(CalUsdValue)
+    }, [selDate])
 
     const load = async () => {
         try {
@@ -314,16 +332,11 @@ const Farms = () => {
                                                 <img src="./assets/images/link_open.svg" alt="" className="link-open first" />
                                             </div>
                                         </a>
-                                        {/* <div className="d-flex cursor-pointer">
-                                            <p className="links first">See Pair Info</p>
-                                            <img src="./assets/images/link_open.svg" alt="" className="link-open first" />
-                                        </div> */}
                                     </div>
                                 </div>
                             </div>
                         </div>
                         <Cwallet isOpen={isOpenDialog} setIsOpen={setIsOpenDialog} />
-
                         <div className="modal fade" id="calmodal" tabIndex="-1" aria-labelledby="exampleModalLabel"
                             aria-hidden="true">
                             <div className="modal-dialog modal-dialog-centered">
@@ -336,8 +349,8 @@ const Farms = () => {
                                         <p className="spin-earned">SPINTOP STAKED</p>
                                         <div className="inner-cust-card active">
                                             <div className="card-two-head">
-                                                <span>{CalUsdValue} USD</span>
-                                                <span>{CalSpinValue} SPINTOP</span>
+                                                <span style={{ display: "inline-block" }}><input type="number" style={{ border: "none", background: "#240e48", color: "white" }} value={CalUsdValue} onChange={(e) => calStake(e.target.value)} /> USD</span>
+                                                <span style={{ marginTop: "10px" }}>{CalSpinValue} SPINTOP</span>
                                             </div>
                                             <div className="card-content">
                                                 <img src="./assets/images/sort-alt.svg" alt="" />
@@ -345,25 +358,26 @@ const Farms = () => {
                                         </div>
 
                                         <div className="d-flex dollar-btns">
-                                            <button className="dollar">
+                                            <button className="dollar" onClick={() => calStake(100)}>
                                                 $100
                                             </button>
-                                            <button className="dollar">
+                                            <button className="dollar" onClick={() => calStake(1000)}>
                                                 $1000
                                             </button>
                                             <button className="dollar" disabled>
                                                 My Balance
                                             </button>
-                                            {/* <input type="text" name="" id="" placeholder="My Balance" className="my-bal" /> */}
-                                            <img src="./assets/images/question-24px.png" className="question-p" alt="" />
+                                            <Tooltip title="“My Balance” here includes both LP Tokens in your wallet, and LP Tokens already staked in this farm.">
+                                                <img src="./assets/images/question-24px.png" className="question-p" alt="" />
+                                            </Tooltip>
                                         </div>
                                         <p className="spin-earned mt-4">STAKED FOR</p>
                                         <div className="year-contain">
-                                            <button className="active">1D</button>
-                                            <button>7D</button>
-                                            <button>30D</button>
-                                            <button>1Y</button>
-                                            <button>5Y</button>
+                                            <button className="datebutton active" id="1" onClick={() => selectD("1")}>1D</button>
+                                            <button className="datebutton" id="7" onClick={() => selectD("7")}>7D</button>
+                                            <button className="datebutton" id="30" onClick={() => selectD("30")}>30D</button>
+                                            <button className="datebutton" id="365" onClick={() => selectD("365")}>1Y</button>
+                                            <button className="datebutton" id="1825" onClick={() => selectD("1825")}>5Y</button>
                                         </div>
                                         <div className="down-arrow">
                                             <img src="./assets/images/down2.svg" alt="" />
@@ -371,7 +385,7 @@ const Farms = () => {
                                         <div className="inner-cust-card active">
                                             <div className="card-two-head">
                                                 <p>ROI AT CURRENT RATES</p>
-                                                <span>$0.00</span>
+                                                <span>{TotalValue}</span>
                                                 <span>~ 0 SPINTOP (0.00%)</span>
                                             </div>
                                             <div className="card-content">
@@ -393,7 +407,19 @@ const Farms = () => {
                                             <div className="inner-card">
                                                 <div className="d-flex justify-content-between align-content-center mb-2">
                                                     <span>APR</span>
-                                                    <span>67.17%</span>
+                                                    {(() => {
+                                                        if (APR != false || typeof (APR) == "string") {
+                                                            return (
+                                                                <>
+                                                                    <Typography className="value big" color="primary">
+                                                                        <span className="col-whtie">{APR}&nbsp;%&nbsp;</span>
+                                                                    </Typography>
+                                                                </>
+                                                            )
+                                                        } else {
+                                                            return <Typography><Skeleton animation="wave" className="smallskelton" style={{ minWidth: "100px" }} /></Typography>
+                                                        }
+                                                    })()}
                                                 </div>
                                                 <div className="d-flex justify-content-between align-content-center mt-1">
                                                     <span>APY (5000x daily compound)</span>
@@ -406,17 +432,18 @@ const Farms = () => {
                                                         <li>All estimated rates take into account this pool’s 2% performance fee</li>
                                                     </ul>
                                                 </ul>
-                                                <div className="links-contain">
-                                                    <p className="links">Get SPINTOP</p>
-                                                    <img src="./assets/images/link_open.svg" alt="" className="link-open" />
-                                                </div>
+                                                <a href="https://pancakeswap.finance/add/BNB/0xF9d52aeA6097c2064964F8A59EDD4F3AAA7CE895" target="_blank" rel="noreferrer">
+                                                    <div className="links-contain">
+                                                        <p className="links">Get SPINTOP</p>
+                                                        <img src="./assets/images/link_open.svg" alt="" className="link-open" />
+                                                    </div>
+                                                </a>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
-
                         <div className="modal fade" id="exampleModal" style={{ zIndex: "2" }} tabIndex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
                             <div className="modal-dialog modal-dialog-centered">
                                 <div className="modal-content">
