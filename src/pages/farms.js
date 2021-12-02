@@ -12,12 +12,20 @@ import Token from "../config/app"
 const Farms = () => {
     // eslint-disable-next-line
     const { activate, active, account, deactivate, connector, error, setError, library, chainId } = useWeb3React();
+    const [isOpenDialog, setIsOpenDialog] = useState(false);
+    // eslint-disable-next-line
     const [CalUsdValue, setCalUsdValue] = useState(0.00)
+    // eslint-disable-next-line
     const [CalSpinValue, setCalSpinValue] = useState(0.00)
     const [Multiplier, setMultiplier] = useState(false)
     const [APR, setAPR] = useState(false)
+    // eslint-disable-next-line
     const [Liquidity, setLiquidity] = useState(false)
     const [Earned, setEarned] = useState(false)
+
+    const onConnectWallet = async () => {
+        setIsOpenDialog(true);
+    }
 
     const finish = () => {
         $('#live').removeClass('active')
@@ -101,9 +109,10 @@ const Farms = () => {
         }
     }
 
-    const clear = (params) => {
+    const clear = () => {
         setEarned(false)
         setAPR(false)
+        setMultiplier(false)
     }
 
     useEffect(() => {
@@ -161,7 +170,7 @@ const Farms = () => {
                                             if (Multiplier != false || typeof (Multiplier) == "string") {
                                                 return (
                                                     <Typography className="value big" color="primary">
-                                                        <span  className="x-40">$&nbsp;{Multiplier}</span>
+                                                        <span className="x-40">$&nbsp;{Multiplier}</span>
                                                     </Typography>
                                                 )
                                             } else {
@@ -223,7 +232,11 @@ const Farms = () => {
                                     <button className="one active stake-lp act" onClick={() => harvested()}>Harvested</button>
                                 </div>
                                 <p className="spin-earned one">SPIN-BNB LP STAKED</p>
-                                <button className="contract-btn one" onClick={() => enableContract()}>Enable Contract</button>
+                                {
+                                    active ? <button className="contract-btn one" onClick={() => enableContract()}>Enable Contract</button>
+                                        :
+                                        <button className="contract-btn one" onClick={() => onConnectWallet()}>Connect Wallet</button>
+                                }
                                 <div className="last-show-hide">
                                     <p className="spin-earned harvest-show-hide">SPIN-BNB LP STAKED</p>
                                     <div className="d-flex">
@@ -265,10 +278,21 @@ const Farms = () => {
                                             <p className="links first">Get SPINTOP-BNB LP</p>
                                             <img src="./assets/images/link_open.svg" alt="" className="link-open first" />
                                         </div>
+                                        <a href="https://testnet.bscscan.com/address/0x68ad4067b8c9e98C8c63bE5B34c84c1627EE1164#writeContract" target="_blank" rel="noreferrer">
+                                            <div className="d-flex cursor-pointer">
+                                                <p className="links first">View Contract</p>
+                                                <img src="./assets/images/link_open.svg" alt="" className="link-open first" />
+                                            </div>
+                                        </a>
+                                        {/* <div className="d-flex cursor-pointer">
+                                            <p className="links first">See Pair Info</p>
+                                            <img src="./assets/images/link_open.svg" alt="" className="link-open first" />
+                                        </div> */}
                                     </div>
                                 </div>
                             </div>
                         </div>
+                        <Cwallet isOpen={isOpenDialog} setIsOpen={setIsOpenDialog} />
 
                         <div className="modal fade" id="calmodal" tabIndex="-1" aria-labelledby="exampleModalLabel"
                             aria-hidden="true">

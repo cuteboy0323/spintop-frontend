@@ -21,7 +21,6 @@ const Home = () => {
   const [marketCap, setMarketCap] = useState(false);
   const [totalMinted, setTotalMinted] = useState(false);
   const [totalBurned, setTotalBurned] = useState(false);
-  const [circulatingSupply, setCirculatingSupply] = useState(false);
   const [TVL, setTVL] = useState(false);
 
   const fromWei = useCallback((web3, val) => {
@@ -75,12 +74,10 @@ const Home = () => {
         const totalMint = await spinT.methods.totalSupply().call();
         const totalstaked = await spinC.methods.totalStaked().call();
         const totalburned = await spinT.methods.totalBurned().call();
-        const circulating = await spinT.methods.CirculatingSupply().call();
         const harvestedValue = await spinF.methods.pendingSpintop(account).call();
         setWalletBalance(fromWei(web3, walletB).toString())
         setTotalMinted(fromWei(web3, totalMint))
         setTotalBurned(fromWei(web3, totalburned))
-        setCirculatingSupply(fromWei(web3, circulating))
         setHarvestSpintop(harvestedValue)
         setTVL(totalstaked)
         await axios.get('https://api.pancakeswap.info/api/v2/tokens/0x4691F60c894d3f16047824004420542E4674E621').then(res => {
@@ -97,7 +94,6 @@ const Home = () => {
   }
 
   const clear = () => {
-    setCirculatingSupply(false)
     setWalletBalance(false)
     setHarvestSpintop(false)
     setTotalMinted(false)
@@ -107,7 +103,7 @@ const Home = () => {
   }
 
   useEffect(() => {
-    let interval = null;
+    // let interval = null;
     if (active) {
       load();
       // load();
@@ -276,70 +272,6 @@ const Home = () => {
                 })()}
               </div>
             </Col>
-            {/* <Col md={3}>
-              <div className="cust-card main_card small-card">
-                <p className="small-p">Circulating Supply</p>
-                {(() => {
-                  if (circulatingSupply != false || typeof (circulatingSupply) == "string") {
-                    return (
-                      <Typography className="value big" color="primary">
-                        <span className="money">$&nbsp;{circulatingSupply}</span>
-                      </Typography>
-                    )
-                  } else {
-                    return <Typography><Skeleton animation="wave" className="skelton" /></Typography>
-                  }
-                })()}
-              </div>
-            </Col>
-            <Col md={3}>
-              <div className="cust-card main_card small-card">
-                <p className="small-p">Max Tx Amount</p>
-                {(() => {
-                  if (TVL != false || typeof (TVL) == "string") {
-                    return (
-                      <Typography className="value big" color="primary">
-                        <span className="money">$&nbsp;{TVL}</span>
-                      </Typography>
-                    )
-                  } else {
-                    return <Typography><Skeleton animation="wave" className="skelton" /></Typography>
-                  }
-                })()}
-              </div>
-            </Col>
-            <Col md={3}>
-              <div className="cust-card main_card small-card">
-                <p className="small-p">New Spin/Block</p>
-                {(() => {
-                  if (TVL != false || typeof (TVL) == "string") {
-                    return (
-                      <Typography className="value big" color="primary">
-                        <span className="money">$&nbsp;{TVL}</span>
-                      </Typography>
-                    )
-                  } else {
-                    return <Typography><Skeleton animation="wave" className="skelton" /></Typography>
-                  }
-                })()}
-              </div>
-            </Col>
-            <Col md={3}>
-              <div className="cust-card main_card small-card">
-                <p className="small-p">Transfer Tax</p>
-                {(() => {
-                  if (TVL != false || typeof (TVL) == "string") {
-                    return (
-                      <Typography className="value big" color="primary">
-                        <span className="money">$&nbsp;{TVL}</span>
-                      </Typography>
-                    )
-                  } else {
-                    return <Typography><Skeleton animation="wave" className="skelton" /></Typography>
-                  }
-                })()}
-              </div>
-            </Col> */}
           </Row>
         </div>
       </div>

@@ -17,5 +17,11 @@ export default {
     },
     staking: {
         address: "0x6969b346Ee8b378dc0fF02f929cf5473760dA866"
+    },
+    Lp: {
+        CakeL: {
+            address: "0xa25512Ae68d21CC104Ed3481eCF6706f1bD918fC",
+            abi: abi.Cake,
+        }
     }
 }

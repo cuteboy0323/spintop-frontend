@@ -568,6 +568,10 @@ header .connect {
   box-sizing: border-box;
 }
 
+.align-content-center {
+  align-items: center;
+}
+
 body {
   /* min-height: 100vh; */
   background-color: #080114;
@@ -1052,9 +1056,9 @@ select {
 }
 
 input[type="text"] {
-  background: #210D42;
+  background: #080114;
   padding: 12px 34px 12px 14px;
-  border-radius: 12px;
+  border-radius: 5px;
   border: none;
   font-size: 16px;
   line-height: 24px;
