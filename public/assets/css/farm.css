@@ -243,8 +243,8 @@ p.line {
 .inner-card span:first-of-type {
     font-family: Nexa-Bold;
     font-style: normal;
-    font-weight: bold;
-    font-size: 12px;
+    /* font-weight: bold; */
+    font-size: 15px;
     line-height: 16px;
     letter-spacing: 0.3px;
     color: #B8C5EC;
@@ -321,7 +321,7 @@ p.line {
 }
 
 .main-container .modal-content {
-    background: #16092B;
+    background: #2c0e5c;
 }
 
 .main-container .modal-content .modal-header {

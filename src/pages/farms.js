@@ -22,7 +22,7 @@ const Farms = () => {
     // eslint-disable-next-line
     const [Liquidity, setLiquidity] = useState(false)
     const [Earned, setEarned] = useState(false)
-
+    const TotalTokens = 3250000
     const onConnectWallet = async () => {
         setIsOpenDialog(true);
     }
@@ -100,10 +100,11 @@ const Farms = () => {
                 Token.farms.address
             );
             const earnValue = await spinF.methods.earned(account).call();
-            const APRValue = await spinF.methods.totalStaked().call();
+            const liquidity = await spinF.methods.totalStaked().call();
             setEarned(earnValue)
-            setAPR(APRValue)
+            setAPR(Math.floor(TotalTokens / liquidity))
             setMultiplier("40X")
+            setLiquidity(liquidity)
         } catch (err) {
             console.log(err)
         }
@@ -170,7 +171,7 @@ const Farms = () => {
                                             if (Multiplier != false || typeof (Multiplier) == "string") {
                                                 return (
                                                     <Typography className="value big" color="primary">
-                                                        <span className="x-40">$&nbsp;{Multiplier}</span>
+                                                        <span className="x-40">{Multiplier}</span>
                                                     </Typography>
                                                 )
                                             } else {
@@ -187,7 +188,7 @@ const Farms = () => {
                                             return (
                                                 <>
                                                     <Typography className="value big" color="primary">
-                                                        <span>{APR}&nbsp;%&nbsp;</span>
+                                                        <span className="col-whtie">{APR}&nbsp;%&nbsp;</span>
                                                     </Typography>
                                                     <img src="./assets/images/calculator-alt.svg" alt="" data-bs-toggle="modal" data-bs-target="#calmodal" />
                                                 </>
@@ -200,27 +201,16 @@ const Farms = () => {
                                 </div>
                                 <div className="d-flex content-one">
                                     <span>Earn</span>
-                                    {(() => {
-                                        if (Earned != false || typeof (Earned) == "string") {
-                                            return (
-                                                <Typography className="value big" color="primary">
-                                                    <span>$&nbsp;{Earned}</span>
-                                                </Typography>
-                                            )
-                                        } else {
-                                            return <Typography><Skeleton animation="wave" className="smallskelton" style={{ minWidth: "100px" }} /></Typography>
-                                        }
-                                    })()}
-                                    {/* <span>0 SPIN</span> */}
+                                    <span>SpinTop</span>
                                 </div>
                                 <p className="spin-earned">Spin Earned</p>
                                 <div className="d-flex harvest">
                                     {/* <span>0.0</span> */}
                                     {(() => {
-                                        if (Multiplier != false || typeof (Multiplier) == "string") {
+                                        if (Earned != false || typeof (Earned) == "string") {
                                             return (
                                                 <Typography className="value big" color="primary">
-                                                    <span>$&nbsp;{Multiplier}</span>
+                                                    <span>$&nbsp;{Earned}</span>
                                                 </Typography>
                                             )
                                         } else {
