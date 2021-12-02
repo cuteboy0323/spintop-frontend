@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
 import SiderBar from "./siderbar"
 import $ from "jquery"
 import { Col, Row } from 'reactstrap'
@@ -19,13 +19,23 @@ const Farms = () => {
     const [CalSpinValue, setCalSpinValue] = useState(0.00)
     const [Multiplier, setMultiplier] = useState(false)
     const [APR, setAPR] = useState(false)
-    // eslint-disable-next-line
     const [Liquidity, setLiquidity] = useState(false)
     const [Earned, setEarned] = useState(false)
+    const [LpToken, setLpToken] = useState(false)
+    const [StakingValue, setStakingValue] = useState(0)
     const TotalTokens = 3250000
+    const myNotification = window.createNotification({})
     const onConnectWallet = async () => {
         setIsOpenDialog(true);
     }
+    const fromWei = useCallback((web3, val) => {
+        if (val) {
+            val = val.toString();
+            return web3.utils.fromWei(val);
+        } else {
+            return "0"
+        }
+    }, []);
 
     const finish = () => {
         $('#live').removeClass('active')
@@ -67,35 +77,37 @@ const Farms = () => {
         } else {
             $('.contract-btn.one').fadeOut()
         }
-        // setTimeout(function () {
-        //     $('.contract-btn.one').fadeOut()
-        //     $('.spin-earned.one').fadeOut()
-        // }, 2000)
-        // setTimeout(function () {
-        //     $('.harvest button.one').hide()
-
-        //     $('.harvest button.one.active').html('')
-        //     $('.harvest button.one.active').html('Stake LP')
-        //     $('.harvest button.one.active').show()
-        //     $('.harvest button.one.active.stake-lp.act').hide()
-        // }, 2500)
     }
 
     const confirm = () => {
-        $('.confirm').addClass('loading')
-        $('.confirm').html('<img src="./assets/images/Progress indicator.svg" class="loading rotating"> Confirming')
-        setTimeout(function () {
-            $('#exampleModal').hide()
-            $('.one.active').html('Harvest')
-            $('.last-show-hide').show()
-            $('.modal-backdrop').hide()
-            $('.harvest button.one.active').hide()
-            $('.harvest button.one.stake-lp.act').show()
-        }, 2500)
+        if (Number(StakingValue) <= 0) {
+            myNotification({
+                title: 'Fail',
+                message: 'Please enter value correctly.',
+                showDuration: 3500
+            })
+            return;
+        }
+        if (Number(StakingValue) > Number(LpToken)) {
+            myNotification({
+                title: 'Fail',
+                message: 'Your SpinTop-BNB token is not enough.',
+                showDuration: 3500
+            })
+            return;
+        } else {
+            $('.confirm').addClass('loading')
+            $('.confirm').html('<img src="./assets/images/Progress indicator.svg" class="loading rotating"> Confirming')
+            setTimeout(function () {
+                $('#exampleModal').hide()
+                $('.one.active').html('Harvest')
+                $('.last-show-hide').show()
+                $('.modal-backdrop').hide()
+                $('.harvest button.one.active').hide()
+                $('.harvest button.one.stake-lp.act').show()
+            }, 2500)
+        }
     }
-    const myNotification = window.createNotification({
-    })
-
     const harvested = () => {
         $(".act").addClass('loading')
         $(".act").html('<img src="./assets/images/Progress indicator.svg" class="loading rotating"> Harvesting')
@@ -114,15 +126,21 @@ const Farms = () => {
         try {
             const web3 = new Web3(library.provider);
             const spinF = new web3.eth.Contract(
-                ABI.farms,
+                Token.farms.abi,
                 Token.farms.address
             );
-            const earnValue = await spinF.methods.earned(account).call();
-            const liquidity = await spinF.methods.totalStaked().call();
+            const spinL = new web3.eth.Contract(
+                Token.Lp.CakeL.abi,
+                Token.Lp.CakeL.address
+            );
+            const lptokenB = await spinL.methods.balanceOf(account).call()
+            const earnValue = await spinF.methods.earned(account).call()
+            const liquidity = await spinF.methods.totalStaked().call()
             setEarned(earnValue)
             setAPR(Math.floor(TotalTokens / liquidity))
             setMultiplier("40X")
             setLiquidity(liquidity)
+            setLpToken(fromWei(web3, lptokenB))
         } catch (err) {
             console.log(err)
         }
@@ -132,6 +150,7 @@ const Farms = () => {
         setEarned(false)
         setAPR(false)
         setLiquidity(false)
+        setLpToken(false)
         setMultiplier(false)
     }
 
@@ -250,7 +269,7 @@ const Farms = () => {
                                     <p className="spin-earned harvest-show-hide">SPIN-BNB LP STAKED</p>
                                     <div className="d-flex">
                                         <div className="d-flex harvest-show-hide">
-                                            <span>0.597</span>
+                                            <span>{StakingValue}</span>
                                             <span>~26.91 USD</span>
                                         </div>
                                         <div className="d-flex">
@@ -409,11 +428,21 @@ const Farms = () => {
                                         <div className="inner-cust-card">
                                             <div className="card-heading">
                                                 <span>Stake</span>
-                                                <span>Blanace 0.598</span>
+                                                {(() => {
+                                                    if (LpToken != false || typeof (LpToken) == "string") {
+                                                        return (
+                                                            <Typography className="value big" color="primary">
+                                                                <span>Blanace  &nbsp;${LpToken}</span>
+                                                            </Typography>
+                                                        )
+                                                    } else {
+                                                        return <Typography><Skeleton animation="wave" className="smallskelton" style={{ minWidth: "100px" }} /></Typography>
+                                                    }
+                                                })()}
                                             </div>
                                             <div className="card-content">
-                                                <span>0.5241654651</span>
-                                                <span>MAX</span>
+                                                <input type="number" style={{ border: "none", background: "#240e48", color: "white" }} value={StakingValue} onChange={(e) => setStakingValue(e.target.value)} />
+                                                <button className="max-button" onClick={(e) => setStakingValue(LpToken)}>Max</button>
                                                 <span style={{ color: "rgba(184, 197, 236, 0.65)" }}>SPINTOP - BNB LP</span>
                                             </div>
                                         </div>

@@ -447,6 +447,23 @@ p.line {
     margin-right: 10px;
 }
 
+.max-button {
+    border-radius: 12px;
+    border: none;
+    padding: 3px 12px;
+    color: var(--white);
+    font-family: Nexa-Bold;
+    font-style: normal;
+    font-weight: bold;
+    font-size: 16px;
+    line-height: 24px;
+    letter-spacing: -0.6px;
+    color: var(--white);
+    background: #16092B;
+    border: 1px solid #630BF1;
+    margin:0px 10px;
+}
+
 .links-contain {
     display: flex;
     margin-top: 60px;
