@@ -851,6 +851,7 @@ body {
   letter-spacing: -1px;
   color: #B8C5EC;
   text-transform: uppercase;
+  text-align: center;
 }
 
 .sub-txt {
@@ -864,7 +865,7 @@ body {
   display: flex;
   flex-direction: column;
   justify-content: flex-end;
-  height: 180px;
+  /* height: 180px; */
 }
 
 .main-container .cust-card.small-card>p {

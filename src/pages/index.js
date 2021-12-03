@@ -1,10 +1,10 @@
 import React, { useCallback, useEffect, useState } from 'react'
+import { Button, Skeleton, Typography, Box } from "@mui/material"
+import LockOpenIcon from '@mui/icons-material/LockOpen';
 import { Row, Col } from 'reactstrap'
 import SiderBar from "./siderbar"
 import config from "./../config/app";
-import { Button, Skeleton, Typography } from "@mui/material"
 import LockIcon from '@mui/icons-material/Lock';
-import LockOpenIcon from '@mui/icons-material/LockOpen';
 import AddIcon from '@mui/icons-material/Add';
 import axios from "axios"
 import Web3 from "web3";
@@ -12,6 +12,7 @@ import { useWeb3React } from "@web3-react/core";
 import Cwallet from "../components/Cwallet";
 import ABI from "../config/abi"
 import Token from "../config/app"
+
 const Home = () => {
   // eslint-disable-next-line
   const { activate, active, account, deactivate, connector, error, setError, library, chainId } = useWeb3React();
@@ -103,42 +104,41 @@ const Home = () => {
   }
 
   useEffect(() => {
-    // let interval = null;
+    let interval = null;
     if (active) {
       load();
-      // load();
-      // interval = setInterval(async () => {
-      //   console.clear();
-      // }, config.updateTime);
+      interval = setInterval(async () => {
+        console.clear();
+      }, config.updateTime);
     } else {
       clear();
-      // return () => clearInterval(interval);
+      return () => clearInterval(interval);
     }
 
   }, [active])
 
   return (
-    <div>
-      <div className="main-container">
+    <Box>
+      <Box className="main-container">
         <SiderBar Params="home" />
-        <div className="right-side">
+        <Box className="right-side">
           <Row>
             <Col>
-              <div className="big-announc">
-                <p>Big announcements</p>
-                <p>Medium to long sized subtitle goes here.</p>
-              </div>
+              <Box className="big-announc">
+                <Typography>Big announcements</Typography>
+                <Typography>Medium to long sized subtitle goes here.</Typography>
+              </Box>
             </Col>
           </Row>
           <Row>
             <Col md={6}>
-              <div className="cust-card main_card">
-                <p className="main-heading">Farms & Staking</p>
-                <div className="meta-mask">
+              <Box className="cust-card main_card">
+                <Typography className="main-heading">Farms & Staking</Typography>
+                <Box className="meta-mask">
                   <img src="./assets/images/Spintoken.svg" alt="" className="spintoken" />
                   <Button variant="outlined" startIcon={<AddIcon />} className="metamask" onClick={() => addToken()}>Add to metaMask </Button>
-                </div>
-                <div className="spin-text">SPINTOP to harvest</div>
+                </Box>
+                <Box className="spin-text">SPINTOP to harvest</Box>
                 {(() => {
                   if (harvestSpintop != false || typeof (harvestSpintop) == "string") {
                     return (
@@ -150,7 +150,7 @@ const Home = () => {
                     return <Typography><Skeleton animation="wave" className="skelton" /></Typography>
                   }
                 })()}
-                <div className="spin-text">SPINTOP in wallet</div>
+                <Box className="spin-text">SPINTOP in wallet</Box>
                 {(() => {
                   if (walletBalance != false || typeof (walletBalance) == "string") {
                     return (
@@ -187,28 +187,28 @@ const Home = () => {
                     </Button>
                 }
                 <Cwallet isOpen={isOpenDialog} setIsOpen={setIsOpenDialog} />
-              </div>
+              </Box>
             </Col>
             <Col md={6}>
-              <div className="cust-card main_card">
-                <div className="d-flex align-items-start">
+              <Box className="cust-card main_card">
+                <Box className="d-flex align-items-start">
                   <img src="./assets/images/Spintoken-big.svg" alt="" />
-                  <div className="d-flex flex-column">
+                  <Box className="d-flex flex-column">
                     <span className="hashtag">SPINTOP #BSC</span>
                     <span className="at-the">@Spintop</span>
-                  </div>
+                  </Box>
                   <img src="./assets/images/twitter-2.svg" alt="" className="twit" />
-                </div>
+                </Box>
                 <p className="det">Details about SPINTOP</p>
                 <a href="https://docs.spintop.network/roadmap"><p className="link">https://docs.spintop.network/roadmap</p></a>
                 <img src="./assets/images/Gallery.png" alt="" className="gallery" />
                 <p className="content" style={{ marginLeft: "60px", marginTop: "16px", marginBottom: "12px" }}>Is the Automated Market Maker(AMM) and decentralized exchange(DEX) of the Spintop Network that allows any pair of tokens to be exchanged on the Binance Smart Chain.</p>
-              </div>
+              </Box>
             </Col>
           </Row>
           <Row>
-            <Col md={3}>
-              <div className="cust-card main_card small-card">
+            <Col md={6}>
+              <Box className="cust-card main_card small-card">
                 <p className="small-p">Market Cap</p>
                 {(() => {
                   if (marketCap != false || typeof (marketCap) == "string") {
@@ -221,10 +221,10 @@ const Home = () => {
                     return <Typography><Skeleton animation="wave" className="skelton" /></Typography>
                   }
                 })()}
-              </div>
+              </Box>
             </Col>
-            <Col md={3}>
-              <div className="cust-card main_card small-card">
+            <Col md={6}>
+              <Box className="cust-card main_card small-card">
                 <p className="small-p">Total Minted</p>
                 {(() => {
                   if (totalMinted != false || typeof (totalMinted) == "string") {
@@ -237,12 +237,11 @@ const Home = () => {
                     return <Typography><Skeleton animation="wave" className="skelton" /></Typography>
                   }
                 })()}
-              </div>
+              </Box>
             </Col>
-            <Col md={3}>
-              <div className="cust-card main_card small-card">
+            <Col md={6}>
+              <Box className="cust-card main_card small-card">
                 <p className="small-p">Total Burned</p>
-                {/* <p className="sub-txt">22,608,221</p> */}
                 {(() => {
                   if (totalBurned != false || typeof (totalBurned) == "string") {
                     return (
@@ -254,12 +253,11 @@ const Home = () => {
                     return <Typography><Skeleton animation="wave" className="skelton" /></Typography>
                   }
                 })()}
-              </div>
+              </Box>
             </Col>
-            <Col md={3}>
-              <div className="cust-card main_card small-card">
+            <Col md={6}>
+              <Box className="cust-card main_card small-card">
                 <p className="small-p">Total Locked Rewards</p>
-                {/* <p className="sub-txt">46,582,901</p> */}
                 {(() => {
                   if (TVL != false || typeof (TVL) == "string") {
                     return (
@@ -271,12 +269,12 @@ const Home = () => {
                     return <Typography><Skeleton animation="wave" className="skelton" /></Typography>
                   }
                 })()}
-              </div>
+              </Box>
             </Col>
           </Row>
-        </div>
-      </div>
-    </div >
+        </Box>
+      </Box>
+    </Box>
   )
 }
 
