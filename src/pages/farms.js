@@ -62,7 +62,7 @@ const Farms = () => {
         $(`.contract-btn.one.${id}`).html('<img src="./assets/images/Progress indicator.svg" class="loading rotating"> Enable Contract')
         const web3 = new Web3(library.provider);
         const spinC = new web3.eth.Contract(
-            ABI.Cake,
+            Config.Lp.CakeL.abi,
             Config.Lp.CakeL.address
         );
         const appr = await spinC.methods.approve(account, 0).call();

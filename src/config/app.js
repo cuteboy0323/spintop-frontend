@@ -5,9 +5,9 @@ export default {
     updateTime: 35000,
     swapFee: 0.0025,
     spin: {
-        price: 70,
+        price: 0.01,
         address: "0xF9d52aeA6097c2064964F8A59EDD4F3AAA7CE895",
-        abi: abi.spin,
+        abi: abi.token,
         symbol: "SPIN",
         img: "https://firebasestorage.googleapis.com/v0/b/gitbook-28427.appspot.com/o/spaces%2F-MbaC5cDQY6glrXLXj4B%2Favatar-1633197511393.png?generation=1633197512121772&alt=media"
     },
@@ -16,12 +16,13 @@ export default {
         abi: abi.farms,
     },
     staking: {
-        address: "0x6969b346Ee8b378dc0fF02f929cf5473760dA866"
+        address: "0x6969b346Ee8b378dc0fF02f929cf5473760dA866",
+        abi: abi.staking
     },
     Lp: {
         CakeL: {
             address: "0xa25512Ae68d21CC104Ed3481eCF6706f1bD918fC",
-            abi: abi.Cake,
+            abi: abi.CakeL,
         }
     },
     Contracts: [
@@ -30,14 +31,6 @@ export default {
             name: "Spintop-BNB",
             icon: "./assets/images/two-logos.svg",
             getline: "https://pancakeswap.finance/add/BNB/0xF9d52aeA6097c2064964F8A59EDD4F3AAA7CE895",
-            contractlink: "https://testnet.bscscan.com/address/0x68ad4067b8c9e98C8c63bE5B34c84c1627EE1164#writeContract",
-            linkimg: "./assets/images/link_open.svg",
-        },
-        {
-            id: "spintop-bnb1",
-            name: "Spintop-BUSD",
-            icon: "./assets/images/logos-three.svg",
-            getlink: "https://pancakeswap.finance/add/BNB/0xF9d52aeA6097c2064964F8A59EDD4F3AAA7CE895",
             contractlink: "https://testnet.bscscan.com/address/0x68ad4067b8c9e98C8c63bE5B34c84c1627EE1164#writeContract",
             linkimg: "./assets/images/link_open.svg",
         }

@@ -1,6 +1,6 @@
 export default {
-    spin: require("./abi/spin.json"),
+    staking: require("./abi/staking.json"),
     token: require("./abi/token.json"),
-    farms: require("./abi/lp.json"),
-    Cake: require("./abi/CakeLp.json"),
+    farms: require("./abi/farms.json"),
+    CakeL: require("./abi/CakeL.json"),
 }

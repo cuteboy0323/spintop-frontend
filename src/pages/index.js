@@ -10,8 +10,7 @@ import axios from "axios"
 import Web3 from "web3";
 import { useWeb3React } from "@web3-react/core";
 import Cwallet from "../components/Cwallet";
-import ABI from "../config/abi"
-import Token from "../config/app"
+import Config from "../config/app"
 
 const Home = () => {
   // eslint-disable-next-line
@@ -60,16 +59,16 @@ const Home = () => {
       try {
         const web3 = new Web3(library.provider);
         const spinT = new web3.eth.Contract(
-          ABI.token,
-          Token.spin.address
+          Config.spin.abi,
+          Config.spin.address
         );
         const spinC = new web3.eth.Contract(
-          ABI.spin,
-          Token.staking.address
+          Config.staking.abi,
+          Config.staking.address
         );
         const spinF = new web3.eth.Contract(
-          ABI.farms,
-          Token.farms.address
+          Config.farms.abi,
+          Config.farms.address
         );
         const walletB = await spinT.methods.balanceOf(account).call();
         const totalMint = await spinT.methods.totalSupply().call();
