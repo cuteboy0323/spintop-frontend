@@ -2,12 +2,52 @@ import React, { useCallback, useEffect, useState } from 'react'
 import SiderBar from "./siderbar"
 import $ from "jquery"
 import { Col, Row } from 'reactstrap'
-import { FormControlLabel, FormGroup, Skeleton, Switch, Typography, Tooltip, Box } from '@mui/material'
+import { FormControlLabel, FormGroup, Skeleton, Switch, Typography, Tooltip, Box, Slider, Modal } from '@mui/material'
 
 import Web3 from "web3";
 import { useWeb3React } from "@web3-react/core";
 import Cwallet from "../components/Cwallet";
 import Config from "../config/app"
+import { styled } from '@mui/material/styles';
+
+const PrettoSlider = styled(Slider)({
+    color: '#52af77',
+    height: 8,
+    '& .MuiSlider-track': {
+        border: 'none',
+    },
+    '& .MuiSlider-thumb': {
+        height: 24,
+        width: 24,
+        backgroundColor: 'rgb(241, 0, 136)',
+        border: '2px solid currentColor',
+        '&:focus, &:hover, &.Mui-active, &.Mui-focusVisible': {
+            boxShadow: 'inherit',
+        },
+        '&:before': {
+            display: 'none',
+        },
+    },
+    '& .MuiSlider-valueLabel': {
+        lineHeight: 1.2,
+        fontSize: 12,
+        background: 'unset',
+        padding: 0,
+        width: 32,
+        height: 32,
+        borderRadius: '50% 50% 50% 0',
+        backgroundColor: 'rgb(241, 0, 136)',
+        transformOrigin: 'bottom left',
+        transform: 'translate(50%, -100%) rotate(-45deg) scale(0)',
+        '&:before': { display: 'none' },
+        '&.MuiSlider-valueLabelOpen': {
+            transform: 'translate(50%, -100%) rotate(-45deg) scale(1)',
+        },
+        '& > *': {
+            transform: 'rotate(45deg)',
+        },
+    },
+});
 
 const Farms = () => {
     // eslint-disable-next-line
@@ -25,6 +65,9 @@ const Farms = () => {
     const myNotification = window.createNotification({})
     const [TotalValue, setTotalValue] = useState(0)
     const [selDate, setselDate] = useState(1)
+    const [open, setOpen] = useState(false);
+    const handleClose = () => setOpen(false);
+
     const onConnectWallet = async () => {
         setIsOpenDialog(true);
     }
@@ -99,12 +142,16 @@ const Farms = () => {
             $('.confirm').addClass('loading')
             $('.confirm').html('<img src="./assets/images/Progress indicator.svg" class="loading rotating"> Confirming')
             setTimeout(function () {
-                $('#exampleModal').hide()
+                setOpen(false)
+                setStakingValue(0)
+                // $('#exampleModal').hide()
                 $('.one.active').html('Harvest')
                 $('.last-show-hide').show()
                 $('.modal-backdrop').hide()
                 $('.harvest button.one.active').hide()
                 $('.harvest button.one.stake-lp.act').show()
+                $('.confirm').removeClass('loading')
+                $('.confirm').html('Confirm')
             }, 2500)
         }
     }
@@ -273,7 +320,7 @@ const Farms = () => {
                                                     }
                                                 })()}
                                                 <button className={item.id} onClick={() => harvest(item.id)} disabled>Harvest</button>
-                                                <button className={`${item.id} active stake-lp`} data-bs-toggle="modal" data-bs-target="#exampleModal">Stake LP</button>
+                                                <button className={`${item.id} active stake-lp`} onClick={() => setOpen(true)}>Stake LP</button>
                                                 <button className={`${item.id} active stake-lp act`} onClick={() => harvested(item.id)}>Harvested</button>
                                             </Box>
                                             <p className={`spin-earned one ${item.id}`}>SPIN-BNB LP STAKED</p>
@@ -340,6 +387,62 @@ const Farms = () => {
                     </Box>
 
                     <Cwallet isOpen={isOpenDialog} setIsOpen={setIsOpenDialog} />
+                    <Modal
+                        keepMounted
+                        open={open}
+                        onClose={handleClose}
+                        aria-labelledby="keep-mounted-modal-title"
+                        aria-describedby="keep-mounted-modal-description"
+                    >
+                        <Box className="stakingmodal" >
+                            <Box className="modal-header">
+                                <span className="modal-span">Stake in Pool</span>
+                                <img src="./assets/images/close-icon.png" alt="" onClick={() => setOpen(false)} />
+                            </Box>
+                            <Box className="modal_content">
+                                <Box className="modal_box">
+                                    <Box style={{ display: "flex", justifyContent: "space-between" }}>
+                                        <span className="stake-span">Stake</span>
+                                        {/* <Typography>Blanace </Typography> */}
+                                        {(() => {
+                                            if (LpToken != false || typeof (LpToken) == "string") {
+                                                return (
+                                                    <Typography className="value big" color="primary">
+                                                        <span className="stake-span">Blanace  &nbsp;${LpToken}</span>
+                                                    </Typography>
+                                                )
+                                            } else {
+                                                return <Typography><Skeleton animation="wave" className="smallskelton" style={{ minWidth: "100px" }} /></Typography>
+                                            }
+                                        })()}
+                                    </Box>
+                                    <Box className="modal_box_cal">
+                                        <input type="number" style={{ border: "none", background: "#240e48", color: "white", width: "50%" }} value={StakingValue} onChange={(e) => setStakingValue(e.target.value)} />
+                                        <button className="max-button" onClick={() => setStakingValue(LpToken)}>Max</button>
+                                        <span style={{ color: "rgba(184, 197, 236, 0.65)" }}>SPINTOP - BNBLP</span>
+                                    </Box>
+                                    <Box sx={{ m: 3 }} />
+                                    <PrettoSlider
+                                        valueLabelDisplay="auto"
+                                        aria-label="pretto slider"
+                                        defaultValue={0}
+                                        value={StakingValue}
+                                        max={LpToken}
+                                        onChange={(e) => setStakingValue(e.target.value)}
+                                    />
+                                </Box>
+                                <Box style={{ marginTop: "30px", display: "flex" }}>
+                                    <button className="cancel" onClick={() => setOpen(false)}>Cancel</button>
+                                    <button className="confirm" onClick={() => confirm()}>Confirm</button>
+                                </Box>
+                                <Box className="links-contain">
+                                    <p className="links">Swap 10 BUSD for 0.025 BNB</p>
+                                    <img src="./assets/images/link_open.svg" alt="" className="link-open" />
+                                </Box>
+                            </Box>
+                        </Box>
+                    </Modal>
+
                     <Box className="modal fade" id="calmodal" tabIndex="-1" aria-labelledby="calmodalLabel" aria-hidden="true">
                         <Box className="modal-dialog modal-dialog-centered">
                             <Box className="modal-content">
