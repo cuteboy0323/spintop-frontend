@@ -33,6 +33,14 @@ export default {
             getline: "https://pancakeswap.finance/add/BNB/0xF9d52aeA6097c2064964F8A59EDD4F3AAA7CE895",
             contractlink: "https://testnet.bscscan.com/address/0x68ad4067b8c9e98C8c63bE5B34c84c1627EE1164#writeContract",
             linkimg: "./assets/images/link_open.svg",
+        },
+        {
+            id: "spintop-busd",
+            name: "Spintop-BUSD",
+            icon: "./assets/images/two-logos.svg",
+            getline: "https://pancakeswap.finance/add/BNB/0xF9d52aeA6097c2064964F8A59EDD4F3AAA7CE895",
+            contractlink: "https://testnet.bscscan.com/address/0x68ad4067b8c9e98C8c63bE5B34c84c1627EE1164#writeContract",
+            linkimg: "./assets/images/link_open.svg",
         }
     ]
 }
