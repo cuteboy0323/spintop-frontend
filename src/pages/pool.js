@@ -64,7 +64,7 @@ const Pool = () => {
     const [open, setOpen] = useState(false);
     const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
-
+    const [SelId, setSelId] = useState()
     const finish = () => {
         $('#live').removeClass('active')
         $('#finished').addClass('active')
@@ -79,6 +79,7 @@ const Pool = () => {
         if ($(`.contract-btn.one.pools-enable.${id}`).text() == "Stake") {
             setStakingValue(0)
             handleOpen()
+            setSelId(id)
         } else {
             $(`.contract-btn.one.pools-enable.${id}`).addClass('loading')
             $(`.contract-btn.one.pools-enable.${id}`).html('<img src="./assets/images/Progress indicator.svg" class="loading rotating"> Enabling')
@@ -130,6 +131,8 @@ const Pool = () => {
                 setOpen(false)
                 $('.confirm').removeClass('loading')
                 $('.confirm').html('Confirm')
+                $(`.last-show-hide.${SelId}`).show()
+                $(`.spin-earned.${SelId}`).hide()
             }, 2500)
         }
     }
@@ -256,8 +259,23 @@ const Pool = () => {
                                                         <button className="harvest-button" disabled>Harvest</button>
                                                     </Box>
                                             }
+                                            <Box className={`last-show-hide ${item.id}`}>
+                                                <p className="spin-earned harvest-show-hide">SPIN-BNB LP STAKED</p>
+                                                <Box className="d-flex">
+                                                    <Box className="d-flex harvest-show-hide">
+                                                        <span>{StakingValue}</span>
+                                                        <span>~26.91 USD</span>
+                                                    </Box>
+                                                    <Box className="d-flex">
+                                                        <img className="plus-minus-icon" src="./assets/images/minus.svg" alt="" />
+                                                        <img className="plus-minus-icon" src="./assets/images/plus.svg" alt="" />
+                                                    </Box>
+                                                </Box>
+                                            </Box>
+
                                             <p className={`spin-earned ${item.id}`}>{item.spinearn}</p>
                                             <button className={`contract-btn one pools-enable ${item.id}`} onClick={() => enable(item.id)}>Enable</button>
+
                                             <p className="line"></p>
                                             <Box className="hide-show-parent">
                                                 {

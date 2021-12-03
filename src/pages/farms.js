@@ -67,6 +67,7 @@ const Farms = () => {
     const [selDate, setselDate] = useState(1)
     const [open, setOpen] = useState(false);
     const handleClose = () => setOpen(false);
+    const [SelId, setSelId] = useState()
 
     const onConnectWallet = async () => {
         setIsOpenDialog(true);
@@ -146,7 +147,7 @@ const Farms = () => {
                 setStakingValue(0)
                 // $('#exampleModal').hide()
                 $('.one.active').html('Harvest')
-                $('.last-show-hide').show()
+                $(`.last-show-hide.${SelId}`).show()
                 $('.modal-backdrop').hide()
                 $('.harvest button.one.active').hide()
                 $('.harvest button.one.stake-lp.act').show()
@@ -181,6 +182,10 @@ const Farms = () => {
         setselDate(id)
     }
 
+    const stakeLp = (id) => {
+        setOpen(true)
+        setSelId(id)
+    }
 
     useEffect(() => {
         calStake(CalUsdValue)
@@ -320,7 +325,7 @@ const Farms = () => {
                                                     }
                                                 })()}
                                                 <button className={item.id} onClick={() => harvest(item.id)} disabled>Harvest</button>
-                                                <button className={`${item.id} active stake-lp`} onClick={() => setOpen(true)}>Stake LP</button>
+                                                <button className={`${item.id} active stake-lp`} onClick={() => stakeLp(item.id)}>Stake LP</button>
                                                 <button className={`${item.id} active stake-lp act`} onClick={() => harvested(item.id)}>Harvested</button>
                                             </Box>
                                             <p className={`spin-earned one ${item.id}`}>SPIN-BNB LP STAKED</p>
@@ -329,7 +334,7 @@ const Farms = () => {
                                                     :
                                                     <button className={`contract-btn one ${item.id}`} onClick={() => onConnectWallet(item.id)}>Connect Wallet</button>
                                             }
-                                            <Box className="last-show-hide">
+                                            <Box className={`last-show-hide ${item.id}`}>
                                                 <p className="spin-earned harvest-show-hide">SPIN-BNB LP STAKED</p>
                                                 <Box className="d-flex">
                                                     <Box className="d-flex harvest-show-hide">
