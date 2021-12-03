@@ -57,9 +57,10 @@ const Farms = () => {
         }, 2500)
     }
 
-    const enableContract = async () => {
-        $('.contract-btn').addClass('loading')
-        $('.contract-btn').html('<img src="./assets/images/Progress indicator.svg" class="loading rotating"> Enable Contract')
+    const enableContract = async (id) => {
+        console.log(id)
+        $(`.${id}`).addClass('loading')
+        $(`.${id}`).html('<img src="./assets/images/Progress indicator.svg" class="loading rotating"> Enable Contract')
         const web3 = new Web3(library.provider);
         const spinC = new web3.eth.Contract(
             ABI.Cake,
@@ -68,7 +69,7 @@ const Farms = () => {
         const appr = await spinC.methods.approve(account, 0).call();
         console.log(appr)
         if (appr) {
-            $('.contract-btn.one').fadeOut()
+            $(`.${id}`).fadeOut()
             $('.spin-earned.one').fadeOut()
             $('.harvest button.one').hide()
             $('.harvest button.one.active').html('')
@@ -76,7 +77,7 @@ const Farms = () => {
             $('.harvest button.one.active').show()
             $('.harvest button.one.active.stake-lp.act').hide()
         } else {
-            $('.contract-btn.one').fadeOut()
+            $(`.${id}`).fadeOut()
         }
     }
 
@@ -273,15 +274,15 @@ const Farms = () => {
                                                         return <Typography><Skeleton animation="wave" className="smallskelton" style={{ minWidth: "100px" }} /></Typography>
                                                     }
                                                 })()}
-                                                <button className="one" onClick={() => harvest()} disabled>Harvest</button>
+                                                <button className="one" onClick={() => harvest(item.id)} disabled>Harvest</button>
                                                 <button className="one active stake-lp" data-bs-toggle="modal" data-bs-target="#exampleModal">Stake LP</button>
-                                                <button className="one active stake-lp act" onClick={() => harvested()}>Harvested</button>
+                                                <button className="one active stake-lp act" onClick={() => harvested(item.id)}>Harvested</button>
                                             </Box>
                                             <p className="spin-earned one">SPIN-BNB LP STAKED</p>
                                             {
-                                                active ? <button className="contract-btn one" onClick={() => enableContract()}>Enable Contract</button>
+                                                active ? <button className={`contract-btn one ${item.id}`} onClick={() => enableContract(item.id)}>Enable Contract</button>
                                                     :
-                                                    <button className="contract-btn one" onClick={() => onConnectWallet()}>Connect Wallet</button>
+                                                    <button className={`contract-btn one ${item.id}`} onClick={() => onConnectWallet(item.id)}>Connect Wallet</button>
                                             }
                                             <Box className="last-show-hide">
                                                 <p className="spin-earned harvest-show-hide">SPIN-BNB LP STAKED</p>
