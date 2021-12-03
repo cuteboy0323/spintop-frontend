@@ -30,9 +30,9 @@ const Header = () => {
                     params: [
                         {
                             chainId: `0x${config.netId.toString(16)}`,
-                            chainName: "SPIN Network",
+                            chainName: "SPIN MainNet",
                             rpcUrls: [
-                                "https://data-seed-prebsc-1-s1.binance.org:8545"
+                                "https://dataseed1.binance.org/"
                             ],
                             nativeCurrency: {
                                 name: "SPIN",
@@ -40,7 +40,7 @@ const Header = () => {
                                 decimals: 18,
                             },
                             blockExplorerUrls: [
-                                "https://testnet.bscscan.com"
+                                "https://bscscan.com"
                             ],
                         },
                     ],
