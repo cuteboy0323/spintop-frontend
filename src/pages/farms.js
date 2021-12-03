@@ -14,7 +14,6 @@ const Farms = () => {
     const { activate, active, account, deactivate, connector, error, setError, library, chainId } = useWeb3React();
     const [isOpenDialog, setIsOpenDialog] = useState(false);
     const [CalUsdValue, setCalUsdValue] = useState(0.00)
-    // eslint-disable-next-line
     const [CalSpinValue, setCalSpinValue] = useState(0.00)
     const [Multiplier, setMultiplier] = useState(false)
     const [APR, setAPR] = useState(false)
@@ -66,9 +65,7 @@ const Farms = () => {
             ABI.Cake,
             Config.Lp.CakeL.address
         );
-        // const appr = true;
         const appr = await spinC.methods.approve(account, 0).call();
-        // console.log(appr)
         if (appr) {
             $(`.contract-btn.one.${id}`).fadeOut()
             $(`.spin-earned.one.${id}`).fadeOut()
