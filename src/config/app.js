@@ -1,12 +1,12 @@
 import abi from "./abi";
 
 export default {
-    netId: 56,
+    netId: 97,
     updateTime: 35000,
     swapFee: 0.0025,
     spin: {
         price: 0.01,
-        address: "0x6AA217312960A21aDbde1478DC8cBCf828110A67",
+        address: "0xF9d52aeA6097c2064964F8A59EDD4F3AAA7CE895",
         abi: abi.token,
         symbol: "SPIN",
         img: "https://firebasestorage.googleapis.com/v0/b/gitbook-28427.appspot.com/o/spaces%2F-MbaC5cDQY6glrXLXj4B%2Favatar-1633197511393.png?generation=1633197512121772&alt=media"
@@ -29,6 +29,14 @@ export default {
         {
             id: "spintop-bnb",
             name: "Spintop-BNB",
+            icon: "./assets/images/two-logos.svg",
+            getlink: "https://pancakeswap.finance/add/BNB/0xF9d52aeA6097c2064964F8A59EDD4F3AAA7CE895",
+            contractlink: "https://testnet.bscscan.com/address/0x68ad4067b8c9e98C8c63bE5B34c84c1627EE1164#writeContract",
+            linkimg: "./assets/images/link_open.svg",
+        },
+        {
+            id: "spintop-busd",
+            name: "Spintop-BUSD",
             icon: "./assets/images/two-logos.svg",
             getlink: "https://pancakeswap.finance/add/BNB/0xF9d52aeA6097c2064964F8A59EDD4F3AAA7CE895",
             contractlink: "https://testnet.bscscan.com/address/0x68ad4067b8c9e98C8c63bE5B34c84c1627EE1164#writeContract",

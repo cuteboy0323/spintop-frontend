@@ -62,27 +62,24 @@ const Home = () => {
           Config.spin.abi,
           Config.spin.address
         );
-        // const spinC = new web3.eth.Contract(
-        //   Config.staking.abi,
-        //   Config.staking.address
-        // );
-        // const spinF = new web3.eth.Contract(
-        //   Config.farms.abi,
-        //   Config.farms.address
-        // );
+        const spinC = new web3.eth.Contract(
+          Config.staking.abi,
+          Config.staking.address
+        );
+        const spinF = new web3.eth.Contract(
+          Config.farms.abi,
+          Config.farms.address
+        );
         const walletB = await spinT.methods.balanceOf(account).call();
         const totalMint = await spinT.methods.totalSupply().call();
+        const totalstaked = await spinC.methods.totalStaked().call();
         const totalburned = await spinT.methods.totalBurned().call();
-        console.log(totalMint)
-        console.log(walletB)
-        console.log(totalburned)
-        // const totalstaked = await spinC.methods.totalStaked().call();
-        // const harvestedValue = await spinF.methods.pendingSpintop(account).call();
+        const harvestedValue = await spinF.methods.pendingSpintop(account).call();
         setWalletBalance(fromWei(web3, walletB).toString())
         setTotalMinted(fromWei(web3, totalMint))
         setTotalBurned(fromWei(web3, totalburned))
-        setHarvestSpintop(11)
-        setTVL(11)
+        setHarvestSpintop(harvestedValue)
+        setTVL(totalstaked)
         await axios.get('https://api.pancakeswap.info/api/v2/tokens/0x4691F60c894d3f16047824004420542E4674E621').then(res => {
           const val = 1000000000
           const CurrentP = res.data.data.price * val
@@ -106,15 +103,15 @@ const Home = () => {
   }
 
   useEffect(() => {
-    // let interval = null;
+    let interval = null;
     if (active) {
       load();
-      // interval = setInterval(async () => {
-      //   console.clear();
-      // }, config.updateTime);
+      interval = setInterval(async () => {
+        console.clear();
+      }, config.updateTime);
     } else {
       clear();
-      // return () => clearInterval(interval);
+      return () => clearInterval(interval);
     }
 
   }, [active])
