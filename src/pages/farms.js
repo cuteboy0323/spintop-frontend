@@ -2,13 +2,13 @@ import React, { useCallback, useEffect, useState } from 'react'
 import SiderBar from "./siderbar"
 import $ from "jquery"
 import { Col, Row } from 'reactstrap'
-import { FormControlLabel, FormGroup, Skeleton, Switch, Typography, Tooltip, Box, Grid } from '@mui/material'
+import { FormControlLabel, FormGroup, Skeleton, Switch, Typography, Tooltip, Box } from '@mui/material'
 
 import Web3 from "web3";
 import { useWeb3React } from "@web3-react/core";
 import Cwallet from "../components/Cwallet";
-import ABI from "../config/abi"
 import Config from "../config/app"
+
 const Farms = () => {
     // eslint-disable-next-line
     const { activate, active, account, deactivate, connector, error, setError, library, chainId } = useWeb3React();
@@ -446,6 +446,7 @@ const Farms = () => {
                             </Box>
                         </Box>
                     </Box>
+
                     <Box className="modal fade" id="exampleModal" tabIndex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
                         <Box className="modal-dialog modal-dialog-centered">
                             <Box className="modal-content">
@@ -489,6 +490,7 @@ const Farms = () => {
                             </Box>
                         </Box>
                     </Box>
+
                     <Box className="modal fade" id="exampleModal22" tabIndex="-1" aria-labelledby="exampleModal22Label" aria-hidden="true">
                         <Box className="modal-dialog modal-dialog-centered">
                             <Box className="modal-content">

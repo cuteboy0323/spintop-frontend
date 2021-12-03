@@ -343,6 +343,18 @@ header .connect {
   margin-bottom: 0;
 }
 
+.harvest-button {
+  background: rgba(33, 13, 66, 0.35);
+  border-radius: 12px;
+  border: none;
+  padding: 12px 20px;
+  font-size: 16px;
+  line-height: 24px;
+  letter-spacing: -0.6px;
+  color: rgba(184, 197, 236, 0.2);
+  margin-right: 14px;
+}
+
 .main-container .cust-card {
   background: var(--header-bg);
   border-radius: 16px;
@@ -484,7 +496,7 @@ header .connect {
 }
 
 .cust-card a {
-  margin-left: 60px;
+  /* margin-left: 60px; */
 }
 
 .link {

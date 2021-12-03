@@ -146,6 +146,7 @@
     letter-spacing: -0.8px;
     color: rgba(184, 197, 236, 0.65);
     margin-right: auto;
+    /* height: 50px !important; */
 }
 
 .content-one span:nth-of-type(2) {
@@ -461,7 +462,7 @@ p.line {
     color: var(--white);
     background: #16092B;
     border: 1px solid #630BF1;
-    margin:0px 10px;
+    margin: 0px 10px;
 }
 
 .links-contain {
