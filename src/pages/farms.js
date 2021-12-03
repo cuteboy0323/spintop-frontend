@@ -214,11 +214,11 @@ const Farms = () => {
                         </Col>
                     </Row>
 
-                    <Grid container spacing={3}>
+                    <Box className="row">
                         {
                             Config.Contracts.map((item, key) => {
                                 return (
-                                    <Grid item xs={4} key={key}>
+                                    <Box item className="col-sm-6 col-md-6 col-lg-4 col-xl-4" key={key}>
                                         <Box className="cust-card contract">
                                             <Box className="blue-contain"></Box>
                                             <Box className="d-flex main-two-logos">
@@ -333,11 +333,11 @@ const Farms = () => {
                                                 </Box>
                                             </Box>
                                         </Box>
-                                    </Grid>
+                                    </Box>
                                 )
                             })
                         }
-                    </Grid>
+                    </Box>
 
                     <Cwallet isOpen={isOpenDialog} setIsOpen={setIsOpenDialog} />
                     <Box className="modal fade" id="calmodal" tabIndex="-1" aria-labelledby="calmodalLabel" aria-hidden="true">
