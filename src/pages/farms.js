@@ -153,6 +153,8 @@ const Farms = () => {
                 $('.harvest button.one.stake-lp.act').show()
                 $('.confirm').removeClass('loading')
                 $('.confirm').html('Confirm')
+                $(`.${SelId}.active.stake-lp`).hide()
+                $(`#${SelId}`).show()
             }, 2500)
         }
     }
@@ -183,8 +185,7 @@ const Farms = () => {
     }
 
     const stakeLp = (id) => {
-        $(`.${SelId}.active.stake-lp`).hide()
-        $(`#${SelId}`).show()
+
         setOpen(true)
         setSelId(id)
     }
