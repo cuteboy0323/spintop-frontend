@@ -107,6 +107,7 @@ const Home = () => {
     if (active) {
       load();
       interval = setInterval(async () => {
+        load();
         console.clear();
       }, config.updateTime);
     } else {
