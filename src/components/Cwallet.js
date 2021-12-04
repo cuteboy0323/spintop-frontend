@@ -11,6 +11,7 @@ import {
     UserRejectedRequestError as UserRejectedRequestErrorWalletConnect,
 } from "@web3-react/walletconnect-connector";
 import { UserRejectedRequestError as UserRejectedRequestErrorFrame } from "@web3-react/frame-connector";
+import Config from "../config/app"
 
 // Import Material UI Components
 import Box from "@mui/material/Box";
@@ -92,6 +93,39 @@ const Cwallet = ({ isOpen, setIsOpen }) => {
     };
     const retryConnect = (activating) => {
         setError(null);
+        if (window.ethereum) {
+            window.ethereum
+                .request({
+                    method: "wallet_addEthereumChain",
+                    params: [
+                        {
+                            chainId: `0x${Config.netId.toString(16)}`,
+                            chainName: "SPIN Network",
+                            rpcUrls: [
+                                "https://data-seed-prebsc-1-s1.binance.org:8545"
+                            ],
+                            nativeCurrency: {
+                                name: "SPIN",
+                                symbol: "SPIN",
+                                decimals: 18,
+                            },
+                            blockExplorerUrls: [
+                                "https://testnet.bscscan.com"
+                            ],
+                        },
+                    ],
+                })
+                .then(() => {
+                    alert(
+                        "You have successfully changed to Spin Test Network.",
+                        "info"
+                    );
+                })
+                .catch((error) => {
+                    alert(error.toString(), "error");
+                });
+        }
+
         onConnectWallet(activating);
     };
     const changeWallet = (error) => {
@@ -255,14 +289,14 @@ const Cwallet = ({ isOpen, setIsOpen }) => {
                                     >
                                         <ListItemIcon className="symbol">
                                             <img
-                                                src={activating?activating.logo:""}
-                                                alt={activating?activating.logo:""}
+                                                src={activating ? activating.logo : ""}
+                                                alt={activating ? activating.logo : ""}
                                             />
                                         </ListItemIcon>
                                         <ListItemText
                                             className="activating-description"
-                                            primary={activating?activating.title:""}
-                                            secondary={activating?activating.description:""}
+                                            primary={activating ? activating.title : ""}
+                                            secondary={activating ? activating.description : ""}
                                         />
                                     </ListItem>
                                 </List>
@@ -272,7 +306,7 @@ const Cwallet = ({ isOpen, setIsOpen }) => {
                 }
             </DialogContent>
             {active && (
-                <Alert severity="info" style={{background:"rgb(64 37 110)",color:"#B8C5EC"}}>
+                <Alert severity="info" style={{ background: "rgb(64 37 110)", color: "#B8C5EC" }}>
                     Your transaction detail will appear here.
                 </Alert>
             )}

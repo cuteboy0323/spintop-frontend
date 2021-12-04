@@ -6,7 +6,7 @@ import { FormControlLabel, FormGroup, Switch, Box, Tooltip, Typography, Skeleton
 
 // import Web3 from "web3";
 import { useWeb3React } from "@web3-react/core";
-// import Cwallet from "../components/Cwallet";
+import Cwallet from "../components/Cwallet";
 import Config from "../config/app"
 import Modal from '@mui/material/Modal';
 import { styled } from '@mui/material/styles';
@@ -53,6 +53,7 @@ const PrettoSlider = styled(Slider)({
 const Pool = () => {
     // eslint-disable-next-line
     const { activate, active, account, deactivate, connector, error, setError, library, chainId } = useWeb3React();
+    const [isOpenDialog, setIsOpenDialog] = useState(false);
     const [CalUsdValue, setCalUsdValue] = useState(0.00)
     const [CalSpinValue, setCalSpinValue] = useState(0.00)
     const [TotalValue, setTotalValue] = useState(0)
@@ -274,7 +275,13 @@ const Pool = () => {
                                             </Box>
 
                                             <p className={`spin-earned ${item.id}`}>{item.spinearn}</p>
-                                            <button className={`contract-btn one pools-enable ${item.id}`} onClick={() => enable(item.id)}>Enable</button>
+                                            {
+                                                active ?
+                                                    <button className={`contract-btn one pools-enable ${item.id}`} onClick={() => enable(item.id)}>Enable</button>
+                                                    :
+                                                    <button className={`contract-btn one ${item.id}`} onClick={() => setIsOpenDialog(true)}>Connect Wallet</button>
+                                            }
+
 
                                             <p className="line"></p>
                                             <Box className="hide-show-parent">
@@ -590,6 +597,7 @@ const Pool = () => {
                         </Box>
                     </Box>
                 </Box>
+                <Cwallet isOpen={isOpenDialog} setIsOpen={setIsOpenDialog} />
             </Box >
         </Box >
 
