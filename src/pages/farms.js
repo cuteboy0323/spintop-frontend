@@ -183,6 +183,8 @@ const Farms = () => {
     }
 
     const stakeLp = (id) => {
+        $(`.${SelId}.active.stake-lp`).hide()
+        $(`#${SelId}`).show()
         setOpen(true)
         setSelId(id)
     }
@@ -324,7 +326,7 @@ const Farms = () => {
                                                         return <Typography><Skeleton animation="wave" className="smallskelton" style={{ minWidth: "100px" }} /></Typography>
                                                     }
                                                 })()}
-                                                <button className={item.id} onClick={() => harvest(item.id)} disabled>Harvest</button>
+                                                <button className={item.id} id={item.id} onClick={() => harvest(item.id)} disabled>Harvest</button>
                                                 <button className={`${item.id} active stake-lp`} onClick={() => stakeLp(item.id)}>Stake LP</button>
                                                 <button className={`${item.id} active stake-lp act`} onClick={() => harvested(item.id)}>Harvested</button>
                                             </Box>

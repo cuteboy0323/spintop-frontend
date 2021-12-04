@@ -134,6 +134,7 @@ const Pool = () => {
                 $('.confirm').html('Confirm')
                 $(`.last-show-hide.${SelId}`).show()
                 $(`.spin-earned.${SelId}`).hide()
+                $(`.contract-btn.one.pools-enable.${SelId}`).hide()
             }, 2500)
         }
     }
