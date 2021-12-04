@@ -465,6 +465,15 @@ p.line {
     margin: 0px 10px;
 }
 
+.loading-gif {
+    height: 100vh;
+    width: 100vw;
+    justify-content: center;
+    align-items: center;
+    display: flex;
+    background: black;
+}
+
 .links-contain {
     display: flex;
     margin-top: 20px;
