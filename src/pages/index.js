@@ -80,8 +80,8 @@ const Home = () => {
         setTotalBurned(fromWei(web3, totalburned))
         setHarvestSpintop(harvestedValue)
         setTVL(totalstaked)
-        await axios.get('https://api.pancakeswap.info/api/v2/tokens/0x4691F60c894d3f16047824004420542E4674E621').then(res => {
-          const val = 1000000000
+        await axios.get('https://api.pancakeswap.info/api/v2/tokens/0x6AA217312960A21aDbde1478DC8cBCf828110A67').then(res => {
+          const val = 10000000000
           const CurrentP = res.data.data.price * val
           const marketcap = Math.floor(CurrentP) * fromWei(web3, totalMint);
           setMarketCap(marketcap / val)
