@@ -7,20 +7,37 @@ const Calculator = ({ APR }) => {
     const [TotalValue, setTotalValue] = useState(0)
     const [CalUsdValue, setCalUsdValue] = useState(0.00)
     const [selDate, setselDate] = useState(1)
+    const [flag, setflag] = useState(true)
     const selectD = (id) => {
         $('.datebutton').removeClass('active')
         $(`#${id}`).addClass('active')
         setselDate(id)
     }
     const calStake = (val) => {
-        setCalUsdValue(val)
-        setCalSpinValue(val * 100)
-        setTotalValue(val * 10 * selDate)
+        if (flag) {
+            setCalUsdValue(val)
+            setCalSpinValue(val * 100)
+            setTotalValue(val * 10 * selDate)
+        } else {
+            setCalUsdValue(val / 100)
+            setCalSpinValue(val)
+            setTotalValue(val / 100 * selDate)
+        }
+    }
+
+    const switchUnit = () => {
+        // setflag()
+        if (flag) {
+            setflag(false)
+        } else {
+            setflag(true)
+        }
     }
 
     useEffect(() => {
         calStake(CalUsdValue)
     }, [selDate])
+
     return (
         <Box className="modal fade" id="calmodal" tabIndex="-1" aria-labelledby="calmodalLabel" aria-hidden="true">
             <Box className="modal-dialog modal-dialog-centered">
@@ -33,11 +50,13 @@ const Calculator = ({ APR }) => {
                         <p className="spin-earned">SPINTOP STAKED</p>
                         <Box className="inner-cust-card active">
                             <Box className="card-two-head">
-                                <span style={{ display: "inline-block" }}><input type="number" style={{ border: "none", background: "#240e48", color: "white" }} value={CalUsdValue} onChange={(e) => calStake(e.target.value)} /> USD</span>
-                                <span style={{ marginTop: "10px" }}>{CalSpinValue} SPINTOP</span>
+                                <span style={{ display: "inline-block" }}><input type="number" style={{ border: "none", background: "#240e48", color: "white" }} value={flag ? CalUsdValue : CalSpinValue} onChange={(e) => calStake(e.target.value)} />
+                                    {flag ? "USD" : "SPIN"}
+                                </span>
+                                <span style={{ marginTop: "10px" }}>{flag ? `${CalSpinValue} SPIN` : `${CalUsdValue} USD`}</span>
                             </Box>
                             <Box className="card-content">
-                                <img src="./assets/images/sort-alt.svg" alt="" />
+                                <img src="./assets/images/sort-alt.svg" alt="" onClick={() => switchUnit()} />
                             </Box>
                         </Box>
 
