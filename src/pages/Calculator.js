@@ -35,7 +35,7 @@ const Calculator = ({ APR }) => {
     }
 
     useEffect(() => {
-        calStake(CalUsdValue)
+        calStake($("#stakingvalue").val())
     }, [selDate])
 
     return (
@@ -50,7 +50,7 @@ const Calculator = ({ APR }) => {
                         <p className="spin-earned">SPINTOP STAKED</p>
                         <Box className="inner-cust-card active">
                             <Box className="card-two-head">
-                                <span style={{ display: "inline-block" }}><input type="number" style={{ border: "none", background: "#240e48", color: "white" }} value={flag ? CalUsdValue : CalSpinValue} onChange={(e) => calStake(e.target.value)} />
+                                <span style={{ display: "inline-block" }}><input type="number" style={{ border: "none", background: "#240e48", color: "white" }} id="stakingvalue" value={flag ? CalUsdValue : CalSpinValue} onChange={(e) => calStake(e.target.value)} />
                                     {flag ? "USD" : "SPIN"}
                                 </span>
                                 <span style={{ marginTop: "10px" }}>{flag ? `${CalSpinValue} SPIN` : `${CalUsdValue} USD`}</span>
