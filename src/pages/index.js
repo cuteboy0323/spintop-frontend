@@ -213,7 +213,7 @@ const Home = () => {
                   if (marketCap != false || typeof (marketCap) == "string") {
                     return (
                       <Typography className="value big" color="primary">
-                        <span className="money">$&nbsp;{Math.floor(marketCap)}</span>
+                        <span className="money">$&nbsp;{marketCap}</span>
                       </Typography>
                     )
                   } else {
