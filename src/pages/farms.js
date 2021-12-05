@@ -257,7 +257,7 @@ const Farms = () => {
                                 return (
                                     <Box item className="col-sm-6 col-md-6 col-lg-4 col-xl-4" key={key}>
                                         <Box className="cust-card contract">
-                                            <Box className="blue-contain"></Box>
+                                            <Box className="blue-contain"><img className="animation-spin" src="https://firebasestorage.googleapis.com/v0/b/gitbook-28427.appspot.com/o/spaces%2F-MbaC5cDQY6glrXLXj4B%2Favatar-1633197511393.png?generation=1633197512121772&alt=media" alt="SPIN" /></Box>
                                             <Box className="d-flex main-two-logos">
                                                 <img src={item.icon} alt="" className="two-logos" />
                                                 <Box className="d-flex flex-column align-items-end">

@@ -189,9 +189,9 @@ const Pool = () => {
                         {
                             Config.pools.map((item, key) => {
                                 return (
-                                    <Col md={4} key={key}>
+                                    <Col md={4} key={key} style={{ position: "relative" }}>
                                         <Box className="cust-card contract pools">
-                                            <Box className="blue-contain"></Box>
+                                            <Box className="blue-contain"><img className="animation-spin" src="https://firebasestorage.googleapis.com/v0/b/gitbook-28427.appspot.com/o/spaces%2F-MbaC5cDQY6glrXLXj4B%2Favatar-1633197511393.png?generation=1633197512121772&alt=media" alt="SPIN" /></Box>
                                             <Box className="d-flex main-two-logos">
                                                 <Box className="d-flex flex-column align-items-start">
                                                     <span className="bnb">{item.name}</span>

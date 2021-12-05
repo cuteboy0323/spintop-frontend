@@ -1293,9 +1293,8 @@ body .modal-backdrop.show {
 }
 
 .main-container .cust-card.contract:hover, .main-container .cust-card.contract:focus {
-  border: 1px solid #F10088;
   overflow: hidden;
-  width: calc(100% + 2px);
+  box-shadow: 3px 1px 10px 0px #f10088;
 }
 
 body a {
@@ -1315,6 +1314,33 @@ body a:hover {
 
   .main-container .cust-card .unlock-btn {
     background: #630BF1 url("../images/unlock_icon.svg") no-repeat 60px 11px;
+  }
+}
+
+.block {
+  height: 100%;
+  width: 100%;
+  filter: blur(6px);
+  position: absolute;
+  top: 10px;
+  left: 0px;
+  z-index: 1;
+  border-radius: 10px;
+  background: linear-gradient(45deg, rgb(255, 0, 0) 0%, rgb(255, 154, 0) 10%, rgb(208, 222, 33) 20%, rgb(79, 220, 74) 30%, rgb(63, 218, 216) 40%, rgb(47, 201, 226) 50%, rgb(28, 127, 238) 60%, rgb(95, 21, 242) 70%, rgb(186, 12, 248) 80%, rgb(251, 7, 217) 90%, rgb(255, 0, 0) 100%) 0% 0% / 300% 300%;
+  animation: 2s linear 0s infinite normal none running ilqnTz;
+}
+
+@keyframes ilqnTz {
+  0% {
+    background-position: 0% 50%;
+  }
+
+  50% {
+    background-position: 100% 50%;
+  }
+
+  100% {
+    background-position: 0% 50%;
   }
 }
 

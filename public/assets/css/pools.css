@@ -87,6 +87,14 @@
     height: 160px;
     background: rgba(33, 13, 66, 0.75);
     border-radius: 12px 12px 0px 0px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.animation-spin {
+    border-radius: 50px;
+    height: 100px;
 }
 
 .main-container .cust-card.contract .bnb {
