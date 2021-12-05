@@ -587,11 +587,22 @@ header .wallet-icon::before {
     display: none;
 }
 
+.contract-res {
+    background-color: #630BF1 !important;
+    width: 100% !important;
+    margin-top: 75px !important;
+}
+
 @media screen and (max-width: 1024px) {
     .main-container .cust-card.steak-only input[type="text"] {
         width: 80px;
     }
+
+    .contract-res {
+        margin-top: 22px !important;
+    }
 }
+
 
 @media screen and (max-width: 768px) {
     .main-container .cust-card.steak-only {
@@ -600,6 +611,10 @@ header .wallet-icon::before {
 
     .mobile-margin {
         margin-top: 35px;
+    }
+
+    .contract-res {
+        margin-top: 45px !important;
     }
 
     .main-container .cust-card.steak-only.mobile {

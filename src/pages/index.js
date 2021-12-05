@@ -166,22 +166,20 @@ const Home = () => {
                   active ?
                     <Button
                       variant="contained"
-                      className="contract-btn2"
+                      className="contract-btn2 contract-res"
                       startIcon={<LockOpenIcon />}
                       color="secondary"
                       onClick={onConnectWallet}
-                      style={{ background: "#630BF1", width: "100%", marginTop: "75px" }}
                     >
                       {account.substring(0, 10)} ... {account.substring(account.length - 5)}
                     </Button>
                     :
                     <Button
                       variant="contained"
-                      className="contract-btn2"
+                      className="contract-btn2 contract-res"
                       startIcon={<LockIcon />}
                       color="secondary"
                       onClick={onConnectWallet}
-                      style={{ background: "#630BF1", width: "100%", marginTop: "75px" }}
                     >
                       Unlock wallet
                     </Button>
