@@ -97,10 +97,9 @@ const Home = () => {
       try {
         const CoinGeckoClient = new CoinGecko();
         let data = await CoinGeckoClient.simple.fetchTokenPrice({
-          contract_addresses: Config.RealSpin,
-          vs_currencies: 'usd',
+          ids: ['spintop'],
+          vs_currencies: ['bnb', 'usd'],
         });
-        
         console.log(data)
         const web3 = new Web3(library.provider);
         const spinT = new web3.eth.Contract(
