@@ -164,8 +164,8 @@ const Home = () => {
           <Row>
             <Col>
               <Box className="big-announc">
-                <Typography>Big announcements</Typography>
-                <Typography>Medium to long sized subtitle goes here.</Typography>
+                <Typography>Spindex</Typography>
+                <Typography>Gaming exclusive AMM, Staking & Farming pools and the Spindex Wallet.</Typography>
               </Box>
             </Col>
           </Row>
@@ -189,24 +189,26 @@ const Home = () => {
                     <img width={22} src="./assets/images/meta-mask.svg" style={{ margin: "0px" }} alt="connected" />
                   </Fab>
                 </Box>
-                <Box className="spin-text">SPINTOP to harvest</Box>
+                <Box className="spin-text">SPIN to harvest</Box>
                 {(() => {
                   if (harvestSpintop != false || typeof (harvestSpintop) == "string") {
                     return (
                       <Typography className="value big" color="primary">
-                        <span className="money">$&nbsp;{harvestSpintop}</span>
+                        <span className="sub-txt">{harvestSpintop}</span>
+                        <p className="money">~$0.00</p>
                       </Typography>
                     )
                   } else {
                     return <Typography><Skeleton animation="wave" className="skelton" /></Typography>
                   }
                 })()}
-                <Box className="spin-text">SPINTOP in wallet</Box>
+                <Box className="spin-text">SPIN in wallet</Box>
                 {(() => {
                   if (walletBalance != false || typeof (walletBalance) == "string") {
                     return (
                       <Typography className="value big" color="primary">
-                        <span className="money">$&nbsp;{walletBalance}</span>
+                        <span className="sub-txt">{walletBalance}</span>
+                        <p className="money">~$0.00</p>
                       </Typography>
                     )
                   } else {
@@ -263,7 +265,7 @@ const Home = () => {
                   if (marketCap != false || typeof (marketCap) == "string") {
                     return (
                       <Typography className="value big" color="primary">
-                        <span className="money">$&nbsp;{marketCap}</span>
+                        <span className="sub-txt">$&nbsp;{marketCap}</span>
                       </Typography>
                     )
                   } else {
@@ -279,7 +281,7 @@ const Home = () => {
                   if (totalMinted != false || typeof (totalMinted) == "string") {
                     return (
                       <Typography className="value big" color="primary">
-                        <span className="money">$&nbsp;{totalMinted}</span>
+                        <span className="sub-txt">{totalMinted}</span>
                       </Typography>
                     )
                   } else {
@@ -295,7 +297,7 @@ const Home = () => {
                   if (totalBurned != false || typeof (totalBurned) == "string") {
                     return (
                       <Typography className="value big" color="primary">
-                        <span className="money">$&nbsp;{totalBurned}</span>
+                        <span className="sub-txt">{totalBurned}</span>
                       </Typography>
                     )
                   } else {
@@ -311,7 +313,7 @@ const Home = () => {
                   if (TVL != false || typeof (TVL) == "string") {
                     return (
                       <Typography className="value big" color="primary">
-                        <span className="money">$&nbsp;{TVL}</span>
+                        <span className="sub-txt">{TVL}</span>
                       </Typography>
                     )
                   } else {

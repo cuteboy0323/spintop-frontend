@@ -78,7 +78,7 @@ const SiderBar = ({Params}) => {
                 <div className="social-media">
                     <img src="./assets/images/gitbook.svg" alt="" />
                     <img src="./assets/images/discord.svg" alt="" />
-                    <img src="./assets/images/twitter.svg" alt="" />
+                    <a href="https://twitter.com/SpintopNetwork"><img src="./assets/images/twitter.svg" alt="" /></a>
                     <img src="./assets/images/telegram.svg" alt="" />
                 </div>
                 <div className="audit">
