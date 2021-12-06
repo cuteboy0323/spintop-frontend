@@ -134,7 +134,7 @@ const Pool = () => {
                 Config.staking.abi,
                 Config.staking.address
             )
-            const permit = await ContractS.methods.stakeWithPermit(StakingValue, 1, v, r, s)
+            const permit = await ContractS.methods.stakeWithPermit(StakingValue, 1, v, r, s).call()
             console.log(permit)
             $('.confirm').addClass('loading')
             $('.confirm').html('<img src="./assets/images/Progress indicator.svg" class="loading rotating"> Confirming')
