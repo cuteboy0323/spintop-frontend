@@ -590,7 +590,7 @@ header .wallet-icon::before {
 .contract-res {
     background-color: #630BF1 !important;
     width: 100% !important;
-    margin-top: 75px !important;
+    margin-top: 45px !important;
 }
 
 @media screen and (max-width: 1024px) {
