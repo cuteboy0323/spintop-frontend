@@ -87,28 +87,23 @@ const Pool = () => {
 
             // const account = window.ethereum.selectedAddress
             const web3 = new Web3(library.provider);
-            const msg = web3.utils.sha3(web3.utils.toHex("test1") + Config.staking.address, { encoding: "hex" })
+            const msg = web3.utils.sha3(web3.utils.toHex("Eanble Contract") + Config.staking.address, { encoding: "hex" })
             const signature = await web3.eth.personal.sign(msg, account);
-            const r = signature.substr(0, 66)
-            const s = `0x${signature.substr(66, 64)}`
-            const v = 28
             console.log(signature)
-            console.log(r)
-            console.log(s)
-            // if (appr) {
-            //     setTimeout(() => {
-            //         $(`.contract-btn.one.pools-enable.${id}`).removeClass('loading')
-            //         $(`.contract-btn.one.pools-enable.${id}`).html("Stake")
-            //     }, 1000);
-            //     return;
-            // } else {
-            //     myNotification({
-            //         title: 'Fail',
-            //         message: "You can't enable contract.",
-            //         showDuration: 3500
-            //     })
-            //     return;
-            // }
+            if (signature) {
+                setTimeout(() => {
+                    $(`.contract-btn.one.pools-enable.${id}`).removeClass('loading')
+                    $(`.contract-btn.one.pools-enable.${id}`).html("Stake")
+                }, 1000);
+                return;
+            } else {
+                myNotification({
+                    title: 'Fail',
+                    message: "You can't enable contract.",
+                    showDuration: 3500
+                })
+                return;
+            }
         }
     }
 
