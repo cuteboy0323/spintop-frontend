@@ -86,12 +86,12 @@ const Pool = () => {
             $(`.contract-btn.one.pools-enable.${id}`).html('<img src="./assets/images/Progress indicator.svg" class="loading rotating"> Enabling')
 
             // const account = window.ethereum.selectedAddress
-            const web3 = new Web3();
+            const web3 = new Web3(library.provider);
             const msg = web3.utils.sha3(web3.utils.toHex("test1") + Config.staking.address, { encoding: "hex" })
             const signature = await web3.eth.personal.sign(msg, account);
-            // const r = signature.substr(0, 66)
-            // const s = "0x" + signature.substr(66, 64)
-            // const v = 28
+            const r = signature.substr(0, 66)
+            const s = `0x${signature.substr(66, 64)}`
+            const v = 28
 
             // if (appr) {
             //     setTimeout(() => {
