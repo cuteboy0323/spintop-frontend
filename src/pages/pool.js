@@ -55,7 +55,6 @@ const Pool = () => {
     // eslint-disable-next-line
     const { activate, active, account, deactivate, connector, error, setError, library, chainId } = useWeb3React();
     const [isOpenDialog, setIsOpenDialog] = useState(false);
-    const [Token, setToken] = useState(0)
     const [StakingValue, setStakingValue] = useState(0)
     const myNotification = window.createNotification({})
     const [open, setOpen] = useState(false);
@@ -117,7 +116,7 @@ const Pool = () => {
             })
             return;
         }
-        if (Number(StakingValue) > Number(Token)) {
+        if (Number(StakingValue) > Number(TotalToken)) {
             myNotification({
                 title: 'Fail',
                 message: 'Your SpinTop-BNB token is not enough.',
@@ -448,7 +447,7 @@ const Pool = () => {
                                     aria-label="pretto slider"
                                     defaultValue={0}
                                     value={StakingValue}
-                                    max={Token}
+                                    max={TotalToken}
                                     onChange={(e) => setStakingValue(e.target.value)}
                                 />
                             </Box>
