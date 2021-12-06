@@ -4,8 +4,8 @@ import { Row, Col } from 'reactstrap'
 import Modal from '@mui/material/Modal';
 import { styled } from '@mui/material/styles';
 
-// import Web3 from "web3";
 import $ from "jquery"
+import Web3 from "web3";
 import { useWeb3React } from "@web3-react/core";
 import Cwallet from "../components/Cwallet";
 import Config from "../config/app"
@@ -55,7 +55,6 @@ const Pool = () => {
     // eslint-disable-next-line
     const { activate, active, account, deactivate, connector, error, setError, library, chainId } = useWeb3React();
     const [isOpenDialog, setIsOpenDialog] = useState(false);
-    const [APR, setAPR] = useState(false)
     const [Token, setToken] = useState(0)
     const [StakingValue, setStakingValue] = useState(0)
     const myNotification = window.createNotification({})
@@ -63,6 +62,10 @@ const Pool = () => {
     const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
     const [SelId, setSelId] = useState()
+
+    const [TotalStaked, setTotalStaked] = useState(0);
+    const [APR, setAPR] = useState(false)
+    const [Earned, setEarned] = useState(0)
     const finish = () => {
         $('#live').removeClass('active')
         $('#finished').addClass('active')
@@ -127,7 +130,23 @@ const Pool = () => {
     const load = async () => {
         if (active) {
             try {
-                console.log(active)
+                const web3 = new Web3(library.provider);
+                const spinT = new web3.eth.Contract(
+                    Config.spin.abi,
+                    Config.spin.address
+                );
+                const spinC = new web3.eth.Contract(
+                    Config.staking.abi,
+                    Config.staking.address
+                )
+                const totalstaked = await spinC.methods.totalSupply().call()
+                const earned = await spinC.methods.earned(account).call()
+                const current_pool = await spinC.methods.lastTimeRewardApplicable().call()
+                const apr = totalstaked / current_pool / 30 * 100
+                // console.log(liquidity)
+                setTotalStaked(totalstaked)
+                setEarned(earned)
+                setAPR(apr)
             } catch (err) {
                 console.log(err)
             }
@@ -248,11 +267,11 @@ const Pool = () => {
                                                     <Box className="d-flex">
                                                         <Box className="d-flex harvest-show-hide">
                                                             {(() => {
-                                                                if (APR != false || typeof (APR) == "string") {
+                                                                if (Earned != false || typeof (Earned) == "string") {
                                                                     return (
                                                                         <>
                                                                             <Typography className="value big" color="primary">
-                                                                                <span className="">$&nbsp;{APR}</span>
+                                                                                <span className="">$&nbsp;{Earned}</span>
                                                                             </Typography>
                                                                             <span className="" style={{ fontSize: "18px" }}>$&nbsp;0.087</span>
                                                                         </>
@@ -325,11 +344,11 @@ const Pool = () => {
                                                     <Box className="d-flex justify-content-between align-content-center mb-2">
                                                         <span>Total staked</span>
                                                         {(() => {
-                                                            if (APR != false || typeof (APR) == "string") {
+                                                            if (TotalStaked != false || typeof (TotalStaked) == "string") {
                                                                 return (
                                                                     <>
                                                                         <Typography className="value big" color="primary">
-                                                                            <span className="">$&nbsp;{APR}&nbsp;<img src="./assets/images/Form.png" alt="" className=" form-p" /></span>
+                                                                            <span className="">$&nbsp;{TotalStaked}&nbsp;<img src="./assets/images/Form.png" alt="" className=" form-p" /></span>
                                                                         </Typography>
                                                                     </>
                                                                 )
@@ -338,10 +357,10 @@ const Pool = () => {
                                                             }
                                                         })()}
                                                     </Box>
-                                                    <Box className="d-flex justify-content-between align-content-center mt-1">
+                                                    {/* <Box className="d-flex justify-content-between align-content-center mt-1">
                                                         <span>Performance fee <img src="./assets/images/Form.png" className=" form-p" alt="" /></span>
                                                         <span>{item.fee}</span>
-                                                    </Box>
+                                                    </Box> */}
                                                     <a href={item.tokeninfo} target="_blank" rel="noreferrer">
                                                         <Box className="d-flex cursor-pointer">
                                                             <p className="links first">See Token Info</p>
