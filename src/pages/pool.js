@@ -199,7 +199,7 @@ const Pool = () => {
             load();
             interval = setInterval(async () => {
                 load();
-                console.clear();
+                // console.clear();
             }, Config.updateTime);
         } else {
             clear();
