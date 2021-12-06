@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
 import { FormControlLabel, FormGroup, Switch, Box, Tooltip, Typography, Skeleton, Slider } from '@mui/material'
 import { Row, Col } from 'reactstrap'
 import Modal from '@mui/material/Modal';
@@ -55,7 +55,6 @@ const Pool = () => {
     // eslint-disable-next-line
     const { activate, active, account, deactivate, connector, error, setError, library, chainId } = useWeb3React();
     const [isOpenDialog, setIsOpenDialog] = useState(false);
-    const [Token, setToken] = useState(0)
     const [StakingValue, setStakingValue] = useState(0)
     const myNotification = window.createNotification({})
     const [open, setOpen] = useState(false);
@@ -117,7 +116,7 @@ const Pool = () => {
             })
             return;
         }
-        if (Number(StakingValue) > Number(Token)) {
+        if (Number(StakingValue) > Number(TotalToken)) {
             myNotification({
                 title: 'Fail',
                 message: 'Your SpinTop-BNB token is not enough.',
@@ -138,6 +137,15 @@ const Pool = () => {
         }
     }
 
+    const fromWei = useCallback((web3, val) => {
+        if (val) {
+            val = val.toString();
+            return web3.utils.fromWei(val);
+        } else {
+            return "0"
+        }
+    }, []);
+
     const load = async () => {
         if (active) {
             try {
@@ -156,10 +164,10 @@ const Pool = () => {
                 const apr = (totalstaked / current_pool) * (100 / 30)
                 const tokenbalance = await spinT.methods.balanceOf(account).call()
                 console.log(apr)
-                setTotalToken(tokenbalance)
-                setTotalStaked(totalstaked)
-                setEarned(earned)
-                setAPR(apr.toString())
+                setTotalToken(fromWei(web3,tokenbalance))
+                setTotalStaked(fromWei(web3,totalstaked))
+                setEarned(fromWei(web3,earned))
+                setAPR(fromWei(web3,apr).toString())
             } catch (err) {
                 console.log(err)
             }
@@ -448,7 +456,7 @@ const Pool = () => {
                                     aria-label="pretto slider"
                                     defaultValue={0}
                                     value={StakingValue}
-                                    max={Token}
+                                    max={TotalToken}
                                     onChange={(e) => setStakingValue(e.target.value)}
                                 />
                             </Box>
