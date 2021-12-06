@@ -1,16 +1,20 @@
 import React, { useCallback, useEffect, useState } from 'react'
-import { Button, Skeleton, Typography, Box } from "@mui/material"
-import LockOpenIcon from '@mui/icons-material/LockOpen';
+import Fab from '@mui/material/Fab';
 import { Row, Col } from 'reactstrap'
-import SiderBar from "./siderbar"
-import config from "./../config/app";
+import { Button, Skeleton, Typography, Box } from "@mui/material"
 import LockIcon from '@mui/icons-material/Lock';
-import AddIcon from '@mui/icons-material/Add';
-import axios from "axios"
+import LockOpenIcon from '@mui/icons-material/LockOpen';
+import LanguageIcon from '@mui/icons-material/Language';
+import KeyboardDoubleArrowRightIcon from '@mui/icons-material/KeyboardDoubleArrowRight';
+//web3
 import Web3 from "web3";
+import axios from "axios"
 import { useWeb3React } from "@web3-react/core";
-import Cwallet from "../components/Cwallet";
+//file
+import SiderBar from "./siderbar"
 import Config from "../config/app"
+import config from "./../config/app";
+import Cwallet from "../components/Cwallet";
 
 const Home = () => {
   // eslint-disable-next-line
@@ -53,6 +57,41 @@ const Home = () => {
         });
     }
   }
+
+  const swn = () => {
+    if (window.ethereum) {
+      window.ethereum
+        .request({
+          method: "wallet_addEthereumChain",
+          params: [
+            {
+              chainId: `0x${config.netId.toString(16)}`,
+              chainName: "SPIN Network",
+              rpcUrls: [
+                "https://data-seed-prebsc-1-s1.binance.org:8545"
+              ],
+              nativeCurrency: {
+                name: "SPIN",
+                symbol: "SPIN",
+                decimals: 18,
+              },
+              blockExplorerUrls: [
+                "https://testnet.bscscan.com"
+              ],
+            },
+          ],
+        })
+        .then(() => {
+          alert(
+            "You have successfully changed to Spin Test Network.",
+            "info"
+          );
+        })
+        .catch((error) => {
+          alert(error.toString(), "error");
+        });
+    }
+  };
 
   const load = async () => {
     if (active) {
@@ -135,8 +174,20 @@ const Home = () => {
               <Box className="cust-card main_card">
                 <Typography className="main-heading">Farms & Staking</Typography>
                 <Box className="meta-mask">
-                  <img src="./assets/images/Spintoken.svg" alt="" className="spintoken" />
-                  <Button variant="outlined" startIcon={<AddIcon />} className="metamask" onClick={() => addToken()}>Add to metaMask </Button>
+                  <Box>
+                    <img src="./assets/images/Spintoken.svg" alt="" className="spintoken" />
+                    <Fab variant="extended" size="small" color="primary" aria-label="add" title="Add Token" onClick={() => addToken()} style={{ background: "rgb(33 15 60)" }}>
+                      {/* <TokenIcon sx={{ mr: 1 }} /> */}
+                      <img src="./assets/images/logo.png" style={{ height: "20px", margin: "0px" }} />&nbsp;&nbsp;&nbsp;
+                      <KeyboardDoubleArrowRightIcon sx={{ mr: 1 }} />
+                      <img width={22} src="./assets/images/meta-mask.svg" style={{ margin: "0px" }} alt="connected" />
+                    </Fab>
+                  </Box>
+                  <Fab variant="extended" size="small" color="primary" aria-label="add" title="Add NetWork" onClick={() => swn()} style={{ background: "rgb(33 15 60)" }}>
+                    <LanguageIcon sx={{ mr: 1 }} />
+                    <KeyboardDoubleArrowRightIcon sx={{ mr: 1 }} />
+                    <img width={22} src="./assets/images/meta-mask.svg" style={{ margin: "0px" }} alt="connected" />
+                  </Fab>
                 </Box>
                 <Box className="spin-text">SPINTOP to harvest</Box>
                 {(() => {

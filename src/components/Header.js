@@ -1,9 +1,8 @@
 import React, { useState } from 'react'
 import $ from 'jquery'
-import { useWeb3React } from "@web3-react/core";
 import Cwallet from "./Cwallet";
 import { Button } from "@mui/material"
-import config from "../config/app";
+import { useWeb3React } from "@web3-react/core";
 
 const Header = () => {
     const close = () => {
@@ -21,41 +20,6 @@ const Header = () => {
     const onConnectWallet = async () => {
         setIsOpenDialog(true);
     }
-
-    const swn = () => {
-        if (window.ethereum) {
-            window.ethereum
-                .request({
-                    method: "wallet_addEthereumChain",
-                    params: [
-                        {
-                            chainId: `0x${config.netId.toString(16)}`,
-                            chainName: "SPIN Network",
-                            rpcUrls: [
-                                "https://data-seed-prebsc-1-s1.binance.org:8545"
-                            ],
-                            nativeCurrency: {
-                                name: "SPIN",
-                                symbol: "SPIN",
-                                decimals: 18,
-                            },
-                            blockExplorerUrls: [
-                                "https://testnet.bscscan.com"
-                            ],
-                        },
-                    ],
-                })
-                .then(() => {
-                    alert(
-                        "You have successfully changed to Spin Test Network.",
-                        "info"
-                    );
-                })
-                .catch((error) => {
-                    alert(error.toString(), "error");
-                });
-        }
-    };
 
     return (
         <header>
@@ -130,18 +94,6 @@ const Header = () => {
                 <span>DEX</span>
                 <span>Gamepedia</span>
             </div>
-            {/* <img src="./assets/images/settings_icon.svg" alt="" /> */}
-            <Button
-                variant="contained"
-                startIcon={
-                    <img width={22} style={{ borderRadius: "10px", background: "#16092b" }} src="https://firebasestorage.googleapis.com/v0/b/gitbook-28427.appspot.com/o/spaces%2F-MbaC5cDQY6glrXLXj4B%2Favatar-1633197511393.png?generation=1633197512121772&alt=media" alt="Net" />
-                }
-                onClick={swn}
-                color="secondary"
-                style={{ background: "#f10088", marginRight: "10px" }}
-            >
-                NetWork
-            </Button>
             {
                 active ?
                     <Button
