@@ -2,8 +2,9 @@ import abi from "./abi";
 
 export default {
     netId: 97,
-    updateTime: 5000,
+    updateTime: 20000,
     swapFee: 0.0025,
+    RealSpin:"0x6AA217312960A21aDbde1478DC8cBCf828110A67",
     spin: {
         price: 0.01,
         address: "0xF9d52aeA6097c2064964F8A59EDD4F3AAA7CE895",
@@ -31,6 +32,7 @@ export default {
             name: "Spintop-BNB",
             icon: "./assets/images/two-logos.svg",
             getlink: "https://pancakeswap.finance/add/BNB/0xF9d52aeA6097c2064964F8A59EDD4F3AAA7CE895",
+            earn: "SpinTop",
             contractlink: "https://testnet.bscscan.com/address/0x68ad4067b8c9e98C8c63bE5B34c84c1627EE1164#writeContract",
             linkimg: "./assets/images/link_open.svg",
         }

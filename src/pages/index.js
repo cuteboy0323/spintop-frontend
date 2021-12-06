@@ -13,9 +13,8 @@ import { useWeb3React } from "@web3-react/core";
 //file
 import SiderBar from "./siderbar"
 import Config from "../config/app"
-import config from "./../config/app";
 import Cwallet from "../components/Cwallet";
-
+import CoinGecko from "coingecko-api";
 const Home = () => {
   // eslint-disable-next-line
   const { activate, active, account, deactivate, connector, error, setError, library, chainId } = useWeb3React();
@@ -48,10 +47,10 @@ const Home = () => {
           params: {
             type: 'ERC20', // Initially only supports ERC20, but eventually more!
             options: {
-              address: config.spin.address, // The address that the token is at.
-              symbol: config.spin.symbol, // A ticker symbol or shorthand, up to 5 chars.
+              address: Config.spin.address, // The address that the token is at.
+              symbol: Config.spin.symbol, // A ticker symbol or shorthand, up to 5 chars.
               decimals: 18,
-              image: config.spin.img
+              image: Config.spin.img
             },
           },
         });
@@ -65,7 +64,7 @@ const Home = () => {
           method: "wallet_addEthereumChain",
           params: [
             {
-              chainId: `0x${config.netId.toString(16)}`,
+              chainId: `0x${Config.netId.toString(16)}`,
               chainName: "SPIN Network",
               rpcUrls: [
                 "https://data-seed-prebsc-1-s1.binance.org:8545"
@@ -96,6 +95,13 @@ const Home = () => {
   const load = async () => {
     if (active) {
       try {
+        const CoinGeckoClient = new CoinGecko();
+        let data = await CoinGeckoClient.simple.fetchTokenPrice({
+          contract_addresses: Config.RealSpin,
+          vs_currencies: 'usd',
+        });
+        
+        console.log(data)
         const web3 = new Web3(library.provider);
         const spinT = new web3.eth.Contract(
           Config.spin.abi,
@@ -119,6 +125,7 @@ const Home = () => {
         setTotalBurned(fromWei(web3, totalburned))
         setHarvestSpintop(harvestedValue)
         setTVL(totalstaked)
+
         await axios.get('https://api.pancakeswap.info/api/v2/tokens/0x6AA217312960A21aDbde1478DC8cBCf828110A67').then(res => {
           const val = 10000000000
           const CurrentP = res.data.data.price * val
@@ -147,8 +154,8 @@ const Home = () => {
       load();
       interval = setInterval(async () => {
         load();
-        console.clear();
-      }, config.updateTime);
+        // console.clear();
+      }, Config.updateTime);
     } else {
       clear();
       return () => clearInterval(interval);

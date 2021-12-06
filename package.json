@@ -15,6 +15,7 @@
         "@web3-react/walletconnect-connector": "^6.2.4",
         "axios": "^0.22.0",
         "clsx": "^1.1.1",
+        "coingecko-api": "^1.0.10",
         "i": "^0.3.7",
         "jquery": "^3.6.0",
         "notistack": "^2.0.2",

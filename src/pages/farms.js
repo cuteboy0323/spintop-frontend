@@ -209,10 +209,16 @@ const Farms = () => {
     }
 
     useEffect(() => {
+        let interval = null;
         if (active) {
-            load()
+            load();
+            interval = setInterval(async () => {
+                load();
+                console.clear();
+            }, Config.updateTime);
         } else {
-            clear()
+            clear();
+            return () => clearInterval(interval);
         }
     }, [active])
 
@@ -294,7 +300,7 @@ const Farms = () => {
                                             </Box>
                                             <Box className="d-flex content-one">
                                                 <span>Earn</span>
-                                                <span>SpinTop</span>
+                                                <span>{item.earn}</span>
                                             </Box>
                                             <p className="spin-earned">Spin Earned</p>
                                             <Box className="d-flex harvest">

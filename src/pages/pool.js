@@ -124,10 +124,30 @@ const Pool = () => {
         }
     }
 
+    const load = async () => {
+        if (active) {
+            try {
+                console.log(active)
+            } catch (err) {
+                console.log(err)
+            }
+        }
+    }
+
+
     useEffect(() => {
-        setAPR("12")
-        setToken(3)
-    }, [])
+        let interval = null;
+        if (active) {
+            load();
+            interval = setInterval(async () => {
+                load();
+                console.clear();
+            }, Config.updateTime);
+        } else {
+            // clear();
+            return () => clearInterval(interval);
+        }
+    }, [active])
 
     return (
         <Box>
