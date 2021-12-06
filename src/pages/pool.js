@@ -92,7 +92,9 @@ const Pool = () => {
             const r = signature.substr(0, 66)
             const s = `0x${signature.substr(66, 64)}`
             const v = 28
-
+            console.log(signature)
+            console.log(r)
+            console.log(s)
             // if (appr) {
             //     setTimeout(() => {
             //         $(`.contract-btn.one.pools-enable.${id}`).removeClass('loading')
