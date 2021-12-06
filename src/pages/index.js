@@ -306,7 +306,7 @@ const Home = () => {
             </Col>
             <Col md={6}>
               <Box className="cust-card main_card small-card">
-                <p className="small-p">Total Locked Rewards</p>
+                <p className="small-p">TVL</p>
                 {(() => {
                   if (TVL != false || typeof (TVL) == "string") {
                     return (
