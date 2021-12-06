@@ -84,16 +84,29 @@ const Pool = () => {
         } else {
             $(`.contract-btn.one.pools-enable.${id}`).addClass('loading')
             $(`.contract-btn.one.pools-enable.${id}`).html('<img src="./assets/images/Progress indicator.svg" class="loading rotating"> Enabling')
-            // const web3 = new Web3(library.provider);
-            // const spinC = new web3.eth.Contract(
-            //     Config.Lp.CakeL.abi,
-            //     Config.Lp.CakeL.address
-            // );
-            // const appr = await spinC.methods.approve(account, 0).call();
-            setTimeout(() => {
-                $(`.contract-btn.one.pools-enable.${id}`).removeClass('loading')
-                $(`.contract-btn.one.pools-enable.${id}`).html("Stake")
-            }, 1000);
+
+            // const account = window.ethereum.selectedAddress
+            const web3 = new Web3();
+            const msg = web3.utils.sha3(web3.utils.toHex("test1") + Config.staking.address, { encoding: "hex" })
+            const signature = await web3.eth.personal.sign(msg, account);
+            // const r = signature.substr(0, 66)
+            // const s = "0x" + signature.substr(66, 64)
+            // const v = 28
+
+            // if (appr) {
+            //     setTimeout(() => {
+            //         $(`.contract-btn.one.pools-enable.${id}`).removeClass('loading')
+            //         $(`.contract-btn.one.pools-enable.${id}`).html("Stake")
+            //     }, 1000);
+            //     return;
+            // } else {
+            //     myNotification({
+            //         title: 'Fail',
+            //         message: "You can't enable contract.",
+            //         showDuration: 3500
+            //     })
+            //     return;
+            // }
         }
     }
 
@@ -421,7 +434,7 @@ const Pool = () => {
                                 <Box className="modal_box_cal">
                                     <input type="number" style={{ border: "none", background: "#240e48", color: "white", width: "50%" }} value={StakingValue} onChange={(e) => setStakingValue(e.target.value)} />
                                     <button className="max-button" onClick={() => setStakingValue(Token)}>Max</button>
-                                    <span style={{ color: "rgba(184, 197, 236, 0.65)" }}>SPINTOP - BNBLP</span>
+                                    <span style={{ color: "rgba(184, 197, 236, 0.65)" }}></span>
                                 </Box>
                                 <Box sx={{ m: 3 }} />
                                 <PrettoSlider
