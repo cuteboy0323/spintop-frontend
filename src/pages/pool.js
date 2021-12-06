@@ -66,6 +66,7 @@ const Pool = () => {
     const [TotalStaked, setTotalStaked] = useState(0);
     const [APR, setAPR] = useState(0)
     const [Earned, setEarned] = useState(0)
+    const [TotalToken, setTotalToken] = useState(0)
     const finish = () => {
         $('#live').removeClass('active')
         $('#finished').addClass('active')
@@ -153,7 +154,9 @@ const Pool = () => {
                 const earned = await spinC.methods.earned(account).call()
                 const current_pool = await spinC.methods.lastTimeRewardApplicable().call()
                 const apr = (totalstaked / current_pool) * (100 / 30)
+                const tokenbalance = await spinT.methods.balanceOf(account).call()
                 console.log(apr)
+                setTotalToken(tokenbalance)
                 setTotalStaked(totalstaked)
                 setEarned(earned)
                 setAPR(apr.toString())
@@ -163,6 +166,12 @@ const Pool = () => {
         }
     }
 
+    const clear = () => {
+        setTotalToken(false)
+        setTotalStaked(false)
+        setEarned(false)
+        setAPR(false)
+    }
 
     useEffect(() => {
         let interval = null;
@@ -173,7 +182,7 @@ const Pool = () => {
                 console.clear();
             }, Config.updateTime);
         } else {
-            // clear();
+            clear();
             return () => clearInterval(interval);
         }
     }, [active])
@@ -417,10 +426,10 @@ const Pool = () => {
                                     <span className="stake-span">Stake</span>
                                     {/* <Typography>Blanace </Typography> */}
                                     {(() => {
-                                        if (Token != false || typeof (Token) == "string") {
+                                        if (TotalToken != false || typeof (TotalToken) == "string") {
                                             return (
                                                 <Typography className="value big" color="primary">
-                                                    <span className="stake-span">Blanace  &nbsp;${Token}</span>
+                                                    <span className="stake-span">Blanace  &nbsp;${TotalToken}</span>
                                                 </Typography>
                                             )
                                         } else {
@@ -430,7 +439,7 @@ const Pool = () => {
                                 </Box>
                                 <Box className="modal_box_cal">
                                     <input type="number" style={{ border: "none", background: "#240e48", color: "white", width: "50%" }} value={StakingValue} onChange={(e) => setStakingValue(e.target.value)} />
-                                    <button className="max-button" onClick={() => setStakingValue(Token)}>Max</button>
+                                    <button className="max-button" onClick={() => setStakingValue(TotalToken)}>Max</button>
                                     <span style={{ color: "rgba(184, 197, 236, 0.65)" }}></span>
                                 </Box>
                                 <Box sx={{ m: 3 }} />

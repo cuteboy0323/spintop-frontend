@@ -528,7 +528,7 @@ header .connect {
 .modal_box_cal {
   display: flex;
   align-items: center;
-  justify-content: right;
+  justify-content: space-between;
   margin-top: 20px;
 }
 
