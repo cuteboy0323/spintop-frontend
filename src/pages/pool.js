@@ -146,7 +146,7 @@ const Pool = () => {
                 console.log(apr)
                 setTotalStaked(totalstaked)
                 setEarned(earned)
-                setAPR(apr)
+                setAPR(apr.toString())
             } catch (err) {
                 console.log(err)
             }
