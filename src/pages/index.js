@@ -14,7 +14,7 @@ import { useWeb3React } from "@web3-react/core";
 import SiderBar from "./siderbar"
 import Config from "../config/app"
 import Cwallet from "../components/Cwallet";
-import CoinGecko from "coingecko-api";
+
 const Home = () => {
   // eslint-disable-next-line
   const { activate, active, account, deactivate, connector, error, setError, library, chainId } = useWeb3React();
@@ -95,12 +95,6 @@ const Home = () => {
   const load = async () => {
     if (active) {
       try {
-        const CoinGeckoClient = new CoinGecko();
-        let data = await CoinGeckoClient.simple.fetchTokenPrice({
-          ids: ['spintop'],
-          vs_currencies: ['bnb', 'usd'],
-        });
-        console.log(data)
         const web3 = new Web3(library.provider);
         const spinT = new web3.eth.Contract(
           Config.spin.abi,
@@ -153,7 +147,7 @@ const Home = () => {
       load();
       interval = setInterval(async () => {
         load();
-        // console.clear();
+        console.clear();
       }, Config.updateTime);
     } else {
       clear();
