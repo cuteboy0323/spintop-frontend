@@ -64,7 +64,7 @@ const Pool = () => {
     const [SelId, setSelId] = useState()
 
     const [TotalStaked, setTotalStaked] = useState(0);
-    const [APR, setAPR] = useState(false)
+    const [APR, setAPR] = useState(0)
     const [Earned, setEarned] = useState(0)
     const finish = () => {
         $('#live').removeClass('active')
@@ -142,8 +142,8 @@ const Pool = () => {
                 const totalstaked = await spinC.methods.totalSupply().call()
                 const earned = await spinC.methods.earned(account).call()
                 const current_pool = await spinC.methods.lastTimeRewardApplicable().call()
-                const apr = totalstaked / current_pool / 30 * 100
-                // console.log(liquidity)
+                const apr = (totalstaked / current_pool) * (100 / 30)
+                console.log(apr)
                 setTotalStaked(totalstaked)
                 setEarned(earned)
                 setAPR(apr)
@@ -273,7 +273,7 @@ const Pool = () => {
                                                                             <Typography className="value big" color="primary">
                                                                                 <span className="">$&nbsp;{Earned}</span>
                                                                             </Typography>
-                                                                            <span className="" style={{ fontSize: "18px" }}>$&nbsp;0.087</span>
+                                                                            {/* <span className="" style={{ fontSize: "18px" }}>$&nbsp;0.087</span> */}
                                                                         </>
                                                                     )
                                                                 } else {
