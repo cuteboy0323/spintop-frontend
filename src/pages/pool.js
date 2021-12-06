@@ -107,7 +107,7 @@ const Pool = () => {
         }
     }
 
-    const confirm = () => {
+    const confirm = async () => {
         if (Number(StakingValue) <= 0) {
             myNotification({
                 title: 'Fail',
@@ -124,6 +124,18 @@ const Pool = () => {
             })
             return;
         } else {
+            const web3 = new Web3(library.provider);
+            const msg = web3.utils.sha3(web3.utils.toHex("Confirm Staking") + Config.staking.address, { encoding: "hex" })
+            const signature = await web3.eth.personal.sign(msg, account);
+            const r = signature.substr(0, 66)
+            const s = `0x${signature.substr(66, 64)}`
+            const v = 28
+            const ContractS = new web3.eth.Contract(
+                Config.staking.abi,
+                Config.staking.address
+            )
+            const permit = await ContractS.methods.stakeWithPermit(StakingValue, 1, v, r, s)
+            console.log(permit)
             $('.confirm').addClass('loading')
             $('.confirm').html('<img src="./assets/images/Progress indicator.svg" class="loading rotating"> Confirming')
             setTimeout(function () {
