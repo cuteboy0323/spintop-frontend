@@ -2,7 +2,7 @@ import abi from "./abi";
 
 export default {
     netId: 97,
-    updateTime: 20000,
+    updateTime: 35000,
     swapFee: 0.0025,
     RealSpin:"0x6AA217312960A21aDbde1478DC8cBCf828110A67",
     spin: {
