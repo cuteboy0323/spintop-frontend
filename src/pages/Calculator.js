@@ -17,11 +17,11 @@ const Calculator = ({ APR }) => {
         if (flag) {
             setCalUsdValue(val)
             setCalSpinValue(val * 100)
-            setTotalValue(val * 10 * selDate)
+            setTotalValue(val * 10 * selDate * APR)
         } else {
             setCalUsdValue(val / 100)
             setCalSpinValue(val)
-            setTotalValue(val / 100 * selDate)
+            setTotalValue(val / 100 * selDate * APR)
         }
     }
 
