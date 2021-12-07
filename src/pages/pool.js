@@ -176,7 +176,7 @@ const Pool = () => {
                     Config.staking.abi,
                     Config.staking.address
                 )
-                const totalstaked = await spinC.methods.totalSupply().call()
+                const totalstaked = await spinC.methods.totalStaked().call()
                 const earned = await spinC.methods.earned(account).call()
                 const current_pool = await spinC.methods.lastTimeRewardApplicable().call()
                 const apr = (totalstaked / current_pool) * (100 / 30)
