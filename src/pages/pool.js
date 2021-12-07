@@ -680,6 +680,15 @@ const Pool = () => {
                                     <button className="max-button" onClick={() => setUnStakingValue(UserStakedToken)}>Max</button>
                                     <span style={{ color: "rgba(184, 197, 236, 0.65)" }}></span>
                                 </Box>
+                                <Box sx={{ m: 3 }} />
+                                <PrettoSlider
+                                    valueLabelDisplay="auto"
+                                    aria-label="pretto slider"
+                                    defaultValue={0}
+                                    value={UnStakingValue}
+                                    max={UserStakedToken}
+                                    onChange={(e) => setUnStakingValue(e.target.value)}
+                                />
                             </Box>
                             <Box style={{ marginTop: "30px", display: "flex" }}>
                                 <button className="cancel" onClick={() => setOpenUnstake(false)}>Cancel</button>
