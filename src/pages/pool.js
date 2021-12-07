@@ -210,8 +210,7 @@ const Pool = () => {
 
     const unstake = () => {
         if ($('.confirm').text() == "Confirm") {
-
-            if (Number(StakingValue) <= 0) {
+            if (Number(UnStakingValue) <= 0) {
                 myNotification({
                     title: 'Fail',
                     message: 'Please enter value correctly.',
@@ -219,7 +218,7 @@ const Pool = () => {
                 })
                 return;
             }
-            if (Number(StakingValue) > Number(TotalToken)) {
+            if (Number(UnStakingValue) > Number(UserStakedToken)) {
                 myNotification({
                     title: 'Fail',
                     message: 'Your SpinTop token is not enough.',
@@ -240,28 +239,21 @@ const Pool = () => {
                         Config.staking.address
                     )
 
-                    // const balance = toWei(web3, StakingValue)
-                    // const apr = await ContractT.methods.approve(Config.staking.address, balance).send({ from: account })
-                    // if (apr) {
-                    //     const staked = await ContractS.methods.stake(balance).send({ from: account })
-                    //     console.log(apr)
-                    //     console.log(staked)
-                    //     if (staked) {
-                    //         setOpen(false)
-                    //         $('.confirm').removeClass('loading')
-                    //         $('.confirm').html('Confirm')
-                    //         $(`.last-show-hide.${SelId}`).show()
-                    //         $(`.spin-earned.${SelId}`).hide()
-                    //         $(`.contract-btn.one.pools-enable.${SelId}`).hide()
-                    //         $('.harvest-button').prop("disabled", false);
-                    //         myNotification({
-                    //             title: 'Staked',
-                    //             message: 'Your Spintop funds have been staked in the pool.',
-                    //             showDuration: 3500
-                    //         })
-                    //         load()
-                    //     }
-                    // }
+                    const balance = toWei(web3, UnStakingValue)
+                    const apr = await ContractT.methods.unstake(balance).send({ from: account })
+                    if (apr) {
+                        setOpen(false)
+                        $('.confirm').removeClass('loading')
+                        $('.confirm').html('Confirm')
+                        $(`.contract-btn.one.pools-enable.${SelId}`).hide()
+                        $('.harvest-button').prop("disabled", false);
+                        myNotification({
+                            title: 'UnStaked',
+                            message: 'Your Spintop funds have been unstaked in the pool.',
+                            showDuration: 3500
+                        })
+                        load()
+                    }
                 } catch (e) {
                     console.log(e)
                 }
