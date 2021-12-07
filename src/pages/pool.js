@@ -238,7 +238,7 @@ const Pool = () => {
                     const balance = toWei(web3, UnStakingValue)
                     const apr = await ContractS.methods.unstake(balance).send({ from: account })
                     if (apr) {
-                        setOpen(false)
+                        setOpenUnstake(false)
                         $('.confirm.unstake').removeClass('loading')
                         $('.confirm.unstake').html('Confirm')
                         $(`.contract-btn.one.pools-enable.${SelId}`).hide()
