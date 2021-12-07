@@ -65,13 +65,13 @@ const Home = () => {
           params: [
             {
               chainId: `0x${Config.netId.toString(16)}`,
-              chainName: "SPIN Network",
+              chainName: "BNB TEST Network",
               rpcUrls: [
                 "https://data-seed-prebsc-1-s1.binance.org:8545"
               ],
               nativeCurrency: {
-                name: "SPIN",
-                symbol: "SPIN",
+                name: "BNB",
+                symbol: "BNB",
                 decimals: 18,
               },
               blockExplorerUrls: [

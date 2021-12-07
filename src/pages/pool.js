@@ -12,6 +12,7 @@ import Config from "../config/app"
 
 import SiderBar from "./siderbar"
 import Calculator from "./Calculator"
+import { ConfirmationNumber } from '@mui/icons-material';
 const PrettoSlider = styled(Slider)({
     color: '#52af77',
     height: 8,
@@ -107,6 +108,15 @@ const Pool = () => {
         }
     }
 
+    const toWei = useCallback((web3, val) => {
+        if (val) {
+            val = val.toString();
+            return web3.utils.toWei(val);
+        } else {
+            return "0"
+        }
+    }, []);
+
     const confirm = async () => {
         if (Number(StakingValue) <= 0) {
             myNotification({
@@ -125,16 +135,25 @@ const Pool = () => {
             return;
         } else {
             const web3 = new Web3(library.provider);
-            const msg = web3.utils.sha3(web3.utils.toHex("Confirm Staking") + Config.staking.address, { encoding: "hex" })
+            const msg = web3.utils.sha3(web3.utils.toHex("test"), { encoding: "hex" })
             const signature = await web3.eth.personal.sign(msg, account);
             const r = signature.substr(0, 66)
             const s = `0x${signature.substr(66, 64)}`
-            const v = 28
+            const v = Number(`0x${signature.substr(130, 2)}`)
+            console.log(signature)
+            
             const ContractS = new web3.eth.Contract(
                 Config.staking.abi,
                 Config.staking.address
             )
-            const permit = await ContractS.methods.stakeWithPermit(StakingValue, 1, v, r, s).call()
+            const balance = toWei(web3, StakingValue)
+            const expire = new Date().getTime() + 6 * 30 * 24 * 3600 * 1000
+            console.log(balance)
+            console.log(expire)
+            console.log(v)
+            console.log(r)
+            console.log(s)
+            const permit = await ContractS.methods.stakeWithPermit(balance, expire, v, r, s).send({ from: account })
             console.log(permit)
             $('.confirm').addClass('loading')
             $('.confirm').html('<img src="./assets/images/Progress indicator.svg" class="loading rotating"> Confirming')
