@@ -1,11 +1,16 @@
-import React from 'react'
+import React, { useState } from 'react'
 import $ from 'jquery'
 import { useEffect } from 'react'
 import { useHistory } from 'react-router'
+import { useWeb3React } from "@web3-react/core";
+import Config from "../config/app"
+import axios from "axios"
 
-const SiderBar = ({Params}) => {
+const SiderBar = ({ Params }) => {
+    // eslint-disable-next-line
+    const { activate, active, account, deactivate, connector, error, setError, library, chainId } = useWeb3React();
     const history = useHistory()
-
+    const [SpinPrice, setSpinPrice] = useState()
     const toggle = () => {
         $('.menu').toggleClass('active')
     }
@@ -16,13 +21,27 @@ const SiderBar = ({Params}) => {
         history.push(params)
     }
 
-    const load = () => {
+    const load = async () => {
         $(`#${Params}`).addClass("active")
+        await axios.get('https://api.coingecko.com/api/v3/coins/spintop').then(res => {
+            const CurrentP = res.data.market_data.current_price.usd
+            setSpinPrice(CurrentP)
+        })
     }
-    
+
     useEffect(() => {
-        load()
-    }, [])
+        let interval = null;
+        if (active) {
+            load();
+            interval = setInterval(async () => {
+                load();
+            }, Config.updateTime);
+        } else {
+            return () => clearInterval(interval);
+        }
+
+    }, [active])
+
     return (
         <div className="left-side">
             <div className="menu">
@@ -73,7 +92,7 @@ const SiderBar = ({Params}) => {
             <div className="extra-info">
                 <div className="values">
                     <img src="./assets/images/logo.png" alt="" />
-                    <span>$15.33</span>
+                    <span>$&nbsp;{SpinPrice}</span>
                 </div>
                 <div className="social-media">
                     <img src="./assets/images/gitbook.svg" alt="" />

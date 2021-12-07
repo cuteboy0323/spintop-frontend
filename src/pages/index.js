@@ -25,6 +25,7 @@ const Home = () => {
   const [totalMinted, setTotalMinted] = useState(false);
   const [totalBurned, setTotalBurned] = useState(false);
   const [TVL, setTVL] = useState(false);
+  const [SpinPrice, setSpinPrice] = useState()
 
   const fromWei = useCallback((web3, val) => {
     if (val) {
@@ -125,6 +126,7 @@ const Home = () => {
           const CurrentP = res.data.market_data.current_price.usd
           setTotalMinted(res.data.market_data.total_supply)
           setTotalBurned(res.data.market_data.total_volume.usd)
+          setSpinPrice(CurrentP)
           const marketcap = CurrentP * res.data.market_data.total_supply;
           setMarketCap(marketcap)
         })
@@ -198,7 +200,7 @@ const Home = () => {
                     return (
                       <Typography className="value big" color="primary">
                         <span className="sub-txt">{harvestSpintop}</span>
-                        <p className="money">~$0.00</p>
+                        <p className="money">~${harvestSpintop * SpinPrice}</p>
                       </Typography>
                     )
                   } else {
@@ -211,7 +213,7 @@ const Home = () => {
                     return (
                       <Typography className="value big" color="primary">
                         <span className="sub-txt">{walletBalance}</span>
-                        <p className="money">~$0.00</p>
+                        <p className="money">~${walletBalance * SpinPrice}</p>
                       </Typography>
                     )
                   } else {
