@@ -208,7 +208,7 @@ const Pool = () => {
         }
     })
 
-    const unstake = () => {
+    const unstake = async () => {
         if ($('.confirm').text() == "Confirm") {
             if (Number(UnStakingValue) <= 0) {
                 myNotification({
