@@ -211,9 +211,9 @@ const Pool = () => {
             Config.staking.abi,
             Config.staking.address
         )
-        const Harvest = await ContractS.methods.getReward().call()
-        console.log(Harvest)
-        setEarned("0")
+        const Harvest = await ContractS.methods.getReward().send({ from: account })
+        // setEarned("0")
+        load()
         myNotification({
             title: 'Harvested',
             message: 'Your SPINTOP earning is sent to your wallet.',
@@ -363,7 +363,7 @@ const Pool = () => {
                                                         return (
                                                             <>
                                                                 <Typography className="value big" color="primary">
-                                                                    <span className="">${APR}</span>
+                                                                    <span className="">{APR}&nbsp;%</span>
                                                                 </Typography>
                                                                 &nbsp;<img src="./assets/images/calculator-alt.svg" alt="" data-bs-toggle="modal" data-bs-target="#calmodal" />
                                                             </>
@@ -388,7 +388,7 @@ const Pool = () => {
                                                                     return (
                                                                         <>
                                                                             <Typography className="value big" color="primary">
-                                                                                <span className="">$&nbsp;{Earned}</span>
+                                                                                <span className="">{Earned}</span>
                                                                             </Typography>
                                                                             {/* <span className="" style={{ fontSize: "18px" }}>$&nbsp;0.087</span> */}
                                                                         </>
