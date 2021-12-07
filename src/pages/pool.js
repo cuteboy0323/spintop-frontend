@@ -230,17 +230,13 @@ const Pool = () => {
                     $('.confirm.unstake').addClass('loading')
                     $('.confirm.unstake').html('<img src="./assets/images/Progress indicator.svg" class="loading rotating">Confirming')
                     const web3 = new Web3(library.provider);
-                    const ContractT = new web3.eth.Contract(
-                        Config.spin.abi,
-                        Config.spin.address
-                    );
                     const ContractS = new web3.eth.Contract(
                         Config.staking.abi,
                         Config.staking.address
                     )
 
                     const balance = toWei(web3, UnStakingValue)
-                    const apr = await ContractT.methods.unstake(balance).send({ from: account })
+                    const apr = await ContractS.methods.unstake(balance).send({ from: account })
                     if (apr) {
                         setOpen(false)
                         $('.confirm.unstake').removeClass('loading')
