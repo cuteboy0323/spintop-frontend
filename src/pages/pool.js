@@ -239,7 +239,7 @@ const Pool = () => {
                         Config.staking.abi,
                         Config.staking.address
                     )
-                    
+
                     // const balance = toWei(web3, StakingValue)
                     // const apr = await ContractT.methods.approve(Config.staking.address, balance).send({ from: account })
                     // if (apr) {
@@ -649,8 +649,8 @@ const Pool = () => {
 
                 <Modal
                     keepMounted
-                    open={open}
-                    onClose={handleClose}
+                    open={OpenUnstake}
+                    onClose={() => setOpenUnstake(false)}
                     aria-labelledby="keep-mounted-modal-title"
                     aria-describedby="keep-mounted-modal-description"
                 >
@@ -661,14 +661,10 @@ const Pool = () => {
                         </Box>
                         <Box className="modal_content">
                             <Box className="modal_box">
-                                <Box>
-                                    <p></p>
-                                </Box>
                                 <Box style={{ display: "flex", justifyContent: "space-between" }}>
                                     <span className="stake-span">UnStake</span>
-                                    {/* <Typography>Blanace </Typography> */}
                                     {(() => {
-                                        if (TotalToken != false || typeof (TotalToken) == "string") {
+                                        if (UserStakedToken != false || typeof (UserStakedToken) == "string") {
                                             return (
                                                 <Typography className="value big" color="primary">
                                                     <span className="stake-span">Blanace  &nbsp;${UserStakedToken}</span>
@@ -681,7 +677,7 @@ const Pool = () => {
                                 </Box>
                                 <Box className="modal_box_cal">
                                     <input type="number" style={{ border: "none", background: "#240e48", color: "white", width: "50%" }} value={StakingValue} onChange={(e) => setUnStakingValue(e.target.value)} />
-                                    <button className="max-button" onClick={() => setUnStakingValue(TotalToken)}>Max</button>
+                                    <button className="max-button" onClick={() => setUnStakingValue(UserStakedToken)}>Max</button>
                                     <span style={{ color: "rgba(184, 197, 236, 0.65)" }}></span>
                                 </Box>
                             </Box>
