@@ -111,7 +111,7 @@ const Home = () => {
         );
         const walletB = await spinT.methods.balanceOf(account).call();
         const totalMint = await spinT.methods.totalSupply().call();
-        const totalstaked = await spinC.methods.totalSupply().call();
+        const totalstaked = await spinC.methods.totalStaked().call();
         const totalburned = await spinT.methods.totalSupply().call();
         const harvestedValue = await spinF.methods.pendingSpintop(account).call();
         setWalletBalance(fromWei(web3, walletB).toString())
