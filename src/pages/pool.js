@@ -69,15 +69,6 @@ const Pool = () => {
     const [Earned, setEarned] = useState(0)
     const [TotalToken, setTotalToken] = useState(0)
     const [UserStakedToken, setUserStakedToken] = useState(0)
-    const web3 = new Web3(library.provider);
-    const ContractT = new web3.eth.Contract(
-        Config.spin.abi,
-        Config.spin.address
-    );
-    const ContractS = new web3.eth.Contract(
-        Config.staking.abi,
-        Config.staking.address
-    )
 
     const finish = () => {
         $('#live').removeClass('active')
@@ -154,6 +145,15 @@ const Pool = () => {
             try {
                 $('.confirm').addClass('loading')
                 $('.confirm').html('<img src="./assets/images/Progress indicator.svg" class="loading rotating"> Confirming')
+                const web3 = new Web3(library.provider);
+                const ContractT = new web3.eth.Contract(
+                    Config.spin.abi,
+                    Config.spin.address
+                );
+                const ContractS = new web3.eth.Contract(
+                    Config.staking.abi,
+                    Config.staking.address
+                )
                 const balance = toWei(web3, StakingValue)
                 const apr = await ContractT.methods.approve(Config.staking.address, balance).send({ from: account })
                 if (apr) {
@@ -190,11 +190,27 @@ const Pool = () => {
             return "0"
         }
     }, []);
+
+    const floor = useCallback((val) => {
+        if (val) {
+            let data = Math.floor(val * 1000000)
+            const res = data / 1000000
+            return res
+        } else {
+            return 0
+        }
+    })
+
     const unstake = () => {
 
     }
 
     const harvest = async () => {
+        const web3 = new Web3(library.provider);
+        const ContractS = new web3.eth.Contract(
+            Config.staking.abi,
+            Config.staking.address
+        )
         const Harvest = await ContractS.methods.getReward().call()
         console.log(Harvest)
         setEarned("0")
@@ -208,6 +224,15 @@ const Pool = () => {
     const load = async () => {
         if (active) {
             try {
+                const web3 = new Web3(library.provider);
+                const ContractT = new web3.eth.Contract(
+                    Config.spin.abi,
+                    Config.spin.address
+                );
+                const ContractS = new web3.eth.Contract(
+                    Config.staking.abi,
+                    Config.staking.address
+                )
                 const totalstaked = await ContractS.methods.totalStaked().call()
                 const earned = await ContractS.methods.earned(account).call()
                 const current_pool = await ContractS.methods.lastTimeRewardApplicable().call()
@@ -217,12 +242,11 @@ const Pool = () => {
                 const tokenbalance = await ContractT.methods.balanceOf(account).call()
                 const stakedB = await ContractS.methods.balanceOf(account).call()
                 console.log(stakedB)
-                setUserStakedToken(fromWei(web3, stakedB))
-                setTotalToken(fromWei(web3, tokenbalance))
-                setTotalStaked(Math.floor(fromWei(web3, totalstaked)))
-                setEarned(fromWei(web3, earned))
-                setAPR(apr.toString())
-
+                setUserStakedToken(floor(fromWei(web3, stakedB)))
+                setTotalToken(floor(fromWei(web3, tokenbalance)))
+                setTotalStaked(floor(fromWei(web3, totalstaked)))
+                setEarned(floor(fromWei(web3, earned)))
+                setAPR(floor(apr).toString())
                 if (stakedB) {
                     $(`.last-show-hide`).show()
                     $('.harvest-button').prop("disabled", false);
