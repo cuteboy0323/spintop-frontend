@@ -185,7 +185,7 @@ const Pool = () => {
                 setTotalToken(fromWei(web3, tokenbalance))
                 setTotalStaked(fromWei(web3, totalstaked))
                 setEarned(fromWei(web3, earned))
-                setAPR(fromWei(web3, apr).toString())
+                setAPR(apr.toString())
             } catch (err) {
                 console.log(err)
             }
