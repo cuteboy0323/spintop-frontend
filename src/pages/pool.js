@@ -676,7 +676,7 @@ const Pool = () => {
                                     })()}
                                 </Box>
                                 <Box className="modal_box_cal">
-                                    <input type="number" style={{ border: "none", background: "#240e48", color: "white", width: "50%" }} value={StakingValue} onChange={(e) => setUnStakingValue(e.target.value)} />
+                                    <input type="number" style={{ border: "none", background: "#240e48", color: "white", width: "50%" }} value={UnStakingValue} onChange={(e) => setUnStakingValue(e.target.value)} />
                                     <button className="max-button" onClick={() => setUnStakingValue(UserStakedToken)}>Max</button>
                                     <span style={{ color: "rgba(184, 197, 236, 0.65)" }}></span>
                                 </Box>
