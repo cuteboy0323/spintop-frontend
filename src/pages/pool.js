@@ -1,4 +1,4 @@
-import React, { useCallback, useContext, useEffect, useState } from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
 import { FormControlLabel, FormGroup, Switch, Box, Tooltip, Typography, Skeleton, Slider } from '@mui/material'
 import { Row, Col } from 'reactstrap'
 import Modal from '@mui/material/Modal';
@@ -157,14 +157,12 @@ const Pool = () => {
                     console.log(apr)
                     console.log(staked)
                     if (staked) {
-                        setTimeout(function () {
-                            setOpen(false)
-                            $('.confirm').removeClass('loading')
-                            $('.confirm').html('Confirm')
-                            $(`.last-show-hide.${SelId}`).show()
-                            $(`.spin-earned.${SelId}`).hide()
-                            $(`.contract-btn.one.pools-enable.${SelId}`).hide()
-                        }, 2500)
+                        setOpen(false)
+                        $('.confirm').removeClass('loading')
+                        $('.confirm').html('Confirm')
+                        $(`.last-show-hide.${SelId}`).show()
+                        $(`.spin-earned.${SelId}`).hide()
+                        $(`.contract-btn.one.pools-enable.${SelId}`).hide()
                     }
                 }
             } catch (e) {
@@ -181,6 +179,10 @@ const Pool = () => {
             return "0"
         }
     }, []);
+    const unstake = () => {
+
+    }
+
 
     const load = async () => {
         if (active) {
@@ -368,8 +370,8 @@ const Pool = () => {
                                                                 <span>~{UserStakedToken * SpinPrice} USD</span>
                                                             </Box>
                                                             <Box className="d-flex">
-                                                                <img className="plus-minus-icon" src="./assets/images/minus.svg" alt="" />
-                                                                <img className="plus-minus-icon" src="./assets/images/plus.svg" alt="" />
+                                                                <a onClick={() => unstake()}><img className="plus-minus-icon" src="./assets/images/minus.svg" alt="" /></a>
+                                                                <a onClick={() => handleOpen()}><img className="plus-minus-icon" src="./assets/images/plus.svg" alt="" /></a>
                                                             </Box>
                                                         </Box>
                                                     </Box>
