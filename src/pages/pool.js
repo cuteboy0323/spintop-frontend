@@ -128,7 +128,7 @@ const Pool = () => {
     }, []);
 
     const confirm = async () => {
-        if ($('.confirm').text() == "Confirm") {
+        if ($('.confirm.stake').text() == "Confirm") {
 
             if (Number(StakingValue) <= 0) {
                 myNotification({
@@ -147,8 +147,8 @@ const Pool = () => {
                 return;
             } else {
                 try {
-                    $('.confirm').addClass('loading')
-                    $('.confirm').html('<img src="./assets/images/Progress indicator.svg" class="loading rotating">Confirming')
+                    $('.confirm.stake').addClass('loading')
+                    $('.confirm.stake').html('<img src="./assets/images/Progress indicator.svg" class="loading rotating">Confirming')
                     const web3 = new Web3(library.provider);
                     const ContractT = new web3.eth.Contract(
                         Config.spin.abi,
@@ -166,8 +166,8 @@ const Pool = () => {
                         console.log(staked)
                         if (staked) {
                             setOpen(false)
-                            $('.confirm').removeClass('loading')
-                            $('.confirm').html('Confirm')
+                            $('.confirm.stake').removeClass('loading')
+                            $('.confirm.stake').html('Confirm')
                             $(`.last-show-hide.${SelId}`).show()
                             $(`.spin-earned.${SelId}`).hide()
                             $(`.contract-btn.one.pools-enable.${SelId}`).hide()
@@ -209,7 +209,7 @@ const Pool = () => {
     })
 
     const unstake = async () => {
-        if ($('.confirm').text() == "Confirm") {
+        if ($('.confirm.unstake').text() == "Confirm") {
             if (Number(UnStakingValue) <= 0) {
                 myNotification({
                     title: 'Fail',
@@ -227,8 +227,8 @@ const Pool = () => {
                 return;
             } else {
                 try {
-                    $('.confirm').addClass('loading')
-                    $('.confirm').html('<img src="./assets/images/Progress indicator.svg" class="loading rotating">Confirming')
+                    $('.confirm.unstake').addClass('loading')
+                    $('.confirm.unstake').html('<img src="./assets/images/Progress indicator.svg" class="loading rotating">Confirming')
                     const web3 = new Web3(library.provider);
                     const ContractT = new web3.eth.Contract(
                         Config.spin.abi,
@@ -243,8 +243,8 @@ const Pool = () => {
                     const apr = await ContractT.methods.unstake(balance).send({ from: account })
                     if (apr) {
                         setOpen(false)
-                        $('.confirm').removeClass('loading')
-                        $('.confirm').html('Confirm')
+                        $('.confirm.unstake').removeClass('loading')
+                        $('.confirm.unstake').html('Confirm')
                         $(`.contract-btn.one.pools-enable.${SelId}`).hide()
                         $('.harvest-button').prop("disabled", false);
                         myNotification({
@@ -629,7 +629,7 @@ const Pool = () => {
                             </Box>
                             <Box style={{ marginTop: "30px", display: "flex" }}>
                                 <button className="cancel" onClick={() => setOpen(false)}>Cancel</button>
-                                <button className="confirm" onClick={() => confirm()}>Confirm</button>
+                                <button className="confirm stake" onClick={() => confirm()}>Confirm</button>
                             </Box>
                             <Box className="links-contain">
                                 <p className="links">Swap 10 BUSD for 0.025 BNB</p>
@@ -684,7 +684,7 @@ const Pool = () => {
                             </Box>
                             <Box style={{ marginTop: "30px", display: "flex" }}>
                                 <button className="cancel" onClick={() => setOpenUnstake(false)}>Cancel</button>
-                                <button className="confirm" onClick={() => unstake()}>Confirm</button>
+                                <button className="confirm unstake" onClick={() => unstake()}>Confirm</button>
                             </Box>
                             <Box className="links-contain">
                                 <p className="links">Swap 10 BUSD for 0.025 BNB</p>
