@@ -58,8 +58,10 @@ const Pool = () => {
     const { activate, active, account, deactivate, connector, error, setError, library, chainId } = useWeb3React();
     const [isOpenDialog, setIsOpenDialog] = useState(false);
     const [StakingValue, setStakingValue] = useState(0)
+    const [UnStakingValue, setUnStakingValue] = useState(0)
     const myNotification = window.createNotification({})
     const [open, setOpen] = useState(false);
+    const [OpenUnstake, setOpenUnstake] = useState(false);
     const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
     const [SelId, setSelId] = useState()
@@ -126,7 +128,6 @@ const Pool = () => {
     }, []);
 
     const confirm = async () => {
-        console.log($('.confirm').text())
         if ($('.confirm').text() == "Confirm") {
 
             if (Number(StakingValue) <= 0) {
@@ -140,7 +141,7 @@ const Pool = () => {
             if (Number(StakingValue) > Number(TotalToken)) {
                 myNotification({
                     title: 'Fail',
-                    message: 'Your SpinTop-BNB token is not enough.',
+                    message: 'Your SpinTop token is not enough.',
                     showDuration: 3500
                 })
                 return;
@@ -208,7 +209,66 @@ const Pool = () => {
     })
 
     const unstake = () => {
+        if ($('.confirm').text() == "Confirm") {
 
+            if (Number(StakingValue) <= 0) {
+                myNotification({
+                    title: 'Fail',
+                    message: 'Please enter value correctly.',
+                    showDuration: 3500
+                })
+                return;
+            }
+            if (Number(StakingValue) > Number(TotalToken)) {
+                myNotification({
+                    title: 'Fail',
+                    message: 'Your SpinTop token is not enough.',
+                    showDuration: 3500
+                })
+                return;
+            } else {
+                try {
+                    $('.confirm').addClass('loading')
+                    $('.confirm').html('<img src="./assets/images/Progress indicator.svg" class="loading rotating">Confirming')
+                    const web3 = new Web3(library.provider);
+                    const ContractT = new web3.eth.Contract(
+                        Config.spin.abi,
+                        Config.spin.address
+                    );
+                    const ContractS = new web3.eth.Contract(
+                        Config.staking.abi,
+                        Config.staking.address
+                    )
+                    
+                    // const balance = toWei(web3, StakingValue)
+                    // const apr = await ContractT.methods.approve(Config.staking.address, balance).send({ from: account })
+                    // if (apr) {
+                    //     const staked = await ContractS.methods.stake(balance).send({ from: account })
+                    //     console.log(apr)
+                    //     console.log(staked)
+                    //     if (staked) {
+                    //         setOpen(false)
+                    //         $('.confirm').removeClass('loading')
+                    //         $('.confirm').html('Confirm')
+                    //         $(`.last-show-hide.${SelId}`).show()
+                    //         $(`.spin-earned.${SelId}`).hide()
+                    //         $(`.contract-btn.one.pools-enable.${SelId}`).hide()
+                    //         $('.harvest-button').prop("disabled", false);
+                    //         myNotification({
+                    //             title: 'Staked',
+                    //             message: 'Your Spintop funds have been staked in the pool.',
+                    //             showDuration: 3500
+                    //         })
+                    //         load()
+                    //     }
+                    // }
+                } catch (e) {
+                    console.log(e)
+                }
+            }
+        } else {
+            return;
+        }
     }
 
     const harvest = async () => {
@@ -424,10 +484,10 @@ const Pool = () => {
                                                         <Box className="d-flex">
                                                             <Box className="d-flex harvest-show-hide">
                                                                 <span>{UserStakedToken}</span>
-                                                                <span>~{UserStakedToken * SpinPrice} USD</span>
+                                                                <span>~{floor(UserStakedToken * SpinPrice)} USD</span>
                                                             </Box>
                                                             <Box className="d-flex">
-                                                                <a onClick={() => unstake()}><img className="plus-minus-icon" src="./assets/images/minus.svg" alt="" /></a>
+                                                                <a onClick={() => setOpenUnstake(true)}><img className="plus-minus-icon" src="./assets/images/minus.svg" alt="" /></a>
                                                                 <a onClick={() => handleOpen()}><img className="plus-minus-icon" src="./assets/images/plus.svg" alt="" /></a>
                                                             </Box>
                                                         </Box>
@@ -586,6 +646,57 @@ const Pool = () => {
                         </Box>
                     </Box>
                 </Modal>
+
+                <Modal
+                    keepMounted
+                    open={open}
+                    onClose={handleClose}
+                    aria-labelledby="keep-mounted-modal-title"
+                    aria-describedby="keep-mounted-modal-description"
+                >
+                    <Box className="stakingmodal" >
+                        <Box className="modal-header">
+                            <span className="modal-span">UnStake in Pool</span>
+                            <img src="./assets/images/close-icon.png" alt="" onClick={() => setOpenUnstake(false)} />
+                        </Box>
+                        <Box className="modal_content">
+                            <Box className="modal_box">
+                                <Box>
+                                    <p></p>
+                                </Box>
+                                <Box style={{ display: "flex", justifyContent: "space-between" }}>
+                                    <span className="stake-span">UnStake</span>
+                                    {/* <Typography>Blanace </Typography> */}
+                                    {(() => {
+                                        if (TotalToken != false || typeof (TotalToken) == "string") {
+                                            return (
+                                                <Typography className="value big" color="primary">
+                                                    <span className="stake-span">Blanace  &nbsp;${UserStakedToken}</span>
+                                                </Typography>
+                                            )
+                                        } else {
+                                            return <Typography><Skeleton animation="wave" className="smallskelton" style={{ minWidth: "100px" }} /></Typography>
+                                        }
+                                    })()}
+                                </Box>
+                                <Box className="modal_box_cal">
+                                    <input type="number" style={{ border: "none", background: "#240e48", color: "white", width: "50%" }} value={StakingValue} onChange={(e) => setUnStakingValue(e.target.value)} />
+                                    <button className="max-button" onClick={() => setUnStakingValue(TotalToken)}>Max</button>
+                                    <span style={{ color: "rgba(184, 197, 236, 0.65)" }}></span>
+                                </Box>
+                            </Box>
+                            <Box style={{ marginTop: "30px", display: "flex" }}>
+                                <button className="cancel" onClick={() => setOpenUnstake(false)}>Cancel</button>
+                                <button className="confirm" onClick={() => unstake()}>Confirm</button>
+                            </Box>
+                            <Box className="links-contain">
+                                <p className="links">Swap 10 BUSD for 0.025 BNB</p>
+                                <img src="./assets/images/link_open.svg" alt="" className="link-open" />
+                            </Box>
+                        </Box>
+                    </Box>
+                </Modal>
+
                 <Calculator APR={APR} />
                 <Box className="modal fade" id="exampleModal2" tabIndex="-1" aria-labelledby="exampleModal2Label"
                     aria-hidden="true">
