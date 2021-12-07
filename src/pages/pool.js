@@ -339,7 +339,7 @@ const Pool = () => {
                                                         <span className="auto-matic">0.1% ustaking fee if withdrawn within 72h</span>
                                                     </Box>
                                                     :
-                                                    <Box className="d-flex">
+                                                    <Box className="d-flex" style={{ alignItems: "center" }}>
                                                         <Box className="d-flex harvest-show-hide">
                                                             {(() => {
                                                                 if (Earned != false || typeof (Earned) == "string") {
