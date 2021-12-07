@@ -14,7 +14,6 @@ import { useWeb3React } from "@web3-react/core";
 import SiderBar from "./siderbar"
 import Config from "../config/app"
 import Cwallet from "../components/Cwallet";
-
 const Home = () => {
   // eslint-disable-next-line
   const { activate, active, account, deactivate, connector, error, setError, library, chainId } = useWeb3React();
@@ -115,19 +114,15 @@ const Home = () => {
         const totalburned = await spinT.methods.totalSupply().call();
         const harvestedValue = await spinF.methods.pendingSpintop(account).call();
         setWalletBalance(fromWei(web3, walletB).toString())
-        // setTotalMinted(fromWei(web3, totalMint))
-        // setTotalBurned(fromWei(web3, totalburned))
+        setTotalMinted(fromWei(web3, totalMint))
+        setTotalBurned(fromWei(web3, totalburned))
         setHarvestSpintop(harvestedValue)
-        setTVL(totalstaked)
+        setTVL(Math.floor(fromWei(web3, totalstaked)))
 
         await axios.get('https://api.coingecko.com/api/v3/coins/spintop').then(res => {
-          // const val = 10000000000
-          console.log(res.data)
           const CurrentP = res.data.market_data.current_price.usd
-          setTotalMinted(res.data.market_data.total_supply)
-          setTotalBurned(res.data.market_data.total_volume.usd)
-          setSpinPrice(CurrentP)
           const marketcap = CurrentP * res.data.market_data.total_supply;
+          setSpinPrice(CurrentP)
           setMarketCap(marketcap)
         })
 

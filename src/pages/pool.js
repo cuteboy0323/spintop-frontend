@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from 'react'
+import React, { useCallback, useContext, useEffect, useState } from 'react'
 import { FormControlLabel, FormGroup, Switch, Box, Tooltip, Typography, Skeleton, Slider } from '@mui/material'
 import { Row, Col } from 'reactstrap'
 import Modal from '@mui/material/Modal';
@@ -9,10 +9,11 @@ import Web3 from "web3";
 import { useWeb3React } from "@web3-react/core";
 import Cwallet from "../components/Cwallet";
 import Config from "../config/app"
+import axios from "axios"
 
 import SiderBar from "./siderbar"
 import Calculator from "./Calculator"
-import { ConfirmationNumber } from '@mui/icons-material';
+
 const PrettoSlider = styled(Slider)({
     color: '#52af77',
     height: 8,
@@ -62,11 +63,13 @@ const Pool = () => {
     const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
     const [SelId, setSelId] = useState()
+    const [SpinPrice, setSpinPrice] = useState()
 
     const [TotalStaked, setTotalStaked] = useState(0);
     const [APR, setAPR] = useState(0)
     const [Earned, setEarned] = useState(0)
     const [TotalToken, setTotalToken] = useState(0)
+    const [UserStakedToken, setUserStakedToken] = useState(0)
     const finish = () => {
         $('#live').removeClass('active')
         $('#finished').addClass('active')
@@ -134,24 +137,39 @@ const Pool = () => {
             })
             return;
         } else {
-            const web3 = new Web3(library.provider);
-            const ContractT = new web3.eth.Contract(
-                Config.spin.abi,
-                Config.spin.address
-            )
-            const balance = toWei(web3, StakingValue)
-            const apr = await ContractT.methods.approve(Config.staking.address, balance).send({ from: account })
-            console.log(apr)
-            $('.confirm').addClass('loading')
-            $('.confirm').html('<img src="./assets/images/Progress indicator.svg" class="loading rotating"> Confirming')
-            setTimeout(function () {
-                setOpen(false)
-                $('.confirm').removeClass('loading')
-                $('.confirm').html('Confirm')
-                $(`.last-show-hide.${SelId}`).show()
-                $(`.spin-earned.${SelId}`).hide()
-                $(`.contract-btn.one.pools-enable.${SelId}`).hide()
-            }, 2500)
+            try {
+                $('.confirm').addClass('loading')
+                $('.confirm').html('<img src="./assets/images/Progress indicator.svg" class="loading rotating"> Confirming')
+                const web3 = new Web3(library.provider);
+                const ContractT = new web3.eth.Contract(
+                    Config.spin.abi,
+                    Config.spin.address
+                )
+                const ContractS = new web3.eth.Contract(
+                    Config.staking.abi,
+                    Config.staking.address
+                )
+
+                const balance = toWei(web3, StakingValue)
+                const apr = await ContractT.methods.approve(Config.staking.address, balance).send({ from: account })
+                if (apr) {
+                    const staked = await ContractS.methods.stake(balance).send({ from: account })
+                    console.log(apr)
+                    console.log(staked)
+                    if (staked) {
+                        setTimeout(function () {
+                            setOpen(false)
+                            $('.confirm').removeClass('loading')
+                            $('.confirm').html('Confirm')
+                            $(`.last-show-hide.${SelId}`).show()
+                            $(`.spin-earned.${SelId}`).hide()
+                            $(`.contract-btn.one.pools-enable.${SelId}`).hide()
+                        }, 2500)
+                    }
+                }
+            } catch (e) {
+                console.log(e)
+            }
         }
     }
 
@@ -181,11 +199,20 @@ const Pool = () => {
                 const current_pool = await spinC.methods.lastTimeRewardApplicable().call()
                 const apr = (totalstaked / current_pool) * (100 / 30)
                 const tokenbalance = await spinT.methods.balanceOf(account).call()
-                console.log(apr)
+                const stakedB = await spinC.methods.balanceOf(account).call()
+                console.log(stakedB)
+                setUserStakedToken(fromWei(web3, stakedB))
                 setTotalToken(fromWei(web3, tokenbalance))
-                setTotalStaked(fromWei(web3, totalstaked))
+                setTotalStaked(Math.floor(fromWei(web3, totalstaked)))
                 setEarned(fromWei(web3, earned))
                 setAPR(apr.toString())
+                if (stakedB) {
+                    $(`.last-show-hide`).show()
+                }
+                await axios.get('https://api.coingecko.com/api/v3/coins/spintop').then(res => {
+                    const CurrentP = res.data.market_data.current_price.usd
+                    setSpinPrice(CurrentP)
+                })
             } catch (err) {
                 console.log(err)
             }
@@ -196,6 +223,7 @@ const Pool = () => {
         setTotalToken(false)
         setTotalStaked(false)
         setEarned(false)
+        setUserStakedToken(false)
         setAPR(false)
     }
 
@@ -329,27 +357,34 @@ const Pool = () => {
                                                         <button className="harvest-button" disabled>Harvest</button>
                                                     </Box>
                                             }
-                                            <Box className={`last-show-hide ${item.id}`}>
-                                                <p className="spin-earned harvest-show-hide">SPIN-BNB LP STAKED</p>
-                                                <Box className="d-flex">
-                                                    <Box className="d-flex harvest-show-hide">
-                                                        <span>{StakingValue}</span>
-                                                        <span>~26.91 USD</span>
-                                                    </Box>
-                                                    <Box className="d-flex">
-                                                        <img className="plus-minus-icon" src="./assets/images/minus.svg" alt="" />
-                                                        <img className="plus-minus-icon" src="./assets/images/plus.svg" alt="" />
-                                                    </Box>
-                                                </Box>
-                                            </Box>
 
-                                            <p className={`spin-earned ${item.id}`}>{item.spinearn}</p>
                                             {
+                                                UserStakedToken ?
+                                                    <Box className={`last-show-hide ${item.id}`}>
+                                                        <p className="spin-earned harvest-show-hide">SPIN-BNB LP STAKED</p>
+                                                        <Box className="d-flex">
+                                                            <Box className="d-flex harvest-show-hide">
+                                                                <span>{UserStakedToken}</span>
+                                                                <span>~{UserStakedToken * SpinPrice} USD</span>
+                                                            </Box>
+                                                            <Box className="d-flex">
+                                                                <img className="plus-minus-icon" src="./assets/images/minus.svg" alt="" />
+                                                                <img className="plus-minus-icon" src="./assets/images/plus.svg" alt="" />
+                                                            </Box>
+                                                        </Box>
+                                                    </Box>
+                                                    :
+                                                    <>
+                                                        <p className={`spin-earned ${item.id}`}>{item.spinearn}</p>
+                                                        <button className={`contract-btn one pools-enable ${item.id}`} onClick={() => enable(item.id)}>Enable</button>
+                                                    </>
+                                            }
+                                            {/* {
                                                 active ?
                                                     <button className={`contract-btn one pools-enable ${item.id}`} onClick={() => enable(item.id)}>Enable</button>
                                                     :
                                                     <button className={`contract-btn one ${item.id}`} onClick={() => setIsOpenDialog(true)}>Connect Wallet</button>
-                                            }
+                                            } */}
 
 
                                             <p className="line"></p>
