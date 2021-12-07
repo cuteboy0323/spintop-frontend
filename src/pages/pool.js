@@ -206,14 +206,17 @@ const Pool = () => {
     }
 
     const harvest = async () => {
+        $('.harvest-button').addClass('loading')
+        $('.harvest-button').html('<img src="./assets/images/Progress indicator.svg" class="loading rotating"> Harvesting')
         const web3 = new Web3(library.provider);
         const ContractS = new web3.eth.Contract(
             Config.staking.abi,
             Config.staking.address
         )
-        const Harvest = await ContractS.methods.getReward().send({ from: account })
-        // setEarned("0")
-        load()
+        await ContractS.methods.getReward().send({ from: account })
+        setEarned("0")
+        $('.harvest-button').removeClass('loading')
+        $('.harvest-button').html('Harvest')
         myNotification({
             title: 'Harvested',
             message: 'Your SPINTOP earning is sent to your wallet.',
