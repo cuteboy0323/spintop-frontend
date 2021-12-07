@@ -107,6 +107,11 @@ const Pool = () => {
                 setTimeout(() => {
                     $(`.contract-btn.one.pools-enable.${id}`).removeClass('loading')
                     $(`.contract-btn.one.pools-enable.${id}`).html("Stake")
+                    myNotification({
+                        title: 'Contract enabled',
+                        message: "You can stake now in the pool.",
+                        showDuration: 3500
+                    })
                 }, 1000);
                 return;
             } else {
@@ -162,9 +167,10 @@ const Pool = () => {
                         $(`.last-show-hide.${SelId}`).show()
                         $(`.spin-earned.${SelId}`).hide()
                         $(`.contract-btn.one.pools-enable.${SelId}`).hide()
+                        $('.harvest-button').prop("disabled", false);
                         myNotification({
-                            title: 'Success',
-                            message: 'You staked correctly.',
+                            title: 'Staked',
+                            message: 'Your Spintop funds have been staked in the pool.',
                             showDuration: 3500
                         })
                         load()
@@ -192,6 +198,11 @@ const Pool = () => {
         const Harvest = await ContractS.methods.getReward().call()
         console.log(Harvest)
         setEarned(0)
+        myNotification({
+            title: 'Harvested',
+            message: 'Your SPINTOP earning is sent to your wallet.',
+            showDuration: 3500
+        })
     }
 
     const load = async () => {
@@ -212,6 +223,7 @@ const Pool = () => {
 
                 if (stakedB) {
                     $(`.last-show-hide`).show()
+                    $('.harvest-button').prop("disabled", false);
                 }
 
                 await axios.get('https://api.coingecko.com/api/v3/coins/spintop').then(res => {
