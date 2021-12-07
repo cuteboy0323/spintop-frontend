@@ -197,7 +197,7 @@ const Pool = () => {
     const harvest = async () => {
         const Harvest = await ContractS.methods.getReward().call()
         console.log(Harvest)
-        setEarned(0)
+        setEarned("0")
         myNotification({
             title: 'Harvested',
             message: 'Your SPINTOP earning is sent to your wallet.',
@@ -211,7 +211,9 @@ const Pool = () => {
                 const totalstaked = await ContractS.methods.totalStaked().call()
                 const earned = await ContractS.methods.earned(account).call()
                 const current_pool = await ContractS.methods.lastTimeRewardApplicable().call()
-                const apr = (totalstaked / current_pool) * (100 / 30)
+                console.log(current_pool)
+                console.log(totalstaked)
+                const apr = (fromWei(web3, totalstaked) / current_pool) * (100 / 30)
                 const tokenbalance = await ContractT.methods.balanceOf(account).call()
                 const stakedB = await ContractS.methods.balanceOf(account).call()
                 console.log(stakedB)
@@ -372,7 +374,7 @@ const Pool = () => {
                                                                 }
                                                             })()}
                                                         </Box>
-                                                        <button className="harvest-button" disabled onClick={() => harvest()}>Harvest</button>
+                                                        <button className="harvest-button" onClick={() => harvest()}>Harvest</button>
                                                     </Box>
                                             }
 
@@ -501,6 +503,9 @@ const Pool = () => {
                         </Box>
                         <Box className="modal_content">
                             <Box className="modal_box">
+                                <Box>
+                                    <p></p>
+                                </Box>
                                 <Box style={{ display: "flex", justifyContent: "space-between" }}>
                                     <span className="stake-span">Stake</span>
                                     {/* <Typography>Blanace </Typography> */}
