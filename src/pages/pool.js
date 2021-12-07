@@ -126,59 +126,65 @@ const Pool = () => {
     }, []);
 
     const confirm = async () => {
-        if (Number(StakingValue) <= 0) {
-            myNotification({
-                title: 'Fail',
-                message: 'Please enter value correctly.',
-                showDuration: 3500
-            })
-            return;
-        }
-        if (Number(StakingValue) > Number(TotalToken)) {
-            myNotification({
-                title: 'Fail',
-                message: 'Your SpinTop-BNB token is not enough.',
-                showDuration: 3500
-            })
-            return;
-        } else {
-            try {
-                $('.confirm').addClass('loading')
-                $('.confirm').html('<img src="./assets/images/Progress indicator.svg" class="loading rotating"> Confirming')
-                const web3 = new Web3(library.provider);
-                const ContractT = new web3.eth.Contract(
-                    Config.spin.abi,
-                    Config.spin.address
-                );
-                const ContractS = new web3.eth.Contract(
-                    Config.staking.abi,
-                    Config.staking.address
-                )
-                const balance = toWei(web3, StakingValue)
-                const apr = await ContractT.methods.approve(Config.staking.address, balance).send({ from: account })
-                if (apr) {
-                    const staked = await ContractS.methods.stake(balance).send({ from: account })
-                    console.log(apr)
-                    console.log(staked)
-                    if (staked) {
-                        setOpen(false)
-                        $('.confirm').removeClass('loading')
-                        $('.confirm').html('Confirm')
-                        $(`.last-show-hide.${SelId}`).show()
-                        $(`.spin-earned.${SelId}`).hide()
-                        $(`.contract-btn.one.pools-enable.${SelId}`).hide()
-                        $('.harvest-button').prop("disabled", false);
-                        myNotification({
-                            title: 'Staked',
-                            message: 'Your Spintop funds have been staked in the pool.',
-                            showDuration: 3500
-                        })
-                        load()
-                    }
-                }
-            } catch (e) {
-                console.log(e)
+        console.log($('.confirm').text())
+        if ($('.confirm').text() == "Confirming") {
+
+            if (Number(StakingValue) <= 0) {
+                myNotification({
+                    title: 'Fail',
+                    message: 'Please enter value correctly.',
+                    showDuration: 3500
+                })
+                return;
             }
+            if (Number(StakingValue) > Number(TotalToken)) {
+                myNotification({
+                    title: 'Fail',
+                    message: 'Your SpinTop-BNB token is not enough.',
+                    showDuration: 3500
+                })
+                return;
+            } else {
+                try {
+                    $('.confirm').addClass('loading')
+                    $('.confirm').html('<img src="./assets/images/Progress indicator.svg" class="loading rotating">Confirming')
+                    const web3 = new Web3(library.provider);
+                    const ContractT = new web3.eth.Contract(
+                        Config.spin.abi,
+                        Config.spin.address
+                    );
+                    const ContractS = new web3.eth.Contract(
+                        Config.staking.abi,
+                        Config.staking.address
+                    )
+                    const balance = toWei(web3, StakingValue)
+                    const apr = await ContractT.methods.approve(Config.staking.address, balance).send({ from: account })
+                    if (apr) {
+                        const staked = await ContractS.methods.stake(balance).send({ from: account })
+                        console.log(apr)
+                        console.log(staked)
+                        if (staked) {
+                            setOpen(false)
+                            $('.confirm').removeClass('loading')
+                            $('.confirm').html('Confirm')
+                            $(`.last-show-hide.${SelId}`).show()
+                            $(`.spin-earned.${SelId}`).hide()
+                            $(`.contract-btn.one.pools-enable.${SelId}`).hide()
+                            $('.harvest-button').prop("disabled", false);
+                            myNotification({
+                                title: 'Staked',
+                                message: 'Your Spintop funds have been staked in the pool.',
+                                showDuration: 3500
+                            })
+                            load()
+                        }
+                    }
+                } catch (e) {
+                    console.log(e)
+                }
+            }
+        } else {
+            return;
         }
     }
 
@@ -206,22 +212,28 @@ const Pool = () => {
     }
 
     const harvest = async () => {
-        $('.harvest-button').addClass('loading')
-        $('.harvest-button').html('<img src="./assets/images/Progress indicator.svg" class="loading rotating"> Harvesting')
-        const web3 = new Web3(library.provider);
-        const ContractS = new web3.eth.Contract(
-            Config.staking.abi,
-            Config.staking.address
-        )
-        await ContractS.methods.getReward().send({ from: account })
-        setEarned("0")
-        $('.harvest-button').removeClass('loading')
-        $('.harvest-button').html('Harvest')
-        myNotification({
-            title: 'Harvested',
-            message: 'Your SPINTOP earning is sent to your wallet.',
-            showDuration: 3500
-        })
+        console.log($('.harvest-button').text())
+        if ($('.harvest-button').text() == "Harvesting") {
+            $('.harvest-button').addClass('loading')
+            $('.harvest-button').html('<img src="./assets/images/Progress indicator.svg" class="loading rotating">Harvesting')
+            const web3 = new Web3(library.provider);
+            const ContractS = new web3.eth.Contract(
+                Config.staking.abi,
+                Config.staking.address
+            )
+            await ContractS.methods.getReward().send({ from: account })
+            setEarned("0")
+            $('.harvest-button').removeClass('loading')
+            $('.harvest-button').html('Harvest')
+            myNotification({
+                title: 'Harvested',
+                message: 'Your SPINTOP earning is sent to your wallet.',
+                showDuration: 3500
+            })
+        } else {
+            return;
+        }
+
     }
 
     const load = async () => {
