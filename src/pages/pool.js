@@ -167,6 +167,7 @@ const Pool = () => {
                             message: 'You staked correctly.',
                             showDuration: 3500
                         })
+                        load()
                     }
                 }
             } catch (e) {
@@ -359,7 +360,7 @@ const Pool = () => {
                                                                 }
                                                             })()}
                                                         </Box>
-                                                        <button className="harvest-button" onClick={() => harvest()}>Harvest</button>
+                                                        <button className="harvest-button" disabled onClick={() => harvest()}>Harvest</button>
                                                     </Box>
                                             }
 
