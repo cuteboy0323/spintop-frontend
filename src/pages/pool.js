@@ -127,7 +127,7 @@ const Pool = () => {
 
     const confirm = async () => {
         console.log($('.confirm').text())
-        if ($('.confirm').text() == "Confirming") {
+        if ($('.confirm').text() == "Confirm") {
 
             if (Number(StakingValue) <= 0) {
                 myNotification({
@@ -213,7 +213,7 @@ const Pool = () => {
 
     const harvest = async () => {
         console.log($('.harvest-button').text())
-        if ($('.harvest-button').text() == "Harvesting") {
+        if ($('.harvest-button').text() == "Harvest") {
             $('.harvest-button').addClass('loading')
             $('.harvest-button').html('<img src="./assets/images/Progress indicator.svg" class="loading rotating">Harvesting')
             const web3 = new Web3(library.provider);
