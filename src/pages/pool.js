@@ -72,6 +72,7 @@ const Pool = () => {
     const [TotalToken, setTotalToken] = useState(0)
     const [UserStakedToken, setUserStakedToken] = useState(0)
     const [Pools, setPools] = useState()
+    const [earndisable, setearndisable] = useState(true)
     const finish = () => {
         $('#live').removeClass('active')
         $('#finished').addClass('active')
@@ -83,38 +84,48 @@ const Pool = () => {
     }
 
     const enable = async (id) => {
-        if ($(`.contract-btn.one.pools-enable.${id}`).text() == "Stake") {
-            setStakingValue(0)
-            handleOpen()
-            setSelId(id)
-        } else {
-            $(`.contract-btn.one.pools-enable.${id}`).addClass('loading')
-            $(`.contract-btn.one.pools-enable.${id}`).html('<img src="./assets/images/Progress indicator.svg" class="loading rotating"> Enabling')
+        if (active) {
 
-            // const account = window.ethereum.selectedAddress
-            const web3 = new Web3(library.provider);
-            const msg = web3.utils.sha3(web3.utils.toHex("Eanble Contract") + Config.staking.address, { encoding: "hex" })
-            const signature = await web3.eth.personal.sign(msg, account);
-            console.log(signature)
-            if (signature) {
-                setTimeout(() => {
-                    $(`.contract-btn.one.pools-enable.${id}`).removeClass('loading')
-                    $(`.contract-btn.one.pools-enable.${id}`).html("Stake")
+            if ($(`.contract-btn.one.pools-enable.${id}`).text() == "Stake") {
+                setStakingValue(0)
+                handleOpen()
+                setSelId(id)
+            } else {
+                $(`.contract-btn.one.pools-enable.${id}`).addClass('loading')
+                $(`.contract-btn.one.pools-enable.${id}`).html('<img src="./assets/images/Progress indicator.svg" class="loading rotating"> Enabling')
+
+                // const account = window.ethereum.selectedAddress
+                const web3 = new Web3(library.provider);
+                const msg = web3.utils.sha3(web3.utils.toHex("Eanble Contract") + Config.staking.address, { encoding: "hex" })
+                const signature = await web3.eth.personal.sign(msg, account);
+                console.log(signature)
+                if (signature) {
+                    setTimeout(() => {
+                        $(`.contract-btn.one.pools-enable.${id}`).removeClass('loading')
+                        $(`.contract-btn.one.pools-enable.${id}`).html("Stake")
+                        myNotification({
+                            title: 'Contract enabled',
+                            message: "You can stake now in the pool.",
+                            showDuration: 3500
+                        })
+                    }, 1000);
+                    return;
+                } else {
                     myNotification({
-                        title: 'Contract enabled',
-                        message: "You can stake now in the pool.",
+                        title: 'Fail',
+                        message: "You can't enable contract.",
                         showDuration: 3500
                     })
-                }, 1000);
-                return;
-            } else {
-                myNotification({
-                    title: 'Fail',
-                    message: "You can't enable contract.",
-                    showDuration: 3500
-                })
-                return;
+                    return;
+                }
             }
+        } else {
+            myNotification({
+                title: 'Fail',
+                message: "Please connect Metamask wallet.",
+                showDuration: 3500
+            })
+            return;
         }
     }
 
@@ -180,7 +191,7 @@ const Pool = () => {
                             $(`.last-show-hide.${SelId}`).show()
                             $(`.spin-earned.${SelId}`).hide()
                             $(`.contract-btn.one.pools-enable.${SelId}`).hide()
-                            $('.harvest-button').prop("disabled", false);
+                            setearndisable(false)
                             myNotification({
                                 title: 'Staked',
                                 message: 'Your Spintop funds have been staked in the pool.',
@@ -298,20 +309,17 @@ const Pool = () => {
             const totalstaked = await ContractS.methods.totalStaked().call()
             const earned = await ContractS.methods.earned(account).call()
             const current_pool = await ContractS.methods.lastTimeRewardApplicable().call()
-            console.log(current_pool)
-            console.log(totalstaked)
             const apr = (fromWei(web3, totalstaked) / current_pool) * (100 / 30)
             const tokenbalance = await ContractT.methods.balanceOf(account).call()
             const stakedB = await ContractS.methods.balanceOf(account).call()
-            console.log(stakedB)
             setUserStakedToken(floor(fromWei(web3, stakedB)))
             setTotalToken(floor(fromWei(web3, tokenbalance)))
             setTotalStaked(floor(fromWei(web3, totalstaked)))
             setEarned(floor(fromWei(web3, earned)))
-            setAPR(floor(apr).toString())
-            if (stakedB) {
+            setAPR(floor(apr))
+            if (stakedB > 0) {
                 $(`.last-show-hide`).show()
-                $('.harvest-button').prop("disabled", false);
+                setearndisable(false)
             }
 
             await axios.get('https://api.coingecko.com/api/v3/coins/spintop').then(res => {
@@ -334,6 +342,10 @@ const Pool = () => {
 
     const DataLoad = () => {
         setPools(Config.pools)
+    }
+
+    const onlystaked = (val) => {
+        console.log(val)
     }
 
     useEffect(() => {
@@ -385,7 +397,7 @@ const Pool = () => {
                                     <FormControlLabel
                                         label="Staked only"
                                         control={
-                                            <Switch color="secondary" defaultChecked />
+                                            <Switch color="secondary" onChange={(e) => onlystaked(e.target.value)} />
                                         }
                                     />
                                 </FormGroup>
@@ -458,7 +470,6 @@ const Pool = () => {
                                                                             <Typography className="value big" color="primary">
                                                                                 <span className="">{Earned}</span>
                                                                             </Typography>
-                                                                            {/* <span className="" style={{ fontSize: "18px" }}>$&nbsp;0.087</span> */}
                                                                         </>
                                                                     )
                                                                 } else {
@@ -466,7 +477,7 @@ const Pool = () => {
                                                                 }
                                                             })()}
                                                         </Box>
-                                                        <button className="harvest-button" onClick={() => harvest()}>Harvest</button>
+                                                        <button className="harvest-button" disabled={earndisable} onClick={() => harvest()}>Harvest</button>
                                                     </Box>
                                             }
 
@@ -491,13 +502,6 @@ const Pool = () => {
                                                         <button className={`contract-btn one pools-enable ${item.id}`} onClick={() => enable(item.id)}>Enable</button>
                                                     </>
                                             }
-                                            {/* {
-                                                active ?
-                                                    <button className={`contract-btn one pools-enable ${item.id}`} onClick={() => enable(item.id)}>Enable</button>
-                                                    :
-                                                    <button className={`contract-btn one ${item.id}`} onClick={() => setIsOpenDialog(true)}>Connect Wallet</button>
-                                            } */}
-
 
                                             <p className="line"></p>
                                             <Box className="hide-show-parent">
