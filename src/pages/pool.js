@@ -271,7 +271,7 @@ const Pool = () => {
                 Config.staking.abi,
                 Config.staking.address
             )
-            const res = await ContractS.methods.getReward().send({ from: account })
+            await ContractS.methods.getReward().send({ from: account })
             setEarned("0")
             $('.harvest-button').removeClass('loading')
             $('.harvest-button').html('Harvest')
