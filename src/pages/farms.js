@@ -64,7 +64,7 @@ const Farms = () => {
     const [StakingValue, setStakingValue] = useState(0)
     const myNotification = window.createNotification({})
     const [open, setOpen] = useState(false);
-    const [SelId, setSelId] = useState()
+    const [SelId, setSelId] = useState("")
     const TotalTokens = 3250000
 
     const onConnectWallet = async () => {
@@ -190,7 +190,7 @@ const Farms = () => {
             const liquidity = await spinF.methods.totalStaked().call()
             setEarned(earnValue)
             setAPR(Math.floor(TotalTokens / liquidity))
-            setMultiplier("40X")
+            setMultiplier(40)
             setLiquidity(liquidity)
             setLpToken(fromWei(web3, lptokenB))
         } catch (err) {
