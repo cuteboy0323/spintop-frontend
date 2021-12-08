@@ -332,7 +332,7 @@ const Pool = () => {
         }
     }
 
-    const unstakeable = () => {
+    const unstakeable = async () => {
         const web3 = new Web3(library.provider);
         const ContractS = new web3.eth.Contract(
             Config.staking.abi,
