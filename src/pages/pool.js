@@ -409,7 +409,7 @@ const Pool = () => {
 
                     <Row className="parent-pool">
                         {
-                            Pools.map((item, key) => {
+                            Pools ? Pools.map((item, key) => {
                                 return (
                                     <Col md={4} key={key} style={{ position: "relative" }}>
                                         <Box className="cust-card contract pools">
@@ -575,6 +575,8 @@ const Pool = () => {
                                     </Col>
                                 )
                             })
+                                :
+                                ""
                         }
                     </Row>
                 </Box>
