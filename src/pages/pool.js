@@ -70,6 +70,7 @@ const Pool = () => {
     const [TotalToken, setTotalToken] = useState(0)
     const [UserStakedToken, setUserStakedToken] = useState(0)
     const [Pools, setPools] = useState()
+    const [Unstakeable, setUnstakeable] = useState(false)
     const [earndisable, setearndisable] = useState(true)
     const finish = () => {
         $('#live').removeClass('active')
@@ -230,28 +231,36 @@ const Pool = () => {
                 return;
             } else {
                 try {
-                    $('.confirm.unstake').addClass('loading')
-                    $('.confirm.unstake').html('<img src="./assets/images/Progress indicator.svg" class="loading rotating">Confirming')
-                    const web3 = new Web3(library.provider);
-                    const ContractS = new web3.eth.Contract(
-                        Config.staking.abi,
-                        Config.staking.address
-                    )
+                    if (Unstakeable) {
+                        $('.confirm.unstake').addClass('loading')
+                        $('.confirm.unstake').html('<img src="./assets/images/Progress indicator.svg" class="loading rotating">Confirming')
+                        const web3 = new Web3(library.provider);
+                        const ContractS = new web3.eth.Contract(
+                            Config.staking.abi,
+                            Config.staking.address
+                        )
 
-                    const balance = toWei(web3, UnStakingValue)
-                    const apr = await ContractS.methods.unstake(balance).send({ from: account })
-                    if (apr) {
-                        setOpenUnstake(false)
-                        $('.confirm.unstake').removeClass('loading')
-                        $('.confirm.unstake').html('Confirm')
-                        $(`.contract-btn.one.pools-enable.${SelId}`).hide()
-                        $('.harvest-button').prop("disabled", false);
+                        const balance = toWei(web3, UnStakingValue)
+                        const apr = await ContractS.methods.unstake(balance).send({ from: account })
+                        if (apr) {
+                            setOpenUnstake(false)
+                            $('.confirm.unstake').removeClass('loading')
+                            $('.confirm.unstake').html('Confirm')
+                            $(`.contract-btn.one.pools-enable.${SelId}`).hide()
+                            $('.harvest-button').prop("disabled", false);
+                            myNotification({
+                                title: 'UnStaked',
+                                message: 'Your Spintop funds have been unstaked in the pool.',
+                                showDuration: 3500
+                            })
+                            load()
+                        }
+                    } else {
                         myNotification({
-                            title: 'UnStaked',
-                            message: 'Your Spintop funds have been unstaked in the pool.',
+                            title: 'Unstake',
+                            message: 'Please wait one day from latest staking date.Then You can unstake.',
                             showDuration: 3500
                         })
-                        load()
                     }
                 } catch (e) {
                     console.log(e)
@@ -280,6 +289,7 @@ const Pool = () => {
                 message: 'Your SPINTOP earning is sent to your wallet.',
                 showDuration: 3500
             })
+            return;
         } else {
             return;
         }
@@ -319,6 +329,30 @@ const Pool = () => {
 
         } catch (err) {
             console.log(err)
+        }
+    }
+
+    const unstakeable = () => {
+        const web3 = new Web3(library.provider);
+        const ContractS = new web3.eth.Contract(
+            Config.staking.abi,
+            Config.staking.address
+        )
+        const unstakeable = await ContractS.methods.unstakable(account).call()
+        console.log(unstakeable)
+        if (unstakeable) {
+            setOpenUnstake(unstakeable)
+            setUnstakeable(unstakeable)
+            return;
+        } else {
+            setOpenUnstake(unstakeable)
+            setUnstakeable(unstakeable)
+            myNotification({
+                title: 'Unstake',
+                message: 'Please wait one day from latest staking date.Then You can unstake.',
+                showDuration: 3500
+            })
+            return;
         }
     }
 
@@ -479,7 +513,7 @@ const Pool = () => {
                                                                 <span>~{floor(UserStakedToken * SpinPrice)} USD</span>
                                                             </Box>
                                                             <Box className="d-flex">
-                                                                <a onClick={() => setOpenUnstake(true)}><img className="plus-minus-icon" src="./assets/images/minus.svg" alt="" /></a>
+                                                                <a onClick={() => unstakeable()}><img className="plus-minus-icon" src="./assets/images/minus.svg" alt="" /></a>
                                                                 <a onClick={() => setOpen(true)}><img className="plus-minus-icon" src="./assets/images/plus.svg" alt="" /></a>
                                                             </Box>
                                                         </Box>

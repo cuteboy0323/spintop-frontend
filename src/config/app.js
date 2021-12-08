@@ -17,7 +17,7 @@ export default {
         abi: abi.farms,
     },
     staking: {
-        address: "0xe8067f6523c866a15796cfaecc5e4fe0876f74d1",
+        address: "0x202F811C007e60A616Bd141d23b3C128A625E012",
         abi: abi.staking
     },
     Lp: {
