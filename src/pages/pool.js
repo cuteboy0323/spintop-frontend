@@ -83,7 +83,6 @@ const Pool = () => {
 
     const enable = async (id) => {
         if (active) {
-
             if ($(`.contract-btn.one.pools-enable.${id}`).text() == "Stake") {
                 setStakingValue(0)
                 setOpen(true)
@@ -91,12 +90,9 @@ const Pool = () => {
             } else {
                 $(`.contract-btn.one.pools-enable.${id}`).addClass('loading')
                 $(`.contract-btn.one.pools-enable.${id}`).html('<img src="./assets/images/Progress indicator.svg" class="loading rotating"> Enabling')
-
-                // const account = window.ethereum.selectedAddress
                 const web3 = new Web3(library.provider);
                 const msg = web3.utils.sha3(web3.utils.toHex("Eanble Contract") + Config.staking.address, { encoding: "hex" })
                 const signature = await web3.eth.personal.sign(msg, account);
-                console.log(signature)
                 if (signature) {
                     setTimeout(() => {
                         $(`.contract-btn.one.pools-enable.${id}`).removeClass('loading')
@@ -267,7 +263,6 @@ const Pool = () => {
     }
 
     const harvest = async () => {
-        console.log($('.harvest-button').text())
         if ($('.harvest-button').text() == "Harvest") {
             $('.harvest-button').addClass('loading')
             $('.harvest-button').html('<img src="./assets/images/Progress indicator.svg" class="loading rotating">Harvesting')
@@ -277,7 +272,6 @@ const Pool = () => {
                 Config.staking.address
             )
             const res = await ContractS.methods.getReward().send({ from: account })
-            console.log(res, 1)
             setEarned("0")
             $('.harvest-button').removeClass('loading')
             $('.harvest-button').html('Harvest')
@@ -358,8 +352,6 @@ const Pool = () => {
             return () => clearInterval(interval);
         }
     }, [active])
-
-    console.log(Pools)
 
     return (
         <Box>

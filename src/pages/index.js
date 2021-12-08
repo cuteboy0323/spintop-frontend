@@ -194,7 +194,7 @@ const Home = () => {
                   if (harvestSpintop != false || typeof (harvestSpintop) == "string") {
                     return (
                       <Typography className="value big" color="primary">
-                        <span className="sub-txt">{harvestSpintop}</span>
+                        <span className="sub-txt">{harvestSpintop}</span><br/>
                         <span className="money">~${harvestSpintop * SpinPrice}</span>
                       </Typography>
                     )
@@ -207,7 +207,7 @@ const Home = () => {
                   if (walletBalance != false || typeof (walletBalance) == "string") {
                     return (
                       <Typography className="value big" color="primary">
-                        <span className="sub-txt">{walletBalance}</span>
+                        <span className="sub-txt">{walletBalance}</span><br/>
                         <span className="money">~${walletBalance * SpinPrice}</span>
                       </Typography>
                     )
