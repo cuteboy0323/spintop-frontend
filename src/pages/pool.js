@@ -182,8 +182,6 @@ const Pool = () => {
                     const apr = await ContractT.methods.approve(Config.staking.address, balance).send({ from: account })
                     if (apr) {
                         const staked = await ContractS.methods.stake(balance).send({ from: account })
-                        console.log(apr)
-                        console.log(staked)
                         if (staked) {
                             setOpen(false)
                             $('.confirm.stake').removeClass('loading')
