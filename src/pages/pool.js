@@ -65,7 +65,7 @@ const Pool = () => {
     const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
     const [SelId, setSelId] = useState()
-    const [SpinPrice, setSpinPrice] = useState()
+    const [SpinPrice, setSpinPrice] = useState(0)
     const [TotalStaked, setTotalStaked] = useState(0);
     const [APR, setAPR] = useState(0)
     const [Earned, setEarned] = useState(0)
@@ -325,11 +325,11 @@ const Pool = () => {
     }
 
     const clear = () => {
-        setTotalToken(false)
-        setTotalStaked(false)
-        setEarned(false)
-        setUserStakedToken(false)
-        setAPR(false)
+        setTotalToken(-1)
+        setTotalStaked(-1)
+        setEarned(-1)
+        setUserStakedToken(-1)
+        setAPR(-1)
     }
 
     const DataLoad = () => {
@@ -427,7 +427,7 @@ const Pool = () => {
                                                 <img src="./assets/images/Form.png" alt="" className="me-2 form-p" />
                                                 <span>APR</span>
                                                 {(() => {
-                                                    if (APR != false || typeof (APR) == "string") {
+                                                    if (APR != -1) {
                                                         return (
                                                             <>
                                                                 <Typography className="value big" color="primary">
@@ -452,7 +452,7 @@ const Pool = () => {
                                                     <Box className="d-flex" style={{ alignItems: "center" }}>
                                                         <Box className="d-flex harvest-show-hide">
                                                             {(() => {
-                                                                if (Earned != false || typeof (Earned) == "string") {
+                                                                if (Earned != -1) {
                                                                     return (
                                                                         <>
                                                                             <Typography className="value big" color="primary">
@@ -536,7 +536,7 @@ const Pool = () => {
                                                     <Box className="d-flex justify-content-between align-content-center mb-2">
                                                         <span>Total staked</span>
                                                         {(() => {
-                                                            if (TotalStaked != false || typeof (TotalStaked) == "string") {
+                                                            if (TotalStaked != -1) {
                                                                 return (
                                                                     <>
                                                                         <Typography className="value big" color="primary">
@@ -604,7 +604,7 @@ const Pool = () => {
                                     <span className="stake-span">Stake</span>
                                     {/* <Typography>Blanace </Typography> */}
                                     {(() => {
-                                        if (TotalToken != false || typeof (TotalToken) == "string") {
+                                        if (TotalToken != -1) {
                                             return (
                                                 <Typography className="value big" color="primary">
                                                     <span className="stake-span">Blanace  &nbsp;${TotalToken}</span>
@@ -659,7 +659,7 @@ const Pool = () => {
                                 <Box style={{ display: "flex", justifyContent: "space-between" }}>
                                     <span className="stake-span">UnStake</span>
                                     {(() => {
-                                        if (UserStakedToken != false || typeof (UserStakedToken) == "string") {
+                                        if (UserStakedToken != -1) {
                                             return (
                                                 <Typography className="value big" color="primary">
                                                     <span className="stake-span">Blanace  &nbsp;${UserStakedToken}</span>
