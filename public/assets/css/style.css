@@ -432,10 +432,10 @@ header .connect {
 }
 
 .main-container .cust-card .money {
-    font-size: 16px;
-    line-height: 24px;
-    color: var(--header-span-pink);
-  }
+  font-size: 16px;
+  line-height: 24px;
+  color: var(--header-span-pink);
+}
 
 .main-container .cust-card .unlock-btn {
   border-radius: 12px;
@@ -550,6 +550,12 @@ header .connect {
   line-height: 32px;
   letter-spacing: -1px;
   color: #FFFFFF;
+}
+
+.stakebox-header {
+  padding: 10px;
+  justify-content: space-between;
+  display: flex;
 }
 
 .link {

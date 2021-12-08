@@ -62,7 +62,7 @@ const Pool = () => {
     const myNotification = window.createNotification({})
     const [open, setOpen] = useState(false);
     const [OpenUnstake, setOpenUnstake] = useState(false);
-    const handleOpen = () => setOpen(true);
+    const handleOpen = () => setOpen(false);
     const handleClose = () => setOpen(false);
     const [SelId, setSelId] = useState()
     const [SpinPrice, setSpinPrice] = useState(0)
@@ -598,11 +598,13 @@ const Pool = () => {
                             <img src="./assets/images/close-icon.png" alt="" onClick={() => setOpen(false)} />
                         </Box>
                         <Box className="modal_content">
+                            <Box className="stakebox-header">
+                                <span className="stake-span" style={{ fontSize: "20px" }}>Stake</span>
+                                <img src="../assets/images/logo.png" style={{ height: "25px" }} alt="" />
+                            </Box>
+
                             <Box className="modal_box">
-                                <Box>
-                                    <p></p>
-                                </Box>
-                                <Box style={{ display: "flex", justifyContent: "space-between" }}>
+                                <Box style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
                                     <span className="stake-span">Stake</span>
                                     {/* <Typography>Blanace </Typography> */}
                                     {(() => {
@@ -620,7 +622,6 @@ const Pool = () => {
                                 <Box className="modal_box_cal">
                                     <input type="number" style={{ border: "none", background: "#240e48", color: "white", width: "50%" }} value={StakingValue} onChange={(e) => setStakingValue(e.target.value)} />
                                     <button className="max-button" onClick={() => setStakingValue(TotalToken)}>Max</button>
-                                    <span style={{ color: "rgba(184, 197, 236, 0.65)" }}></span>
                                 </Box>
                                 <Box sx={{ m: 3 }} />
                                 <PrettoSlider
@@ -636,10 +637,10 @@ const Pool = () => {
                                 <button className="cancel" onClick={() => setOpen(false)}>Cancel</button>
                                 <button className="confirm stake" onClick={() => confirm()}>Confirm</button>
                             </Box>
-                            <Box className="links-contain">
+                            {/* <Box className="links-contain">
                                 <p className="links">Swap 10 BUSD for 0.025 BNB</p>
                                 <img src="./assets/images/link_open.svg" alt="" className="link-open" />
-                            </Box>
+                            </Box> */}
                         </Box>
                     </Box>
                 </Modal>
@@ -657,8 +658,12 @@ const Pool = () => {
                             <img src="./assets/images/close-icon.png" alt="" onClick={() => setOpenUnstake(false)} />
                         </Box>
                         <Box className="modal_content">
+                            <Box className="stakebox-header">
+                                <span className="stake-span" style={{ fontSize: "20px" }}>UnStake</span>
+                                <img src="../assets/images/logo.png" style={{ height: "25px" }} alt="" />
+                            </Box>
                             <Box className="modal_box">
-                                <Box style={{ display: "flex", justifyContent: "space-between" }}>
+                                <Box style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
                                     <span className="stake-span">UnStake</span>
                                     {(() => {
                                         if (UserStakedToken != -1) {
@@ -675,7 +680,6 @@ const Pool = () => {
                                 <Box className="modal_box_cal">
                                     <input type="number" style={{ border: "none", background: "#240e48", color: "white", width: "50%" }} value={UnStakingValue} onChange={(e) => setUnStakingValue(e.target.value)} />
                                     <button className="max-button" onClick={() => setUnStakingValue(UserStakedToken)}>Max</button>
-                                    <span style={{ color: "rgba(184, 197, 236, 0.65)" }}></span>
                                 </Box>
                                 <Box sx={{ m: 3 }} />
                                 <PrettoSlider
@@ -691,10 +695,10 @@ const Pool = () => {
                                 <button className="cancel" onClick={() => setOpenUnstake(false)}>Cancel</button>
                                 <button className="confirm unstake" onClick={() => unstake()}>Confirm</button>
                             </Box>
-                            <Box className="links-contain">
+                            {/* <Box className="links-contain">
                                 <p className="links">Swap 10 BUSD for 0.025 BNB</p>
                                 <img src="./assets/images/link_open.svg" alt="" className="link-open" />
-                            </Box>
+                            </Box> */}
                         </Box>
                     </Box>
                 </Modal>
@@ -725,7 +729,6 @@ const Pool = () => {
                         </Box>
                     </Box>
                 </Box>
-
                 <Cwallet isOpen={isOpenDialog} setIsOpen={setIsOpenDialog} />
             </Box >
         </Box >
