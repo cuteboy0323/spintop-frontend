@@ -195,7 +195,7 @@ const Home = () => {
                     return (
                       <Typography className="value big" color="primary">
                         <span className="sub-txt">{harvestSpintop}</span>
-                        <p className="money">~${harvestSpintop * SpinPrice}</p>
+                        <span className="money">~${harvestSpintop * SpinPrice}</span>
                       </Typography>
                     )
                   } else {
@@ -208,7 +208,7 @@ const Home = () => {
                     return (
                       <Typography className="value big" color="primary">
                         <span className="sub-txt">{walletBalance}</span>
-                        <p className="money">~${walletBalance * SpinPrice}</p>
+                        <span className="money">~${walletBalance * SpinPrice}</span>
                       </Typography>
                     )
                   } else {
