@@ -56,17 +56,16 @@ const Farms = () => {
     // eslint-disable-next-line
     const { activate, active, account, deactivate, connector, error, setError, library, chainId } = useWeb3React();
     const [isOpenDialog, setIsOpenDialog] = useState(false);
-    const [Multiplier, setMultiplier] = useState(false)
-    const [APR, setAPR] = useState(false)
-    const [Liquidity, setLiquidity] = useState(false)
-    const [Earned, setEarned] = useState(false)
-    const [LpToken, setLpToken] = useState(false)
+    const [Multiplier, setMultiplier] = useState(0)
+    const [APR, setAPR] = useState(0)
+    const [Liquidity, setLiquidity] = useState(0)
+    const [Earned, setEarned] = useState(0)
+    const [LpToken, setLpToken] = useState(0)
     const [StakingValue, setStakingValue] = useState(0)
-    const TotalTokens = 3250000
     const myNotification = window.createNotification({})
     const [open, setOpen] = useState(false);
-    const handleClose = () => setOpen(false);
     const [SelId, setSelId] = useState()
+    const TotalTokens = 3250000
 
     const onConnectWallet = async () => {
         setIsOpenDialog(true);
@@ -100,7 +99,6 @@ const Farms = () => {
     }
 
     const enableContract = async (id) => {
-        console.log(id)
         $(`.contract-btn.one.${id}`).addClass('loading')
         $(`.contract-btn.one.${id}`).html('<img src="./assets/images/Progress indicator.svg" class="loading rotating"> Enable Contract')
         const web3 = new Web3(library.provider);
@@ -201,11 +199,11 @@ const Farms = () => {
     }
 
     const clear = () => {
-        setEarned(false)
-        setAPR(false)
-        setLiquidity(false)
-        setLpToken(false)
-        setMultiplier(false)
+        setEarned(-1)
+        setAPR(-1)
+        setLiquidity(-1)
+        setLpToken(-1)
+        setMultiplier(-1)
     }
 
     useEffect(() => {
@@ -269,7 +267,7 @@ const Farms = () => {
                                                 <Box className="d-flex flex-column align-items-end">
                                                     <span className="bnb">{item.name}</span>
                                                     {(() => {
-                                                        if (Multiplier != false || typeof (Multiplier) == "string") {
+                                                        if (Multiplier != -1) {
                                                             return (
                                                                 <Typography className="value big" color="primary">
                                                                     <span className="x-40">{Multiplier}</span>
@@ -284,7 +282,7 @@ const Farms = () => {
                                             <Box className="d-flex content-one first">
                                                 <span>APR</span>
                                                 {(() => {
-                                                    if (APR != false || typeof (APR) == "string") {
+                                                    if (APR != -1) {
                                                         return (
                                                             <>
                                                                 <Typography className="value big" color="primary">
@@ -305,7 +303,7 @@ const Farms = () => {
                                             <p className="spin-earned">Spin Earned</p>
                                             <Box className="d-flex harvest">
                                                 {(() => {
-                                                    if (Earned != false || typeof (Earned) == "string") {
+                                                    if (Earned != -1) {
                                                         return (
                                                             <Typography className="value big" color="primary">
                                                                 <span>$&nbsp;{Earned}</span>
@@ -350,7 +348,7 @@ const Farms = () => {
                                                     <Box className="d-flex justify-content-between align-content-center">
                                                         <span>Total liquidity</span>
                                                         {(() => {
-                                                            if (Liquidity != false || typeof (Liquidity) == "string") {
+                                                            if (Liquidity != -1) {
                                                                 return (
                                                                     <Typography className="value big" color="primary">
                                                                         <span>$&nbsp;{Liquidity}</span>
@@ -382,11 +380,10 @@ const Farms = () => {
                         }
                     </Box>
 
-                    <Cwallet isOpen={isOpenDialog} setIsOpen={setIsOpenDialog} />
                     <Modal
                         keepMounted
                         open={open}
-                        onClose={handleClose}
+                        onClose={() => setOpen(false)}
                         aria-labelledby="keep-mounted-modal-title"
                         aria-describedby="keep-mounted-modal-description"
                     >
@@ -396,12 +393,17 @@ const Farms = () => {
                                 <img src="./assets/images/close-icon.png" alt="" onClick={() => setOpen(false)} />
                             </Box>
                             <Box className="modal_content">
+                                <Box className="stakebox-header">
+                                    <span className="stake-span" style={{ fontSize: "20px" }}>Stake</span>
+                                    <img src="../assets/images/logo.png" style={{ height: "25px" }} alt="" />
+                                </Box>
+
                                 <Box className="modal_box">
-                                    <Box style={{ display: "flex", justifyContent: "space-between" }}>
+                                    <Box style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
                                         <span className="stake-span">Stake</span>
                                         {/* <Typography>Blanace </Typography> */}
                                         {(() => {
-                                            if (LpToken != false || typeof (LpToken) == "string") {
+                                            if (LpToken != -1) {
                                                 return (
                                                     <Typography className="value big" color="primary">
                                                         <span className="stake-span">Blanace  &nbsp;${LpToken}</span>
@@ -415,7 +417,6 @@ const Farms = () => {
                                     <Box className="modal_box_cal">
                                         <input type="number" style={{ border: "none", background: "#240e48", color: "white", width: "50%" }} value={StakingValue} onChange={(e) => setStakingValue(e.target.value)} />
                                         <button className="max-button" onClick={() => setStakingValue(LpToken)}>Max</button>
-                                        <span style={{ color: "rgba(184, 197, 236, 0.65)" }}>SPINTOP - BNBLP</span>
                                     </Box>
                                     <Box sx={{ m: 3 }} />
                                     <PrettoSlider
@@ -429,50 +430,14 @@ const Farms = () => {
                                 </Box>
                                 <Box style={{ marginTop: "30px", display: "flex" }}>
                                     <button className="cancel" onClick={() => setOpen(false)}>Cancel</button>
-                                    <button className="confirm" onClick={() => confirm()}>Confirm</button>
-                                </Box>
-                                <Box className="links-contain">
-                                    <p className="links">Swap 10 BUSD for 0.025 BNB</p>
-                                    <img src="./assets/images/link_open.svg" alt="" className="link-open" />
+                                    <button className="confirm stake" onClick={() => confirm()}>Confirm</button>
                                 </Box>
                             </Box>
                         </Box>
                     </Modal>
-                    <Calculator APR={APR} />
 
-                    {/* <Box className="modal fade" id="exampleModal22" tabIndex="-1" aria-labelledby="exampleModal22Label" aria-hidden="true">
-                        <Box className="modal-dialog modal-dialog-centered">
-                            <Box className="modal-content">
-                                <Box className="modal-header">
-                                    <span>Unstake LP token</span>
-                                    <img src="./assets/images/close-icon.png" alt="" data-bs-dismiss="modal" aria-label="Close" />
-                                </Box>
-                                <Box className="modal-body">
-                                    <Box className="inner-cust-card">
-                                        <Box className="card-heading">
-                                            <span>Stake</span>
-                                            <span>Blanace 0.598</span>
-                                        </Box>
-                                        <Box className="card-content">
-                                            <span>0.5241654651</span>
-                                            <span>MAX</span>
-                                            <span>BUSD -BNB LP</span>
-                                        </Box>
-                                    </Box>
-                                    <img src="./assets/images/alert-octagon-16px.svg" alt="" />
-                                    <span className="alert-span">No token to stake. Get BUSD-BNB LP</span>
-                                    <Box className="btn-contain">
-                                        <button className="cancel">Cancel</button>
-                                        <button className="confirm">Confirm</button>
-                                    </Box>
-                                    <Box className="links-contain">
-                                        <p className="links">Swap 10 BUSD for 0.025 BNB</p>
-                                        <img src="./assets/images/link_open.svg" alt="" className="link-open" />
-                                    </Box>
-                                </Box>
-                            </Box>
-                        </Box>
-                    </Box> */}
+                    <Cwallet isOpen={isOpenDialog} setIsOpen={setIsOpenDialog} />
+                    <Calculator APR={APR} />
                 </Box>
             </Box>
         </Box>
