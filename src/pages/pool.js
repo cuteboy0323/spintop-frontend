@@ -62,8 +62,6 @@ const Pool = () => {
     const myNotification = window.createNotification({})
     const [open, setOpen] = useState(false);
     const [OpenUnstake, setOpenUnstake] = useState(false);
-    const handleOpen = () => setOpen(false);
-    const handleClose = () => setOpen(false);
     const [SelId, setSelId] = useState()
     const [SpinPrice, setSpinPrice] = useState(0)
     const [TotalStaked, setTotalStaked] = useState(0);
@@ -88,7 +86,7 @@ const Pool = () => {
 
             if ($(`.contract-btn.one.pools-enable.${id}`).text() == "Stake") {
                 setStakingValue(0)
-                handleOpen()
+                setOpen(true)
                 setSelId(id)
             } else {
                 $(`.contract-btn.one.pools-enable.${id}`).addClass('loading')
@@ -490,7 +488,7 @@ const Pool = () => {
                                                             </Box>
                                                             <Box className="d-flex">
                                                                 <a onClick={() => setOpenUnstake(true)}><img className="plus-minus-icon" src="./assets/images/minus.svg" alt="" /></a>
-                                                                <a onClick={() => handleOpen()}><img className="plus-minus-icon" src="./assets/images/plus.svg" alt="" /></a>
+                                                                <a onClick={() => setOpen(true)}><img className="plus-minus-icon" src="./assets/images/plus.svg" alt="" /></a>
                                                             </Box>
                                                         </Box>
                                                     </Box>
@@ -588,7 +586,7 @@ const Pool = () => {
                 <Modal
                     keepMounted
                     open={open}
-                    onClose={handleClose}
+                    onClose={() => setOpen(false)}
                     aria-labelledby="keep-mounted-modal-title"
                     aria-describedby="keep-mounted-modal-description"
                 >
