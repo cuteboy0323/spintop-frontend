@@ -278,7 +278,8 @@ const Pool = () => {
                 Config.staking.abi,
                 Config.staking.address
             )
-            await ContractS.methods.getReward().send({ from: account })
+            const res = await ContractS.methods.getReward().send({ from: account })
+            console.log(res, 1)
             setEarned("0")
             $('.harvest-button').removeClass('loading')
             $('.harvest-button').html('Harvest')
@@ -290,7 +291,6 @@ const Pool = () => {
         } else {
             return;
         }
-
     }
 
     const load = async () => {
