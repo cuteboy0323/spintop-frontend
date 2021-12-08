@@ -71,7 +71,7 @@ const Pool = () => {
     const [Earned, setEarned] = useState(0)
     const [TotalToken, setTotalToken] = useState(0)
     const [UserStakedToken, setUserStakedToken] = useState(0)
-
+    const [Pools, setPools] = useState({})
     const finish = () => {
         $('#live').removeClass('active')
         $('#finished').addClass('active')
@@ -122,6 +122,15 @@ const Pool = () => {
         if (val) {
             val = val.toString();
             return web3.utils.toWei(val);
+        } else {
+            return "0"
+        }
+    }, []);
+
+    const fromWei = useCallback((web3, val) => {
+        if (val) {
+            val = val.toString();
+            return web3.utils.fromWei(val);
         } else {
             return "0"
         }
@@ -188,15 +197,6 @@ const Pool = () => {
             return;
         }
     }
-
-    const fromWei = useCallback((web3, val) => {
-        if (val) {
-            val = val.toString();
-            return web3.utils.fromWei(val);
-        } else {
-            return "0"
-        }
-    }, []);
 
     const floor = useCallback((val) => {
         if (val) {
@@ -285,44 +285,42 @@ const Pool = () => {
     }
 
     const load = async () => {
-        if (active) {
-            try {
-                const web3 = new Web3(library.provider);
-                const ContractT = new web3.eth.Contract(
-                    Config.spin.abi,
-                    Config.spin.address
-                );
-                const ContractS = new web3.eth.Contract(
-                    Config.staking.abi,
-                    Config.staking.address
-                )
-                const totalstaked = await ContractS.methods.totalStaked().call()
-                const earned = await ContractS.methods.earned(account).call()
-                const current_pool = await ContractS.methods.lastTimeRewardApplicable().call()
-                console.log(current_pool)
-                console.log(totalstaked)
-                const apr = (fromWei(web3, totalstaked) / current_pool) * (100 / 30)
-                const tokenbalance = await ContractT.methods.balanceOf(account).call()
-                const stakedB = await ContractS.methods.balanceOf(account).call()
-                console.log(stakedB)
-                setUserStakedToken(floor(fromWei(web3, stakedB)))
-                setTotalToken(floor(fromWei(web3, tokenbalance)))
-                setTotalStaked(floor(fromWei(web3, totalstaked)))
-                setEarned(floor(fromWei(web3, earned)))
-                setAPR(floor(apr).toString())
-                if (stakedB) {
-                    $(`.last-show-hide`).show()
-                    $('.harvest-button').prop("disabled", false);
-                }
-
-                await axios.get('https://api.coingecko.com/api/v3/coins/spintop').then(res => {
-                    const CurrentP = res.data.market_data.current_price.usd
-                    setSpinPrice(CurrentP)
-                })
-
-            } catch (err) {
-                console.log(err)
+        try {
+            const web3 = new Web3(library.provider);
+            const ContractT = new web3.eth.Contract(
+                Config.spin.abi,
+                Config.spin.address
+            );
+            const ContractS = new web3.eth.Contract(
+                Config.staking.abi,
+                Config.staking.address
+            )
+            const totalstaked = await ContractS.methods.totalStaked().call()
+            const earned = await ContractS.methods.earned(account).call()
+            const current_pool = await ContractS.methods.lastTimeRewardApplicable().call()
+            console.log(current_pool)
+            console.log(totalstaked)
+            const apr = (fromWei(web3, totalstaked) / current_pool) * (100 / 30)
+            const tokenbalance = await ContractT.methods.balanceOf(account).call()
+            const stakedB = await ContractS.methods.balanceOf(account).call()
+            console.log(stakedB)
+            setUserStakedToken(floor(fromWei(web3, stakedB)))
+            setTotalToken(floor(fromWei(web3, tokenbalance)))
+            setTotalStaked(floor(fromWei(web3, totalstaked)))
+            setEarned(floor(fromWei(web3, earned)))
+            setAPR(floor(apr).toString())
+            if (stakedB) {
+                $(`.last-show-hide`).show()
+                $('.harvest-button').prop("disabled", false);
             }
+
+            await axios.get('https://api.coingecko.com/api/v3/coins/spintop').then(res => {
+                const CurrentP = res.data.market_data.current_price.usd
+                setSpinPrice(CurrentP)
+            })
+
+        } catch (err) {
+            console.log(err)
         }
     }
 
@@ -334,13 +332,18 @@ const Pool = () => {
         setAPR(false)
     }
 
+    const DataLoad = () => {
+        setPools(Config.pools)
+    }
+
     useEffect(() => {
+        DataLoad()
         let interval = null;
         if (active) {
             load();
             interval = setInterval(async () => {
                 load();
-                // console.clear();
+                console.clear();
             }, Config.updateTime);
         } else {
             clear();
@@ -406,7 +409,7 @@ const Pool = () => {
 
                     <Row className="parent-pool">
                         {
-                            Config.pools.map((item, key) => {
+                            Pools.map((item, key) => {
                                 return (
                                     <Col md={4} key={key} style={{ position: "relative" }}>
                                         <Box className="cust-card contract pools">
