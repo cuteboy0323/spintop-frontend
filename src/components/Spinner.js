@@ -5,10 +5,10 @@ const Spinner = () => {
         <div>
             <div className="loading">
                 <div className="loader">
-                    <span></span>
-                    <span></span>
-                    <span></span>
-                    <span></span>
+                    <span className="loading-span"></span>
+                    <span className="loading-span"></span>
+                    <span className="loading-span"></span>
+                    <span className="loading-span"></span>
                 </div>
             </div>
         </div>
