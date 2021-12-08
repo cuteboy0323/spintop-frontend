@@ -71,7 +71,7 @@ const Pool = () => {
     const [Earned, setEarned] = useState(0)
     const [TotalToken, setTotalToken] = useState(0)
     const [UserStakedToken, setUserStakedToken] = useState(0)
-    const [Pools, setPools] = useState({})
+    const [Pools, setPools] = useState()
     const finish = () => {
         $('#live').removeClass('active')
         $('#finished').addClass('active')
@@ -350,6 +350,8 @@ const Pool = () => {
             return () => clearInterval(interval);
         }
     }, [active])
+
+    console.log(Pools)
 
     return (
         <Box>
