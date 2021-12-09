@@ -400,14 +400,14 @@ const Pool = () => {
                                 <p>High APR, low risk.</p>
                                 <button className="blue-btn">Become a partner</button>
                                 <button className="blue-btn active">Need Help?</button>
-                                <Box className="right-top-head">
+                                {/* <Box className="right-top-head">
                                     <p className="first">Auto SPIN Bounty <img src="./assets/images/Form.png" alt="" /></p>
                                     <Box className="d-flex align-items-center justify-content-between">
                                         <span>0.00 USD</span>
                                         <button className="blue-btn small">Claim</button>
                                     </Box>
                                     <p className="first">~ 0.13 USD</p>
-                                </Box>
+                                </Box> */}
                             </Box>
                         </Col>
                     </Row>

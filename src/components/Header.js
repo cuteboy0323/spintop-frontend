@@ -53,19 +53,19 @@ const Header = () => {
                             <img src="./assets/images/exchange_icon.svg" alt="" />
                             <img src="./assets/images/exchange_icon_active.svg" alt="" />
                             <img src="./assets/images/exchange_icon_coming.svg" alt="" />
-                            <span className="tooltip-span">Exchange <span className="tool">comming soon!</span> </span>
+                            <span className="tooltip-span">Exchange <span className="tool">Comming</span> </span>
                         </div>
                         <div className="pages-btn comming-soon">
                             <img src="./assets/images/liquidity_icon.svg" alt="" />
                             <img src="./assets/images/liquidity_icon_active.svg" alt="" />
                             <img src="./assets/images/liquidity_icon_coming.svg" alt="" />
-                            <span className="tooltip-span">Liquidity <span className="tool">comming soon!</span> </span>
+                            <span className="tooltip-span">Liquidity <span className="tool">Comming</span> </span>
                         </div>
                         <div className="pages-btn comming-soon">
                             <img src="./assets/images/game_tokens_icon.svg" alt="" />
                             <img src="./assets/images/game_tokens_icon _active.svg" alt="" />
                             <img src="./assets/images/game_tokens_icon _coming.svg" alt="" />
-                            <span className="tooltip-span">Game Tokens <span className="tool">comming soon!</span> </span>
+                            <span className="tooltip-span">Game Tokens <span className="tool">Comming</span> </span>
                         </div>
 
                     </div>
@@ -105,12 +105,12 @@ const Header = () => {
                         style={{ background: "#f10088" }}
                         color="secondary"
                     >
-                        {account.substring(0, 5)} ... {account.substring(account.length - 3)}
+                        {account.substring(0, 3)} ... {account.substring(account.length - 3)}
                     </Button>
                     :
                     <Button
                         variant="contained"
-                        startIcon={
+                        endIcon={
                             <img width={22} src="./assets/images/exit_icon.svg" alt="connect" />
                         }
                         onClick={onConnectWallet}

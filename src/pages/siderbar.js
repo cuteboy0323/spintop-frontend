@@ -44,7 +44,7 @@ const SiderBar = ({ Params }) => {
 
     return (
         <div className="left-side">
-            <div className="menu">
+            <div className="menu" style={{ position: "fixed" }}>
                 <div className="left-closing-arrow" onClick={() => toggle()}></div>
                 <div className="menu-btns">
                     <a onClick={() => selectSiderBar("home")}>
@@ -72,24 +72,24 @@ const SiderBar = ({ Params }) => {
                         <img src="./assets/images/exchange_icon.svg" alt="" />
                         <img src="./assets/images/exchange_icon_active.svg" alt="" />
                         <img src="./assets/images/exchange_icon_coming.svg" alt="" />
-                        <span className="tooltip-span">Exchange <span className="tool">comming soon!</span> </span>
+                        <span className="tooltip-span">Exchange <span className="tool">Comming</span> </span>
                     </div>
                     <div className="pages-btn comming-soon">
                         <img src="./assets/images/liquidity_icon.svg" alt="" />
                         <img src="./assets/images/liquidity_icon_active.svg" alt="" />
                         <img src="./assets/images/liquidity_icon_coming.svg" alt="" />
-                        <span className="tooltip-span">Liquidity <span className="tool">comming soon!</span> </span>
+                        <span className="tooltip-span">Liquidity <span className="tool">Comming</span> </span>
                     </div>
                     <div className="pages-btn comming-soon">
                         <img src="./assets/images/game_tokens_icon.svg" alt="" />
                         <img src="./assets/images/game_tokens_icon _active.svg" alt="" />
                         <img src="./assets/images/game_tokens_icon _coming.svg" alt="" />
-                        <span className="tooltip-span">Game Tokens <span className="tool">comming soon!</span> </span>
+                        <span className="tooltip-span">Game Tokens <span className="tool">Comming</span> </span>
                     </div>
 
                 </div>
             </div>
-            <div className="extra-info">
+            <div className="extra-info" style={{ position: "fixed", top: "450px" }}>
                 <div className="values">
                     <img src="./assets/images/logo.png" alt="" />
                     <span>$&nbsp;{SpinPrice}</span>
