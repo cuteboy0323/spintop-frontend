@@ -65,11 +65,11 @@ const Pool = () => {
     const [TotalToken, setTotalToken] = useState(-1)
     const [TotalStaked, setTotalStaked] = useState(-1);
     const [earndisable, setearndisable] = useState(true)
-    const [StakingValue, setStakingValue] = useState(-1)
+    const [StakingValue, setStakingValue] = useState(0)
     const [Unstakeable, setUnstakeable] = useState(false)
     const [OpenUnstake, setOpenUnstake] = useState(false);
     const [isOpenDialog, setIsOpenDialog] = useState(false);
-    const [UnStakingValue, setUnStakingValue] = useState(-1)
+    const [UnStakingValue, setUnStakingValue] = useState(0)
     const [UserStakedToken, setUserStakedToken] = useState(-1)
     const myNotification = window.createNotification({})
 
