@@ -3,7 +3,6 @@ import $ from 'jquery'
 import { useEffect } from 'react'
 import { useHistory } from 'react-router'
 import { useWeb3React } from "@web3-react/core";
-import Config from "../config/app"
 import axios from "axios"
 
 const SiderBar = ({ Params }) => {
@@ -25,21 +24,24 @@ const SiderBar = ({ Params }) => {
         $(`#${Params}`).addClass("active")
         await axios.get('https://api.coingecko.com/api/v3/coins/spintop').then(res => {
             const CurrentP = res.data.market_data.current_price.usd
-            setSpinPrice(CurrentP)
+            if (CurrentP) {
+                setSpinPrice(CurrentP)
+            } else {
+                setSpinPrice(localStorage.tokenprice)
+            }
+        }).catch(() => {
+            setSpinPrice(localStorage.tokenprice)
+
         })
+
     }
 
     useEffect(() => {
-        let interval = null;
         if (active) {
-            load();
-            interval = setInterval(async () => {
-                load();
-            }, Config.updateTime);
+            load()
         } else {
-            return () => clearInterval(interval);
+            setSpinPrice(0)
         }
-
     }, [active])
 
     return (

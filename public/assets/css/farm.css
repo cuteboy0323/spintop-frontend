@@ -590,7 +590,7 @@ header .wallet-icon::before {
 .contract-res {
     background-color: #630BF1 !important;
     width: 100% !important;
-    margin-top: 45px !important;
+    margin-top: 70px !important;
 }
 
 @media screen and (max-width: 1024px) {
@@ -614,7 +614,7 @@ header .wallet-icon::before {
     }
 
     .contract-res {
-        margin-top: 45px !important;
+        margin-top: 30px !important;
     }
 
     .main-container .cust-card.steak-only.mobile {

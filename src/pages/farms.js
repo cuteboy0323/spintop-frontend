@@ -6,6 +6,7 @@ import SiderBar from "./siderbar"
 import { styled } from '@mui/material/styles';
 //web3 and jquery
 import $ from "jquery"
+import axios from "axios"
 import Web3 from "web3";
 import { useWeb3React } from "@web3-react/core";
 //import class
@@ -55,21 +56,32 @@ const PrettoSlider = styled(Slider)({
 const Farms = () => {
     // eslint-disable-next-line
     const { activate, active, account, deactivate, connector, error, setError, library, chainId } = useWeb3React();
-    const [isOpenDialog, setIsOpenDialog] = useState(false);
-    const [Multiplier, setMultiplier] = useState(0)
-    const [APR, setAPR] = useState(0)
-    const [Liquidity, setLiquidity] = useState(0)
-    const [Earned, setEarned] = useState(0)
-    const [LpToken, setLpToken] = useState(0)
-    const [StakingValue, setStakingValue] = useState(0)
-    const myNotification = window.createNotification({})
-    const [open, setOpen] = useState(false);
+    const [APR, setAPR] = useState(-1)
     const [SelId, setSelId] = useState("")
-    const TotalTokens = 3250000
+    const [open, setOpen] = useState(false);
+    const [Earned, setEarned] = useState(-1)
+    const [LpToken, setLpToken] = useState(-1)
+    const [SpinPrice, setSpinPrice] = useState()
+    const [Liquidity, setLiquidity] = useState(-1)
+    const [Multiplier, setMultiplier] = useState(-1)
+    const [StakingValue, setStakingValue] = useState(0)
+    const [earndisable, setearndisable] = useState(true)
+    const [Unstakeable, setUnstakeable] = useState(false)
+    const [OpenUnstake, setOpenUnstake] = useState(false);
+    const [isOpenDialog, setIsOpenDialog] = useState(false);
+    const [UnStakingValue, setUnStakingValue] = useState(-1)
+    const [UserStakedToken, setUserStakedToken] = useState(-1)
+    const myNotification = window.createNotification({})
 
-    const onConnectWallet = async () => {
-        setIsOpenDialog(true);
-    }
+    const toWei = useCallback((web3, val) => {
+        if (val) {
+            val = val.toString();
+            return web3.utils.toWei(val);
+        } else {
+            return "0"
+        }
+    }, []);
+
     const fromWei = useCallback((web3, val) => {
         if (val) {
             val = val.toString();
@@ -89,90 +101,290 @@ const Farms = () => {
         $('#finished').removeClass('active')
     }
 
-    const harvest = () => {
-        $('.harvest button.one').addClass('loading')
-        $('.harvest button.one').html('<img src="./assets/images/Progress indicator.svg" class="loading rotating"> Harvesting')
-        setTimeout(function () {
-            $('.harvest button.one').removeClass('loading')
-            $('.harvest button.one').html('Harvested')
-        }, 2500)
+    const harvest = async (id) => {
+        if ($(`.harvest.${id}`).text() == "Harvest") {
+            if (Earned != 0) {
+                try {
+                    $(`.harvest.${id}`).addClass('loading')
+                    $(`.harvest.${id}`).html('<img src="./assets/images/Progress indicator.svg" class="loading rotating">Harvesting')
+                    const web3 = new Web3(library.provider);
+                    const ContractS = new web3.eth.Contract(
+                        Config.farms.abi,
+                        Config.farms.address
+                    )
+                    await ContractS.methods.getReward().send({ from: account })
+                    setEarned("0")
+                    $(`.harvest.${id}`).removeClass('loading')
+                    $(`.harvest.${id}`).html('Harvest')
+                    myNotification({
+                        title: 'Harvested',
+                        message: 'Your SPINTOP earning is sent to your wallet.',
+                        showDuration: 3500
+                    })
+                    return;
+                } catch (err) {
+                    $(`.harvest.${id}`).removeClass('loading')
+                    $(`.harvest.${id}`).html('Harvest')
+                    myNotification({
+                        title: 'Fail',
+                        message: 'User canceled Harvest.',
+                        showDuration: 3500
+                    })
+                    return;
+                }
+            } else {
+                myNotification({
+                    title: 'Harvested',
+                    message: 'Your earning is 0.',
+                    showDuration: 3500
+                })
+                return;
+            }
+        } else {
+            return;
+        }
     }
 
     const enableContract = async (id) => {
-        $(`.contract-btn.one.${id}`).addClass('loading')
-        $(`.contract-btn.one.${id}`).html('<img src="./assets/images/Progress indicator.svg" class="loading rotating"> Enable Contract')
-        const web3 = new Web3(library.provider);
-        const spinC = new web3.eth.Contract(
-            Config.Lp.CakeL.abi,
-            Config.Lp.CakeL.address
-        );
-        const appr = await spinC.methods.approve(account, 0).call();
-        if (appr) {
-            $(`.contract-btn.one.${id}`).fadeOut()
-            $(`.spin-earned.one.${id}`).fadeOut()
-            $(`.harvest button.${id}`).hide()
-            $(`.harvest button.${id}.active`).html('')
-            $(`.harvest button.${id}.active`).html('Stake LP')
-            $(`.harvest button.${id}.active`).show()
-            $(`.harvest button.${id}.active.stake-lp.act`).hide()
+        if (active) {
+            try {
+                $(`.contract-btn.one.${id}`).addClass('loading')
+                $(`.contract-btn.one.${id}`).html('<img src="./assets/images/Progress indicator.svg" class="loading rotating"> Enable Contract')
+                const web3 = new Web3(library.provider);
+                const msg = web3.utils.sha3(web3.utils.toHex("Eanble Contract") + Config.staking.address, { encoding: "hex" })
+                const signature = await web3.eth.personal.sign(msg, account);
+                if (signature) {
+                    setTimeout(() => {
+                        $(`.contract-btn.one.${id}`).fadeOut()
+                        $(`.spin-earned.one.${id}`).fadeOut()
+                        $(`.harvest button.${id}`).hide()
+                        $(`.harvest button.${id}.active`).html('')
+                        $(`.harvest button.${id}.active`).html('Stake LP')
+                        $(`.harvest button.${id}.active`).show()
+                        $(`.harvest button.${id}.active.stake-lp.act`).hide()
+                        myNotification({
+                            title: 'Contract enabled',
+                            message: "You can stake now in the pool.",
+                            showDuration: 3500
+                        })
+                    }, 1000);
+                    return;
+                } else {
+                    $(`.contract-btn.one.${id}`).fadeOut()
+                    myNotification({
+                        title: 'Fail',
+                        message: "You can't enable contract.",
+                        showDuration: 3500
+                    })
+                    return;
+                }
+            } catch (err) {
+                $(`.contract-btn.one.${id}`).removeClass('loading')
+                $(`.contract-btn.one.${id}`).html('Enable Contract')
+                myNotification({
+                    title: 'Fail',
+                    message: "User canceled enable.",
+                    showDuration: 3500
+                })
+                return;
+            }
         } else {
-            $(`.contract-btn.one.${id}`).fadeOut()
+            $(`.contract-btn.one.${id}`).removeClass('loading')
+            $(`.contract-btn.one.${id}`).html('Enable Contract')
+            myNotification({
+                title: 'Fail',
+                message: "Please connect Metamask wallet.",
+                showDuration: 3500
+            })
+            return;
         }
     }
 
-    const confirm = () => {
-        if (Number(StakingValue) <= 0) {
-            myNotification({
-                title: 'Fail',
-                message: 'Please enter value correctly.',
-                showDuration: 3500
-            })
-            return;
-        }
-        if (Number(StakingValue) > Number(LpToken)) {
-            myNotification({
-                title: 'Fail',
-                message: 'Your SpinTop-BNB token is not enough.',
-                showDuration: 3500
-            })
+    const unstakeable = async () => {
+        const web3 = new Web3(library.provider);
+        const ContractS = new web3.eth.Contract(
+            Config.farms.abi,
+            Config.farms.address
+        )
+        const unstakeable = await ContractS.methods.unstakable(account).call()
+        if (unstakeable) {
+            setOpenUnstake(true)
+            setUnstakeable(true)
             return;
         } else {
-            $('.confirm').addClass('loading')
-            $('.confirm').html('<img src="./assets/images/Progress indicator.svg" class="loading rotating"> Confirming')
-            setTimeout(function () {
-                setOpen(false)
-                setStakingValue(0)
-                // $('#exampleModal').hide()
-                $('.one.active').html('Harvest')
-                $(`.last-show-hide.${SelId}`).show()
-                $('.modal-backdrop').hide()
-                $('.harvest button.one.active').hide()
-                $('.harvest button.one.stake-lp.act').show()
-                $('.confirm').removeClass('loading')
-                $('.confirm').html('Confirm')
-                $(`.${SelId}.active.stake-lp`).hide()
-                $(`#${SelId}`).show()
-            }, 2500)
-        }
-    }
-    const harvested = () => {
-        $(".act").addClass('loading')
-        $(".act").html('<img src="./assets/images/Progress indicator.svg" class="loading rotating"> Harvesting')
-        setTimeout(function () {
-            $('.act').removeClass('loading')
-            $('.act').html('Harvest')
+            setOpenUnstake(true)
+            setUnstakeable(true)
             myNotification({
-                title: 'Harvested',
-                message: 'Your SPINTOP earning is sent to your wallet!',
+                title: 'Unstake',
+                message: 'Please wait one day from latest staking date.Then You can unstake.',
                 showDuration: 3500
             })
-        }, 2500)
+            return;
+        }
+    }
+
+    const confirm = async () => {
+        if ($(".confirm.stake").text() == "Confirm") {
+            if (Number(StakingValue) <= 0) {
+                myNotification({
+                    title: 'Fail',
+                    message: 'Please enter value correctly.',
+                    showDuration: 3500
+                })
+                return;
+            }
+            if (Number(StakingValue) > Number(LpToken)) {
+                myNotification({
+                    title: 'Fail',
+                    message: 'Your SpinTop-BNB token is not enough.',
+                    showDuration: 3500
+                })
+                return;
+            } else {
+                try {
+                    $('.confirm').addClass('loading')
+                    $('.cancel').attr('disabled', true);
+                    $('.confirm').html('<img src="./assets/images/Progress indicator.svg" class="loading rotating">Confirming')
+                    const web3 = new Web3(library.provider);
+                    const ContractT = new web3.eth.Contract(
+                        Config.stakinglp.abi,
+                        Config.stakinglp.address
+                    );
+                    const ContractF = new web3.eth.Contract(
+                        Config.farms.abi,
+                        Config.farms.address
+                    )
+                    const balance = toWei(web3, StakingValue)
+                    const apr = await ContractT.methods.approve(Config.farms.address, balance).send({ from: account })
+                    if (apr) {
+                        const staked = await ContractF.methods.stake(balance).send({ from: account })
+                        if (staked) {
+                            setOpen(false)
+                            $('.cancel').attr('disabled', false);
+                            $('.confirm.stake').removeClass('loading')
+                            $('.confirm.stake').html('Confirm')
+                            $(`.last-show-hide.${SelId}`).show()
+                            $(`.spin-earned.${SelId}`).hide()
+                            $(`.contract-btn.one.pools-enable.${SelId}`).hide()
+                            setearndisable(false)
+                            myNotification({
+                                title: 'Staked',
+                                message: 'Your Spintop-BNB funds have been staked in the farms.',
+                                showDuration: 3500
+                            })
+                            load()
+                        }
+                    }
+                    setTimeout(function () {
+                        setOpen(false)
+                        setStakingValue(0)
+                        $('.one.active').html('Harvest')
+                        $(`.last-show-hide.${SelId}`).show()
+                        $('.modal-backdrop').hide()
+                        $('.harvest button.one.active').hide()
+                        $('.harvest button.one.stake-lp.act').show()
+                        $('.confirm').removeClass('loading')
+                        $('.confirm').html('Confirm')
+                        $(`.${SelId}.active.stake-lp`).hide()
+                        $(`#${SelId}`).show()
+                    }, 2500)
+                } catch (err) {
+                    $('.confirm').removeClass('loading')
+                    $('.cancel').attr('disabled', false);
+                    $('.confirm').html('Confirm')
+                    myNotification({
+                        title: 'Fail',
+                        message: 'User canceled staking.',
+                        showDuration: 3500
+                    })
+                    return;
+                }
+            }
+        } else {
+            return;
+        }
+    }
+
+    const unstake = async () => {
+        if ($('.confirm.unstake').text() == "Confirm") {
+            if (Number(UnStakingValue) <= 0) {
+                myNotification({
+                    title: 'Fail',
+                    message: 'Please enter value correctly.',
+                    showDuration: 3500
+                })
+                return;
+            }
+            if (Number(UnStakingValue) > Number(UserStakedToken)) {
+                myNotification({
+                    title: 'Fail',
+                    message: 'Your SpinTop token is not enough.',
+                    showDuration: 3500
+                })
+                return;
+            } else {
+                try {
+                    if (Unstakeable) {
+                        $('.confirm.unstake').addClass('loading')
+                        $('.confirm.unstake').html('<img src="./assets/images/Progress indicator.svg" class="loading rotating">Confirming')
+                        const web3 = new Web3(library.provider);
+                        const ContractS = new web3.eth.Contract(
+                            Config.farms.abi,
+                            Config.farms.address
+                        )
+
+                        const balance = toWei(web3, UnStakingValue)
+                        const apr = await ContractS.methods.unstake(balance).send({ from: account })
+                        if (apr) {
+                            setOpenUnstake(false)
+                            $('.confirm.unstake').removeClass('loading')
+                            $('.confirm.unstake').html('Confirm')
+                            $(`.contract-btn.one.pools-enable.${SelId}`).hide()
+                            $('.harvest-button').prop("disabled", false);
+                            myNotification({
+                                title: 'UnStaked',
+                                message: 'Your Spintop funds have been unstaked in the pool.',
+                                showDuration: 3500
+                            })
+                            load()
+                        }
+                    } else {
+                        myNotification({
+                            title: 'Unstake',
+                            message: 'Please wait one day from latest staking date.Then You can unstake.',
+                            showDuration: 3500
+                        })
+                    }
+                } catch (e) {
+                    $('.confirm.unstake').removeClass('loading')
+                    $('.confirm.unstake').html('Confirm')
+                    myNotification({
+                        title: 'UnStaked',
+                        message: 'User canceled Unstaking.',
+                        showDuration: 3500
+                    })
+                    return;
+                }
+            }
+        } else {
+            return;
+        }
     }
 
     const stakeLp = (id) => {
         setOpen(true)
         setSelId(id)
     }
+
+    const floor = useCallback((val) => {
+        if (val) {
+            let data = Math.floor(val * 100000000)
+            const res = data / 100000000
+            return res
+        } else {
+            return 0
+        }
+    })
 
     const load = async () => {
         try {
@@ -182,28 +394,51 @@ const Farms = () => {
                 Config.farms.address
             );
             const spinL = new web3.eth.Contract(
-                Config.Lp.CakeL.abi,
-                Config.Lp.CakeL.address
+                Config.stakinglp.abi,
+                Config.stakinglp.address
             );
             const lptokenB = await spinL.methods.balanceOf(account).call()
+            const liquidity = await spinL.methods.getReserves().call()
             const earnValue = await spinF.methods.earned(account).call()
-            const liquidity = await spinF.methods.totalStaked().call()
+            const totalstaked = await spinF.methods.totalStaked().call()
+            const current_pool = await spinF.methods.lastTimeRewardApplicable().call()
+            const stakedB = await spinF.methods.balanceOf(account).call()
+            const apr = (fromWei(web3, totalstaked) / current_pool) * (100 / 30)
+            setUserStakedToken(floor(fromWei(web3, stakedB)))
             setEarned(earnValue)
-            setAPR(Math.floor(TotalTokens / liquidity))
-            setMultiplier(40)
-            setLiquidity(liquidity)
+            setAPR(floor(apr))
+            setMultiplier(10)
             setLpToken(fromWei(web3, lptokenB))
+            if (stakedB > 0) {
+                $(`.last-show-hide`).show()
+                setearndisable(false)
+            }
+            await axios.get('https://api.coingecko.com/api/v3/coins/spintop').then(res => {
+                const CurrentP = res.data.market_data.current_price.usd
+                if (CurrentP) {
+                    localStorage.tokenprice = CurrentP
+                    setSpinPrice(CurrentP)
+                    setLiquidity(floor(fromWei(web3, liquidity[0]) * 2 * CurrentP))
+                } else {
+                    setLiquidity(floor(fromWei(web3, liquidity[0]) * 2 * localStorage.tokenprice))
+                    setSpinPrice(localStorage.tokenprice)
+                }
+            }).catch(() => {
+                setLiquidity(floor(fromWei(web3, liquidity[0]) * 2 * localStorage.tokenprice))
+                setSpinPrice(localStorage.tokenprice)
+            })
         } catch (err) {
             console.log(err)
         }
     }
 
     const clear = () => {
-        setEarned(-1)
         setAPR(-1)
-        setLiquidity(-1)
+        setEarned(-1)
         setLpToken(-1)
+        setLiquidity(-1)
         setMultiplier(-1)
+        setUserStakedToken(-1)
     }
 
     useEffect(() => {
@@ -222,7 +457,7 @@ const Farms = () => {
 
     return (
         <Box>
-            <Box className="main-container">
+            <Box className="main-container" style={{ minHeight: "100vh" }}>
                 <SiderBar Params="farms" />
                 <Box className="right-side">
                     <Box className="cust-card steak-only mobile">
@@ -270,7 +505,7 @@ const Farms = () => {
                                                         if (Multiplier != -1) {
                                                             return (
                                                                 <Typography className="value big" color="primary">
-                                                                    <span className="x-40">{Multiplier}</span>
+                                                                    <span className="x-40">{`${Multiplier}x`}</span>
                                                                 </Typography>
                                                             )
                                                         } else {
@@ -313,29 +548,30 @@ const Farms = () => {
                                                         return <Typography><Skeleton animation="wave" className="smallskelton" style={{ minWidth: "100px" }} /></Typography>
                                                     }
                                                 })()}
-                                                <button className={item.id} id={item.id} onClick={() => harvest(item.id)} disabled>Harvest</button>
+                                                <button className={`harvest ${item.id}`} id={item.id} onClick={() => harvest(item.id)} disabled={earndisable}>Harvest</button>
                                                 <button className={`${item.id} active stake-lp`} onClick={() => stakeLp(item.id)}>Stake LP</button>
-                                                <button className={`${item.id} active stake-lp act`} onClick={() => harvested(item.id)}>Harvested</button>
                                             </Box>
-                                            <p className={`spin-earned one ${item.id}`}>SPIN-BNB LP STAKED</p>
                                             {
-                                                active ? <button className={`contract-btn one ${item.id}`} onClick={() => enableContract(item.id)}>Enable Contract</button>
+                                                UserStakedToken ?
+                                                    <Box className={`last-show-hide ${item.id}`}>
+                                                        <p className="spin-earned harvest-show-hide">SPIN-BNB STAKED</p>
+                                                        <Box className="d-flex">
+                                                            <Box className="d-flex harvest-show-hide">
+                                                                <span>{UserStakedToken}</span>
+                                                                <span>~{floor(UserStakedToken * SpinPrice)} USD</span>
+                                                            </Box>
+                                                            <Box className="d-flex">
+                                                                <a onClick={() => unstakeable()}><img className="plus-minus-icon" src="./assets/images/minus.svg" alt="" /></a>
+                                                                <a onClick={() => setOpen(true)}><img className="plus-minus-icon" src="./assets/images/plus.svg" alt="" /></a>
+                                                            </Box>
+                                                        </Box>
+                                                    </Box>
                                                     :
-                                                    <button className={`contract-btn one ${item.id}`} onClick={() => onConnectWallet(item.id)}>Connect Wallet</button>
+                                                    <>
+                                                        <p className={`spin-earned one ${item.id}`}>SPIN-BNB LP STAKED</p>
+                                                        <button className={`contract-btn one ${item.id}`} onClick={() => enableContract(item.id)}>Enable Contract</button>
+                                                    </>
                                             }
-                                            <Box className={`last-show-hide ${item.id}`}>
-                                                <p className="spin-earned harvest-show-hide">SPIN-BNB LP STAKED</p>
-                                                <Box className="d-flex">
-                                                    <Box className="d-flex harvest-show-hide">
-                                                        <span>{StakingValue}</span>
-                                                        <span>~26.91 USD</span>
-                                                    </Box>
-                                                    <Box className="d-flex">
-                                                        <img className="plus-minus-icon" src="./assets/images/minus.svg" alt="" />
-                                                        <img className="plus-minus-icon" src="./assets/images/plus.svg" alt="" />
-                                                    </Box>
-                                                </Box>
-                                            </Box>
                                             <p className="line"></p>
                                             <Box className="hide-show" data-bs-toggle="collapse" href={`#col${item.id}`} style={{ paddingBottom: "15px" }} role="button" aria-expanded="false" aria-controls="collapseExample1">
                                                 <span>Hide</span>
@@ -383,14 +619,13 @@ const Farms = () => {
                     <Modal
                         keepMounted
                         open={open}
-                        onClose={() => setOpen(false)}
                         aria-labelledby="keep-mounted-modal-title"
                         aria-describedby="keep-mounted-modal-description"
                     >
                         <Box className="stakingmodal" >
                             <Box className="modal-header">
-                                <span className="modal-span">Stake in Pool</span>
-                                <img src="./assets/images/close-icon.png" alt="" onClick={() => setOpen(false)} />
+                                <span className="modal-span">Stake in Farms</span>
+                                {/* <img src="./assets/images/close-icon.png" alt="" onClick={() => setOpen(false)} /> */}
                             </Box>
                             <Box className="modal_content">
                                 <Box className="stakebox-header">
@@ -401,7 +636,6 @@ const Farms = () => {
                                 <Box className="modal_box">
                                     <Box style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
                                         <span className="stake-span">Stake</span>
-                                        {/* <Typography>Blanace </Typography> */}
                                         {(() => {
                                             if (LpToken != -1) {
                                                 return (
@@ -431,6 +665,59 @@ const Farms = () => {
                                 <Box style={{ marginTop: "30px", display: "flex" }}>
                                     <button className="cancel" onClick={() => setOpen(false)}>Cancel</button>
                                     <button className="confirm stake" onClick={() => confirm()}>Confirm</button>
+                                </Box>
+                            </Box>
+                        </Box>
+                    </Modal>
+
+                    <Modal
+                        keepMounted
+                        open={OpenUnstake}
+                        aria-labelledby="keep-mounted-modal-title"
+                        aria-describedby="keep-mounted-modal-description"
+                    >
+                        <Box className="stakingmodal" >
+                            <Box className="modal-header">
+                                <span className="modal-span">UnStake in Farms</span>
+                                {/* <img src="./assets/images/close-icon.png" alt="" onClick={() => setOpenUnstake(false)} /> */}
+                            </Box>
+                            <Box className="modal_content">
+                                <Box className="stakebox-header">
+                                    <span className="stake-span" style={{ fontSize: "20px" }}>UnStake</span>
+                                    <img src="../assets/images/logo.png" style={{ height: "25px" }} alt="" />
+                                </Box>
+                                <Box className="modal_box">
+                                    <Box style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+                                        <span className="stake-span">UnStake</span>
+                                        {(() => {
+                                            if (UserStakedToken != -1) {
+                                                return (
+                                                    <Typography className="value big" color="primary">
+                                                        <span className="stake-span">Blanace  &nbsp;${UserStakedToken}</span>
+                                                    </Typography>
+                                                )
+                                            } else {
+                                                return <Typography><Skeleton animation="wave" className="smallskelton" style={{ minWidth: "100px" }} /></Typography>
+                                            }
+                                        })()}
+                                    </Box>
+                                    <Box className="modal_box_cal">
+                                        <input type="number" style={{ border: "none", background: "#240e48", color: "white", width: "50%" }} value={UnStakingValue} onChange={(e) => setUnStakingValue(e.target.value)} />
+                                        <button className="max-button" onClick={() => setUnStakingValue(UserStakedToken)}>Max</button>
+                                    </Box>
+                                    <Box sx={{ m: 3 }} />
+                                    <PrettoSlider
+                                        valueLabelDisplay="auto"
+                                        aria-label="pretto slider"
+                                        defaultValue={0}
+                                        value={UnStakingValue}
+                                        max={UserStakedToken}
+                                        onChange={(e) => setUnStakingValue(e.target.value)}
+                                    />
+                                </Box>
+                                <Box style={{ marginTop: "30px", display: "flex" }}>
+                                    <button className="cancel" onClick={() => setOpenUnstake(false)}>Cancel</button>
+                                    <button className="confirm unstake" onClick={() => unstake()}>Confirm</button>
                                 </Box>
                             </Box>
                         </Box>

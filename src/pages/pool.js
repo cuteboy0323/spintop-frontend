@@ -56,22 +56,23 @@ const PrettoSlider = styled(Slider)({
 const Pool = () => {
     // eslint-disable-next-line
     const { activate, active, account, deactivate, connector, error, setError, library, chainId } = useWeb3React();
-    const [isOpenDialog, setIsOpenDialog] = useState(false);
-    const [StakingValue, setStakingValue] = useState(0)
-    const [UnStakingValue, setUnStakingValue] = useState(0)
-    const myNotification = window.createNotification({})
-    const [open, setOpen] = useState(false);
-    const [OpenUnstake, setOpenUnstake] = useState(false);
-    const [SelId, setSelId] = useState()
-    const [SpinPrice, setSpinPrice] = useState(0)
-    const [TotalStaked, setTotalStaked] = useState(0);
-    const [APR, setAPR] = useState(0)
-    const [Earned, setEarned] = useState(0)
-    const [TotalToken, setTotalToken] = useState(0)
-    const [UserStakedToken, setUserStakedToken] = useState(0)
+    const [APR, setAPR] = useState(-1)
     const [Pools, setPools] = useState()
-    const [Unstakeable, setUnstakeable] = useState(false)
+    const [SelId, setSelId] = useState()
+    const [open, setOpen] = useState(false);
+    const [Earned, setEarned] = useState(-1)
+    const [SpinPrice, setSpinPrice] = useState(-1)
+    const [TotalToken, setTotalToken] = useState(-1)
+    const [TotalStaked, setTotalStaked] = useState(-1);
     const [earndisable, setearndisable] = useState(true)
+    const [StakingValue, setStakingValue] = useState(-1)
+    const [Unstakeable, setUnstakeable] = useState(false)
+    const [OpenUnstake, setOpenUnstake] = useState(false);
+    const [isOpenDialog, setIsOpenDialog] = useState(false);
+    const [UnStakingValue, setUnStakingValue] = useState(-1)
+    const [UserStakedToken, setUserStakedToken] = useState(-1)
+    const myNotification = window.createNotification({})
+
     const finish = () => {
         $('#live').removeClass('active')
         $('#finished').addClass('active')
@@ -89,26 +90,37 @@ const Pool = () => {
                 setOpen(true)
                 setSelId(id)
             } else {
-                $(`.contract-btn.one.pools-enable.${id}`).addClass('loading')
-                $(`.contract-btn.one.pools-enable.${id}`).html('<img src="./assets/images/Progress indicator.svg" class="loading rotating"> Enabling')
-                const web3 = new Web3(library.provider);
-                const msg = web3.utils.sha3(web3.utils.toHex("Eanble Contract") + Config.staking.address, { encoding: "hex" })
-                const signature = await web3.eth.personal.sign(msg, account);
-                if (signature) {
-                    setTimeout(() => {
-                        $(`.contract-btn.one.pools-enable.${id}`).removeClass('loading')
-                        $(`.contract-btn.one.pools-enable.${id}`).html("Stake")
+                try {
+                    $(`.contract-btn.one.pools-enable.${id}`).addClass('loading')
+                    $(`.contract-btn.one.pools-enable.${id}`).html('<img src="./assets/images/Progress indicator.svg" class="loading rotating"> Enabling')
+                    const web3 = new Web3(library.provider);
+                    const msg = web3.utils.sha3(web3.utils.toHex("Eanble Contract") + Config.staking.address, { encoding: "hex" })
+                    const signature = await web3.eth.personal.sign(msg, account);
+                    if (signature) {
+                        setTimeout(() => {
+                            $(`.contract-btn.one.pools-enable.${id}`).removeClass('loading')
+                            $(`.contract-btn.one.pools-enable.${id}`).html("Stake")
+                            myNotification({
+                                title: 'Contract enabled',
+                                message: "You can stake now in the pool.",
+                                showDuration: 3500
+                            })
+                        }, 1000);
+                        return;
+                    } else {
                         myNotification({
-                            title: 'Contract enabled',
-                            message: "You can stake now in the pool.",
+                            title: 'Fail',
+                            message: "You can't enable contract.",
                             showDuration: 3500
                         })
-                    }, 1000);
-                    return;
-                } else {
+                        return;
+                    }
+                } catch (err) {
+                    $(`.contract-btn.one.pools-enable.${id}`).removeClass('loading')
+                    $(`.contract-btn.one.pools-enable.${id}`).html('Enable')
                     myNotification({
                         title: 'Fail',
-                        message: "You can't enable contract.",
+                        message: "User canceled Contract Enabling.",
                         showDuration: 3500
                     })
                     return;
@@ -163,6 +175,7 @@ const Pool = () => {
             } else {
                 try {
                     $('.confirm.stake').addClass('loading')
+                    $('.cancel').attr('disabled', true);
                     $('.confirm.stake').html('<img src="./assets/images/Progress indicator.svg" class="loading rotating">Confirming')
                     const web3 = new Web3(library.provider);
                     const ContractT = new web3.eth.Contract(
@@ -179,6 +192,7 @@ const Pool = () => {
                         const staked = await ContractS.methods.stake(balance).send({ from: account })
                         if (staked) {
                             setOpen(false)
+                            $('.cancel').attr('disabled', false);
                             $('.confirm.stake').removeClass('loading')
                             $('.confirm.stake').html('Confirm')
                             $(`.last-show-hide.${SelId}`).show()
@@ -194,7 +208,15 @@ const Pool = () => {
                         }
                     }
                 } catch (e) {
-                    console.log(e)
+                    $('.confirm.stake').removeClass('loading')
+                    $('.cancel').attr('disabled', false);
+                    $('.confirm.stake').html('Confirm')
+                    myNotification({
+                        title: 'Fail',
+                        message: 'User canceled Staking.',
+                        showDuration: 3500
+                    })
+                    return;
                 }
             }
         } else {
@@ -233,11 +255,12 @@ const Pool = () => {
                 try {
                     if (Unstakeable) {
                         $('.confirm.unstake').addClass('loading')
+                        $('.cancel').attr('disabled', true);
                         $('.confirm.unstake').html('<img src="./assets/images/Progress indicator.svg" class="loading rotating">Confirming')
                         const web3 = new Web3(library.provider);
                         const ContractS = new web3.eth.Contract(
-                            Config.staking.abi,
-                            Config.staking.address
+                            Config.farms.abi,
+                            Config.farms.address
                         )
 
                         const balance = toWei(web3, UnStakingValue)
@@ -263,7 +286,15 @@ const Pool = () => {
                         })
                     }
                 } catch (e) {
-                    console.log(e)
+                    $('.confirm.unstake').removeClass('loading')
+                    $('.cancel').attr('disabled', false);
+                    $('.confirm.unstake').html('Confirm')
+                    myNotification({
+                        title: 'Fail',
+                        message: 'User canceled Unstaking.',
+                        showDuration: 3500
+                    })
+                    return;
                 }
             }
         } else {
@@ -273,23 +304,43 @@ const Pool = () => {
 
     const harvest = async () => {
         if ($('.harvest-button').text() == "Harvest") {
-            $('.harvest-button').addClass('loading')
-            $('.harvest-button').html('<img src="./assets/images/Progress indicator.svg" class="loading rotating">Harvesting')
-            const web3 = new Web3(library.provider);
-            const ContractS = new web3.eth.Contract(
-                Config.staking.abi,
-                Config.staking.address
-            )
-            await ContractS.methods.getReward().send({ from: account })
-            setEarned("0")
-            $('.harvest-button').removeClass('loading')
-            $('.harvest-button').html('Harvest')
-            myNotification({
-                title: 'Harvested',
-                message: 'Your SPINTOP earning is sent to your wallet.',
-                showDuration: 3500
-            })
-            return;
+            if (Earned != 0) {
+                try {
+                    $('.harvest-button').addClass('loading')
+                    $('.harvest-button').html('<img src="./assets/images/Progress indicator.svg" class="loading rotating">Harvesting')
+                    const web3 = new Web3(library.provider);
+                    const ContractS = new web3.eth.Contract(
+                        Config.staking.abi,
+                        Config.staking.address
+                    )
+                    await ContractS.methods.getReward().send({ from: account })
+                    setEarned("0")
+                    $('.harvest-button').removeClass('loading')
+                    $('.harvest-button').html('Harvest')
+                    myNotification({
+                        title: 'Harvested',
+                        message: 'Your SPINTOP earning is sent to your wallet.',
+                        showDuration: 3500
+                    })
+                    return;
+                } catch (e) {
+                    $('.harvest-button').removeClass('loading')
+                    $('.harvest-button').html('Harvest')
+                    myNotification({
+                        title: 'Fail',
+                        message: 'User canceled Harvest.',
+                        showDuration: 3500
+                    })
+                    return;
+                }
+            } else {
+                myNotification({
+                    title: 'Harvested',
+                    message: 'Your SPINTOP earning is 0.',
+                    showDuration: 3500
+                })
+                return;
+            }
         } else {
             return;
         }
@@ -312,6 +363,7 @@ const Pool = () => {
             const apr = (fromWei(web3, totalstaked) / current_pool) * (100 / 30)
             const tokenbalance = await ContractT.methods.balanceOf(account).call()
             const stakedB = await ContractS.methods.balanceOf(account).call()
+
             setUserStakedToken(floor(fromWei(web3, stakedB)))
             setTotalToken(floor(fromWei(web3, tokenbalance)))
             setTotalStaked(floor(fromWei(web3, totalstaked)))
@@ -324,7 +376,13 @@ const Pool = () => {
 
             await axios.get('https://api.coingecko.com/api/v3/coins/spintop').then(res => {
                 const CurrentP = res.data.market_data.current_price.usd
-                setSpinPrice(CurrentP)
+                if (CurrentP) {
+                    setSpinPrice(CurrentP)
+                } else {
+                    setSpinPrice(localStorage.tokenprice)
+                }
+            }).catch(() => {
+                setSpinPrice(localStorage.tokenprice)
             })
 
         } catch (err) {
@@ -339,7 +397,6 @@ const Pool = () => {
             Config.staking.address
         )
         const unstakeable = await ContractS.methods.unstakable(account).call()
-        console.log(unstakeable)
         if (unstakeable) {
             setOpenUnstake(unstakeable)
             setUnstakeable(unstakeable)
@@ -364,7 +421,7 @@ const Pool = () => {
         setAPR(-1)
     }
 
-    const DataLoad = () => {
+    const dataload = () => {
         setPools(Config.pools)
     }
 
@@ -373,7 +430,7 @@ const Pool = () => {
     }
 
     useEffect(() => {
-        DataLoad()
+        dataload()
         let interval = null;
         if (active) {
             load();
@@ -400,14 +457,6 @@ const Pool = () => {
                                 <p>High APR, low risk.</p>
                                 <button className="blue-btn">Become a partner</button>
                                 <button className="blue-btn active">Need Help?</button>
-                                {/* <Box className="right-top-head">
-                                    <p className="first">Auto SPIN Bounty <img src="./assets/images/Form.png" alt="" /></p>
-                                    <Box className="d-flex align-items-center justify-content-between">
-                                        <span>0.00 USD</span>
-                                        <button className="blue-btn small">Claim</button>
-                                    </Box>
-                                    <p className="first">~ 0.13 USD</p>
-                                </Box> */}
                             </Box>
                         </Col>
                     </Row>
@@ -499,14 +548,14 @@ const Pool = () => {
                                                                 }
                                                             })()}
                                                         </Box>
-                                                        <button className="harvest-button" disabled={earndisable} onClick={() => harvest()}>Harvest</button>
+                                                        <button style={{ marginRight: "17px" }} className="harvest-button" disabled={earndisable} onClick={() => harvest()}>Harvest</button>
                                                     </Box>
                                             }
 
                                             {
                                                 UserStakedToken ?
                                                     <Box className={`last-show-hide ${item.id}`}>
-                                                        <p className="spin-earned harvest-show-hide">SPIN-BNB LP STAKED</p>
+                                                        <p className="spin-earned harvest-show-hide">SPIN STAKED</p>
                                                         <Box className="d-flex">
                                                             <Box className="d-flex harvest-show-hide">
                                                                 <span>{UserStakedToken}</span>
@@ -575,10 +624,6 @@ const Pool = () => {
                                                             }
                                                         })()}
                                                     </Box>
-                                                    {/* <Box className="d-flex justify-content-between align-content-center mt-1">
-                                                        <span>Performance fee <img src="./assets/images/Form.png" className=" form-p" alt="" /></span>
-                                                        <span>{item.fee}</span>
-                                                    </Box> */}
                                                     <a href={item.tokeninfo} target="_blank" rel="noreferrer">
                                                         <Box className="d-flex cursor-pointer">
                                                             <p className="links first">See Token Info</p>
@@ -612,14 +657,13 @@ const Pool = () => {
                 <Modal
                     keepMounted
                     open={open}
-                    onClose={() => setOpen(false)}
                     aria-labelledby="keep-mounted-modal-title"
                     aria-describedby="keep-mounted-modal-description"
                 >
                     <Box className="stakingmodal" >
                         <Box className="modal-header">
                             <span className="modal-span">Stake in Pool</span>
-                            <img src="./assets/images/close-icon.png" alt="" onClick={() => setOpen(false)} />
+                            {/* <img src="./assets/images/close-icon.png" alt="" onClick={() => setOpen(false)} /> */}
                         </Box>
                         <Box className="modal_content">
                             <Box className="stakebox-header">
@@ -630,7 +674,6 @@ const Pool = () => {
                             <Box className="modal_box">
                                 <Box style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
                                     <span className="stake-span">Stake</span>
-                                    {/* <Typography>Blanace </Typography> */}
                                     {(() => {
                                         if (TotalToken != -1) {
                                             return (
@@ -661,10 +704,6 @@ const Pool = () => {
                                 <button className="cancel" onClick={() => setOpen(false)}>Cancel</button>
                                 <button className="confirm stake" onClick={() => confirm()}>Confirm</button>
                             </Box>
-                            {/* <Box className="links-contain">
-                                <p className="links">Swap 10 BUSD for 0.025 BNB</p>
-                                <img src="./assets/images/link_open.svg" alt="" className="link-open" />
-                            </Box> */}
                         </Box>
                     </Box>
                 </Modal>
@@ -672,14 +711,13 @@ const Pool = () => {
                 <Modal
                     keepMounted
                     open={OpenUnstake}
-                    onClose={() => setOpenUnstake(false)}
                     aria-labelledby="keep-mounted-modal-title"
                     aria-describedby="keep-mounted-modal-description"
                 >
                     <Box className="stakingmodal" >
                         <Box className="modal-header">
                             <span className="modal-span">UnStake in Pool</span>
-                            <img src="./assets/images/close-icon.png" alt="" onClick={() => setOpenUnstake(false)} />
+                            {/* <img src="./assets/images/close-icon.png" alt="" onClick={() => setOpenUnstake(false)} /> */}
                         </Box>
                         <Box className="modal_content">
                             <Box className="stakebox-header">
@@ -719,10 +757,6 @@ const Pool = () => {
                                 <button className="cancel" onClick={() => setOpenUnstake(false)}>Cancel</button>
                                 <button className="confirm unstake" onClick={() => unstake()}>Confirm</button>
                             </Box>
-                            {/* <Box className="links-contain">
-                                <p className="links">Swap 10 BUSD for 0.025 BNB</p>
-                                <img src="./assets/images/link_open.svg" alt="" className="link-open" />
-                            </Box> */}
                         </Box>
                     </Box>
                 </Modal>

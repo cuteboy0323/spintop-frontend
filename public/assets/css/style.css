@@ -352,7 +352,7 @@ header .connect {
   line-height: 24px;
   letter-spacing: -0.6px;
   color: rgba(184, 197, 236, 0.2);
-  margin-right: 14px;
+  /* margin-right: 14px; */
 }
 
 .main-container .cust-card {

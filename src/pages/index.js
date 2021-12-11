@@ -104,26 +104,34 @@ const Home = () => {
           Config.staking.abi,
           Config.staking.address
         );
-        const spinF = new web3.eth.Contract(
-          Config.farms.abi,
-          Config.farms.address
-        );
+
         const walletB = await spinT.methods.balanceOf(account).call();
         const totalMint = await spinT.methods.totalSupply().call();
         const totalstaked = await spinC.methods.totalStaked().call();
         const totalburned = await spinT.methods.totalSupply().call();
-        const harvestedValue = await spinF.methods.pendingSpintop(account).call();
+        const harvestedstaking = await spinC.methods.earned(account).call();
+
         setWalletBalance(fromWei(web3, walletB).toString())
         setTotalMinted(fromWei(web3, totalMint))
         setTotalBurned(fromWei(web3, totalburned))
-        setHarvestSpintop(harvestedValue)
+        setHarvestSpintop(fromWei(web3, harvestedstaking))
         setTVL(Math.floor(fromWei(web3, totalstaked)))
 
         await axios.get('https://api.coingecko.com/api/v3/coins/spintop').then(res => {
           const CurrentP = res.data.market_data.current_price.usd
           const marketcap = CurrentP * res.data.market_data.total_supply;
-          setSpinPrice(CurrentP)
-          setMarketCap(marketcap)
+          if (CurrentP) {
+            localStorage.tokenprice = CurrentP
+            localStorage.marketcap = marketcap
+            setSpinPrice(CurrentP)
+            setMarketCap(marketcap)
+          } else {
+            setSpinPrice(localStorage.tokenprice)
+            setMarketCap(localStorage.marketcap)
+          }
+        }).catch(() => {
+          setSpinPrice(localStorage.tokenprice)
+          setMarketCap(localStorage.marketcap)
         })
 
       } catch (err) {
@@ -177,7 +185,6 @@ const Home = () => {
                   <Box>
                     <img src="./assets/images/Spintoken.svg" alt="" className="spintoken" />
                     <Fab variant="extended" size="small" color="primary" aria-label="add" title="Add Token" onClick={() => addToken()} style={{ background: "rgb(33 15 60)" }}>
-                      {/* <TokenIcon sx={{ mr: 1 }} /> */}
                       <img src="./assets/images/logo.png" style={{ height: "20px", margin: "0px" }} />&nbsp;&nbsp;&nbsp;
                       <KeyboardDoubleArrowRightIcon sx={{ mr: 1 }} />
                       <img width={22} src="./assets/images/meta-mask.svg" style={{ margin: "0px" }} alt="connected" />
@@ -194,7 +201,7 @@ const Home = () => {
                   if (harvestSpintop != false || typeof (harvestSpintop) == "string") {
                     return (
                       <Typography className="value big" color="primary">
-                        <span className="sub-txt">{harvestSpintop}</span><br/>
+                        <span className="sub-txt">{harvestSpintop}</span><br />
                         <span className="money">~${harvestSpintop * SpinPrice}</span>
                       </Typography>
                     )
@@ -207,7 +214,7 @@ const Home = () => {
                   if (walletBalance != false || typeof (walletBalance) == "string") {
                     return (
                       <Typography className="value big" color="primary">
-                        <span className="sub-txt">{walletBalance}</span><br/>
+                        <span className="sub-txt">{walletBalance}</span><br />
                         <span className="money">~${walletBalance * SpinPrice}</span>
                       </Typography>
                     )
