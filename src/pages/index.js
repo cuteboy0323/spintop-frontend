@@ -18,12 +18,12 @@ const Home = () => {
   // eslint-disable-next-line
   const { activate, active, account, deactivate, connector, error, setError, library, chainId } = useWeb3React();
   const [isOpenDialog, setIsOpenDialog] = useState(false);
-  const [harvestSpintop, setHarvestSpintop] = useState(false);
-  const [walletBalance, setWalletBalance] = useState(false);
-  const [marketCap, setMarketCap] = useState(false);
-  const [totalMinted, setTotalMinted] = useState(false);
-  const [totalBurned, setTotalBurned] = useState(false);
-  const [TVL, setTVL] = useState(false);
+  const [harvestSpintop, setHarvestSpintop] = useState(-1);
+  const [walletBalance, setWalletBalance] = useState(-1);
+  const [marketCap, setMarketCap] = useState(-1);
+  const [totalMinted, setTotalMinted] = useState(-1);
+  const [totalBurned, setTotalBurned] = useState(-1);
+  const [TVL, setTVL] = useState(-1);
   const [SpinPrice, setSpinPrice] = useState()
 
   const fromWei = useCallback((web3, val) => {
@@ -38,6 +38,16 @@ const Home = () => {
   const onConnectWallet = async () => {
     setIsOpenDialog(true);
   }
+
+  const floor = useCallback((val) => {
+    if (val != 0) {
+      let data = Math.floor(val * 10000)
+      const res = data / 10000
+      return res
+    } else {
+      return 0
+    }
+  })
 
   const addToken = () => {
     if (window.ethereum) {
@@ -110,12 +120,12 @@ const Home = () => {
         const totalstaked = await spinC.methods.totalStaked().call();
         const totalburned = await spinT.methods.totalSupply().call();
         const harvestedstaking = await spinC.methods.earned(account).call();
-
-        setWalletBalance(fromWei(web3, walletB).toString())
-        setTotalMinted(fromWei(web3, totalMint))
-        setTotalBurned(fromWei(web3, totalburned))
-        setHarvestSpintop(fromWei(web3, harvestedstaking))
-        setTVL(Math.floor(fromWei(web3, totalstaked)))
+        console.log(floor(fromWei(web3, harvestedstaking)))
+        setWalletBalance(floor(fromWei(web3, walletB)))
+        setTotalMinted(floor(fromWei(web3, totalMint)))
+        setTotalBurned(floor(fromWei(web3, totalburned)))
+        setHarvestSpintop(floor(fromWei(web3, harvestedstaking)))
+        setTVL(Math.floor(floor(fromWei(web3, totalstaked))))
 
         await axios.get('https://api.coingecko.com/api/v3/coins/spintop').then(res => {
           const CurrentP = res.data.market_data.current_price.usd
@@ -198,10 +208,10 @@ const Home = () => {
                 </Box>
                 <Box className="spin-text">SPIN to harvest</Box>
                 {(() => {
-                  if (harvestSpintop != false || typeof (harvestSpintop) == "string") {
+                  if (harvestSpintop != -1) {
                     return (
                       <Typography className="value big" color="primary">
-                        <span className="sub-txt">{harvestSpintop}</span><br />
+                        <span className="sub-txt">{harvestSpintop}&nbsp;SPIN</span><br />
                         <span className="money">~${harvestSpintop * SpinPrice}</span>
                       </Typography>
                     )
@@ -211,11 +221,11 @@ const Home = () => {
                 })()}
                 <Box className="spin-text">SPIN in wallet</Box>
                 {(() => {
-                  if (walletBalance != false || typeof (walletBalance) == "string") {
+                  if (walletBalance != -1) {
                     return (
                       <Typography className="value big" color="primary">
-                        <span className="sub-txt">{walletBalance}</span><br />
-                        <span className="money">~${walletBalance * SpinPrice}</span>
+                        <span className="sub-txt">{walletBalance}&nbsp;SPIN</span><br />
+                        <span className="money">~${floor(walletBalance * SpinPrice)}</span>
                       </Typography>
                     )
                   } else {
@@ -267,7 +277,7 @@ const Home = () => {
               <Box className="cust-card main_card small-card">
                 <p className="small-p">Market Cap</p>
                 {(() => {
-                  if (marketCap != false || typeof (marketCap) == "string") {
+                  if (marketCap != -1) {
                     return (
                       <Typography className="value big" color="primary">
                         <span className="sub-txt">$&nbsp;{marketCap}</span>
@@ -283,10 +293,10 @@ const Home = () => {
               <Box className="cust-card main_card small-card">
                 <p className="small-p">Total Minted</p>
                 {(() => {
-                  if (totalMinted != false || typeof (totalMinted) == "string") {
+                  if (totalMinted != -1) {
                     return (
                       <Typography className="value big" color="primary">
-                        <span className="sub-txt">{totalMinted}</span>
+                        <span className="sub-txt">{totalMinted}&nbsp;SPIN</span>
                       </Typography>
                     )
                   } else {
@@ -299,10 +309,10 @@ const Home = () => {
               <Box className="cust-card main_card small-card">
                 <p className="small-p">Total Burned</p>
                 {(() => {
-                  if (totalBurned != false || typeof (totalBurned) == "string") {
+                  if (totalBurned != -1) {
                     return (
                       <Typography className="value big" color="primary">
-                        <span className="sub-txt">{totalBurned}</span>
+                        <span className="sub-txt">{totalBurned}&nbsp;SPIN</span>
                       </Typography>
                     )
                   } else {
@@ -315,10 +325,10 @@ const Home = () => {
               <Box className="cust-card main_card small-card">
                 <p className="small-p">TVL</p>
                 {(() => {
-                  if (TVL != false || typeof (TVL) == "string") {
+                  if (TVL != -1) {
                     return (
                       <Typography className="value big" color="primary">
-                        <span className="sub-txt">{TVL}</span>
+                        <span className="sub-txt">{TVL}&nbsp;SPIN</span>
                       </Typography>
                     )
                   } else {
