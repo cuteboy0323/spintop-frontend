@@ -257,10 +257,7 @@ const Home = () => {
                   </Box>
                   <img src="./assets/images/twitter-2.svg" alt="" className="twit" />
                 </Box>
-                <p className="det">Details about SPINTOP</p>
-                <a href="https://docs.spintop.network/roadmap"><p className="link">https://docs.spintop.network/roadmap</p></a>
-                <img src="./assets/images/Gallery.png" alt="" className="gallery" />
-                <p className="content" style={{ marginLeft: "60px", marginTop: "16px", marginBottom: "12px" }}>Is the Automated Market Maker(AMM) and decentralized exchange(DEX) of the Spintop Network that allows any pair of tokens to be exchanged on the Binance Smart Chain.</p>
+		<a className="twitter-timeline" data-height="380" data-theme="dark" href="https://twitter.com/SpintopNetwork?ref_src=twsrc%5Etfw">Tweets by SpintopNetwork</a> <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
               </Box>
             </Col>
           </Row>
