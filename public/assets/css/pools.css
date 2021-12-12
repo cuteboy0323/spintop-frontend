@@ -559,7 +559,7 @@ header .wallet-icon::before {
 /* pools */
 .main-container .big-announc.pools-main-card {
     position: relative;
-    height: 260px;
+    /* height: 260px; */
     /* background: linear-gradient(90deg, rgba(238, 1, 139, 0.76) 0%, rgba(70, 22, 152, 0.76) 100%), url(scr2.png); */
     background: linear-gradient(90deg, rgba(238, 1, 139, 0.76) 0%, rgba(70, 22, 152, 0.76) 100%);
     border-radius: 16px;

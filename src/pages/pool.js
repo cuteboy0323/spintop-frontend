@@ -470,11 +470,16 @@ const Pool = () => {
                     <Row>
                         <Col md={12}>
                             <Box className="big-announc pools-main-card">
-                                <p>Spintop Pools</p>
-                                <p style={{ color: "white" }}>Just stake some tokens to earn.</p>
-                                <p>High APR, low risk.</p>
-                                <button className="blue-btn">Become a partner</button>
-                                <button className="blue-btn active">Need Help?</button>
+                                <Row>
+                                    <Col md={6}>
+                                        <p>Spintop Pools</p>
+                                        <p style={{ color: "white" }}>Just stake some tokens to earn.</p>
+                                        <p>High APR, low risk.</p>
+                                    </Col>
+                                    <Col md={6} style={{ display: "flex", alignItems: "center",justifyContent:"center" }}>
+                                        <button className="blue-btn">Become a partner</button>
+                                    </Col>
+                                </Row>
                             </Box>
                         </Col>
                     </Row>
