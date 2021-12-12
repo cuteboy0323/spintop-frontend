@@ -113,9 +113,11 @@ const Farms = () => {
                         Config.farms.address
                     )
                     await ContractS.methods.getReward().send({ from: account })
-                    setEarned("0")
+                    setEarned(0)
                     $(`.harvest.${id}`).removeClass('loading')
                     $(`.harvest.${id}`).html('Harvest')
+                    setearndisable(true)
+                    $(".harvest").removeClass("active")
                     myNotification({
                         title: 'Harvested',
                         message: 'Your SPINTOP earning is sent to your wallet.',
@@ -405,12 +407,11 @@ const Farms = () => {
             const current_pool = await spinF.methods.lastTimeRewardApplicable().call()
             const stakedB = await spinF.methods.balanceOf(account).call()
             const apr = (fromWei(web3, totalstaked) / current_pool) * (100 / 30)
-
-            setUserStakedToken(floor(fromWei(web3, stakedB)))
-            setEarned(earnValue)
-            setAPR(floor(apr))
             setMultiplier(10)
+            setAPR(floor(apr))
+            setEarned(fromWei(web3, earnValue))
             setLpToken(fromWei(web3, lptokenB))
+            setUserStakedToken(floor(fromWei(web3, stakedB)))
             if (stakedB > 0) {
                 $(`.last-show-hide`).show()
             }

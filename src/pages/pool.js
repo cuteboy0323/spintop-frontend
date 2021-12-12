@@ -314,9 +314,11 @@ const Pool = () => {
                         Config.staking.address
                     )
                     await ContractS.methods.getReward().send({ from: account })
-                    setEarned("0")
+                    setEarned(0)
                     $('.harvest-button').removeClass('loading')
                     $('.harvest-button').html('Harvest')
+                    setearndisable(true)
+                    $(".harvest-button").removeClass("active")
                     myNotification({
                         title: 'Harvested',
                         message: 'Your SPINTOP earning is sent to your wallet.',
@@ -358,7 +360,6 @@ const Pool = () => {
                 Config.staking.address
             )
             const totalstaked = await ContractS.methods.totalStaked().call()
-            // const earned = await ContractS.methods.earned(account).call()
             const earned = await ContractS.methods.earned(account).call()
             const current_pool = await ContractS.methods.lastTimeRewardApplicable().call()
             const apr = (fromWei(web3, totalstaked) / current_pool) * (100 / 30)

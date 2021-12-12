@@ -313,10 +313,10 @@ p.line {
     margin-bottom: 4px;
 }
 
-.harvest button.active {
-    /* background: #630BF1;
+.harvest-button.active {
+    background: #630BF1;
     color: #FFFFFF;
-    transition: 0.3s all; */
+    transition: 0.3s all;
 }
 
 .main-container .modal-content {
