@@ -486,7 +486,7 @@ const Pool = () => {
                         </Col>
                     </Row>
 
-                    <Box className="cust-card steak-only mobile" style={{ marginTop: "375px" }}>
+                    <Box className="cust-card steak-only mobile" style={{ marginTop: "245px" }}>
                         <input type="text" placeholder="Search" />
                         <span className="magnify"></span>
                         <img src="./assets/images/filter.svg" alt="" className="filter" />

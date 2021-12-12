@@ -1,7 +1,6 @@
 import React, { useState } from 'react'
 import $ from 'jquery'
 import Cwallet from "./Cwallet";
-import { Button } from "@mui/material"
 import { useWeb3React } from "@web3-react/core";
 
 const Header = () => {
@@ -96,29 +95,9 @@ const Header = () => {
             </div>
             {
                 active ?
-                    <Button
-                        variant="contained"
-                        startIcon={
-                            <img width={22} src="./assets/images/meta-mask.svg" alt="connected" />
-                        }
-                        onClick={onConnectWallet}
-                        style={{ background: "#f10088" }}
-                        color="secondary"
-                    >
-                        {account.substring(0, 3)} ... {account.substring(account.length - 3)}
-                    </Button>
+                    <button className="button-connected" onClick={onConnectWallet}> {account.substring(0, 3)} ... {account.substring(account.length - 3)}</button>
                     :
-                    <Button
-                        variant="contained"
-                        endIcon={
-                            <img width={22} src="./assets/images/exit_icon.svg" alt="connect" />
-                        }
-                        onClick={onConnectWallet}
-                        style={{ background: "#f10088" }}
-                        color="secondary"
-                    >
-                        Connect
-                    </Button>
+                    <button className="button-connect" onClick={onConnectWallet}>Connect</button>
             }
             <Cwallet isOpen={isOpenDialog} setIsOpen={setIsOpenDialog} />
         </header>

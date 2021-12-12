@@ -241,7 +241,7 @@ const Home = () => {
                       color="secondary"
                       onClick={onConnectWallet}
                     >
-                      Unlock wallet
+                      unlock wallet
                     </Button>
                 }
                 <Cwallet isOpen={isOpenDialog} setIsOpen={setIsOpenDialog} />
