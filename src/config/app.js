@@ -35,27 +35,13 @@ export default {
             id: "spintop-bnb",
             name: "Spintop-BNB",
             icon: "./assets/images/two-logos.svg",
-            getlink: "https://pancakeswap.finance/add/BNB/0xF9d52aeA6097c2064964F8A59EDD4F3AAA7CE895",
+            getlink: "https://pancake.kiemtienonline360.com/#/add/BNB/0xaB537Adc71f1a2A535b39b8847d4E9cA93AF7958",
             earn: "SpinTop",
-            contractlink: "https://testnet.bscscan.com/address/0x68ad4067b8c9e98C8c63bE5B34c84c1627EE1164#writeContract",
+            contractlink: "https://testnet.bscscan.com/address/0xA05a24D08C19bd9bE65F9AC7A2D6236FE10a347e#writeContract",
             linkimg: "./assets/images/link_open.svg",
         }
     ],
     pools: [
-        // {
-        //     id: "auto-spintop",
-        //     name: "Auto SpinTop",
-        //     title: "Automatic restaking",
-        //     icon: "./assets/images/pools-two-logos.svg",
-        //     earntitle: "Recent SPINTOP profit",
-        //     profit: true,
-        //     spinearn: "STAKE SPINTOP",
-        //     fee: "2%",
-        //     contractlink: "https://testnet.bscscan.com/address/0x68ad4067b8c9e98C8c63bE5B34c84c1627EE1164#writeContract",
-        //     viewprojectsite: "https://pancakeswap.finance/",
-        //     tokeninfo: "https://testnet.bscscan.com/token/0x68ad4067b8c9e98C8c63bE5B34c84c1627EE1164",
-        //     method: "auto",
-        // },
         {
             id: "manual-spintop",
             name: "Manual Spintop",
@@ -65,9 +51,9 @@ export default {
             profit: false,
             spinearn: "STAKE SPINTOP",
             fee: "2%",
-            contractlink: "https://testnet.bscscan.com/address/0x68ad4067b8c9e98C8c63bE5B34c84c1627EE1164#writeContract",
+            contractlink: "https://testnet.bscscan.com/address/0x46014677b3d87931b685106da50652765bf5ac50#writeContract",
             viewprojectsite: "https://pancakeswap.finance/",
-            tokeninfo: "https://testnet.bscscan.com/token/0x68ad4067b8c9e98C8c63bE5B34c84c1627EE1164",
+            tokeninfo: "https://testnet.bscscan.com/token/0xab537adc71f1a2a535b39b8847d4e9ca93af7958",
             method: "manual",
         }
     ]
