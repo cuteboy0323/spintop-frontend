@@ -329,7 +329,7 @@ const Home = () => {
                   if (TVL != -1) {
                     return (
                       <Typography className="value big" color="primary">
-                        <span className="sub-txt">{TVL}&nbsp;SPIN</span>
+                        <span className="sub-txt">$&nbsp;{floor(TVL*SpinPrice)}</span>
                       </Typography>
                     )
                   } else {

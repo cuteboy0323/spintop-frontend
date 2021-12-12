@@ -85,46 +85,56 @@ const Pool = () => {
 
     const enable = async (id) => {
         if (active) {
-            if ($(`.contract-btn.one.pools-enable.${id}`).text() == "Stake") {
-                setStakingValue(0)
-                setOpen(true)
-                setSelId(id)
-            } else {
-                try {
-                    $(`.contract-btn.one.pools-enable.${id}`).addClass('loading')
-                    $(`.contract-btn.one.pools-enable.${id}`).html('<img src="./assets/images/Progress indicator.svg" class="loading rotating"> Enabling')
-                    const web3 = new Web3(library.provider);
-                    const msg = web3.utils.sha3(web3.utils.toHex("Eanble Contract") + Config.staking.address, { encoding: "hex" })
-                    const signature = await web3.eth.personal.sign(msg, account);
-                    if (signature) {
-                        setTimeout(() => {
-                            $(`.contract-btn.one.pools-enable.${id}`).removeClass('loading')
-                            $(`.contract-btn.one.pools-enable.${id}`).html("Stake")
+            if (TotalToken) {
+
+                if ($(`.contract-btn.one.pools-enable.${id}`).text() == "Stake") {
+                    setStakingValue(0)
+                    setOpen(true)
+                    setSelId(id)
+                } else {
+                    try {
+                        $(`.contract-btn.one.pools-enable.${id}`).addClass('loading')
+                        $(`.contract-btn.one.pools-enable.${id}`).html('<img src="./assets/images/Progress indicator.svg" class="loading rotating"> Enabling')
+                        const web3 = new Web3(library.provider);
+                        const msg = web3.utils.sha3(web3.utils.toHex("Eanble Contract") + Config.staking.address, { encoding: "hex" })
+                        const signature = await web3.eth.personal.sign(msg, account);
+                        if (signature) {
+                            setTimeout(() => {
+                                $(`.contract-btn.one.pools-enable.${id}`).removeClass('loading')
+                                $(`.contract-btn.one.pools-enable.${id}`).html("Stake")
+                                myNotification({
+                                    title: 'Contract enabled',
+                                    message: "You can stake now in the pool.",
+                                    showDuration: 3500
+                                })
+                            }, 1000);
+                            return;
+                        } else {
                             myNotification({
-                                title: 'Contract enabled',
-                                message: "You can stake now in the pool.",
+                                title: 'Fail',
+                                message: "You can't enable contract.",
                                 showDuration: 3500
                             })
-                        }, 1000);
-                        return;
-                    } else {
+                            return;
+                        }
+                    } catch (err) {
+                        $(`.contract-btn.one.pools-enable.${id}`).removeClass('loading')
+                        $(`.contract-btn.one.pools-enable.${id}`).html('Enable')
                         myNotification({
                             title: 'Fail',
-                            message: "You can't enable contract.",
+                            message: "User canceled Contract Enabling.",
                             showDuration: 3500
                         })
                         return;
                     }
-                } catch (err) {
-                    $(`.contract-btn.one.pools-enable.${id}`).removeClass('loading')
-                    $(`.contract-btn.one.pools-enable.${id}`).html('Enable')
-                    myNotification({
-                        title: 'Fail',
-                        message: "User canceled Contract Enabling.",
-                        showDuration: 3500
-                    })
-                    return;
                 }
+            } else {
+                myNotification({
+                    title: 'Fail',
+                    message: "Please get SPINTOP.",
+                    showDuration: 3500
+                })
+                return;
             }
         } else {
             myNotification({

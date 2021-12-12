@@ -148,44 +148,54 @@ const Farms = () => {
     }
 
     const enableContract = async (id) => {
+        console.log(LpToken)
         if (active) {
-            try {
-                $(`.contract-btn.one.${id}`).addClass('loading')
-                $(`.contract-btn.one.${id}`).html('<img src="./assets/images/Progress indicator.svg" class="loading rotating"> Enable Contract')
-                const web3 = new Web3(library.provider);
-                const msg = web3.utils.sha3(web3.utils.toHex("Eanble Contract") + Config.staking.address, { encoding: "hex" })
-                const signature = await web3.eth.personal.sign(msg, account);
-                if (signature) {
-                    setTimeout(() => {
+            if (LpToken != 0) {
+                try {
+                    $(`.contract-btn.one.${id}`).addClass('loading')
+                    $(`.contract-btn.one.${id}`).html('<img src="./assets/images/Progress indicator.svg" class="loading rotating"> Enable Contract')
+                    const web3 = new Web3(library.provider);
+                    const msg = web3.utils.sha3(web3.utils.toHex("Eanble Contract") + Config.staking.address, { encoding: "hex" })
+                    const signature = await web3.eth.personal.sign(msg, account);
+                    if (signature) {
+                        setTimeout(() => {
+                            $(`.contract-btn.one.${id}`).fadeOut()
+                            $(`.spin-earned.one.${id}`).fadeOut()
+                            $(`.harvest button.${id}`).hide()
+                            $(`.harvest button.${id}.active`).html('')
+                            $(`.harvest button.${id}.active`).html('Stake LP')
+                            $(`.harvest button.${id}.active`).show()
+                            $(`.harvest button.${id}.active.stake-lp.act`).hide()
+                            myNotification({
+                                title: 'Contract enabled',
+                                message: "You can stake now in the pool.",
+                                showDuration: 3500
+                            })
+                        }, 1000);
+                        return;
+                    } else {
                         $(`.contract-btn.one.${id}`).fadeOut()
-                        $(`.spin-earned.one.${id}`).fadeOut()
-                        $(`.harvest button.${id}`).hide()
-                        $(`.harvest button.${id}.active`).html('')
-                        $(`.harvest button.${id}.active`).html('Stake LP')
-                        $(`.harvest button.${id}.active`).show()
-                        $(`.harvest button.${id}.active.stake-lp.act`).hide()
                         myNotification({
-                            title: 'Contract enabled',
-                            message: "You can stake now in the pool.",
+                            title: 'Fail',
+                            message: "You can't enable contract.",
                             showDuration: 3500
                         })
-                    }, 1000);
-                    return;
-                } else {
-                    $(`.contract-btn.one.${id}`).fadeOut()
+                        return;
+                    }
+                } catch (err) {
+                    $(`.contract-btn.one.${id}`).removeClass('loading')
+                    $(`.contract-btn.one.${id}`).html('Enable Contract')
                     myNotification({
                         title: 'Fail',
-                        message: "You can't enable contract.",
+                        message: "User canceled enable.",
                         showDuration: 3500
                     })
                     return;
                 }
-            } catch (err) {
-                $(`.contract-btn.one.${id}`).removeClass('loading')
-                $(`.contract-btn.one.${id}`).html('Enable Contract')
+            } else {
                 myNotification({
                     title: 'Fail',
-                    message: "User canceled enable.",
+                    message: "Please get SPIN-BNB.",
                     showDuration: 3500
                 })
                 return;
@@ -401,7 +411,6 @@ const Farms = () => {
             );
             const lptokenB = await spinL.methods.balanceOf(account).call()
             const liquidity = await spinL.methods.getReserves().call()
-            // const earnValue = 10
             const earnValue = await spinF.methods.earned(account).call()
             const totalstaked = await spinF.methods.totalStaked().call()
             const current_pool = await spinF.methods.lastTimeRewardApplicable().call()

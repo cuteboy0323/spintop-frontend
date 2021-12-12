@@ -45,7 +45,7 @@ export default {
         {
             id: "manual-spintop",
             name: "Manual Spintop",
-            title: "Automatic restaking",
+            title: "",
             icon: "./assets/images/logos-three.svg",
             earntitle: "SPIN EARNED",
             profit: false,
