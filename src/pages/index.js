@@ -257,7 +257,7 @@ const Home = () => {
                   </Box>
                   <img src="./assets/images/twitter-2.svg" alt="" className="twit" />
                 </Box>
-                <iframe src="assets/index.html"></iframe>
+                <iframe src="assets/index.html" style={{ height: "400px", width: "100%", overflow: "hidden" }}></iframe>
                 {/* <a className="twitter-timeline" data-height="380" data-theme="dark" href="https://twitter.com/SpintopNetwork?ref_src=twsrc%5Etfw">Tweets by SpintopNetwork</a> */}
               </Box>
             </Col>
