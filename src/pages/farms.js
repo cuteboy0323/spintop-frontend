@@ -208,12 +208,12 @@ const Farms = () => {
         )
         const unstakeable = await ContractS.methods.unstakable(account).call()
         if (unstakeable) {
-            setOpenUnstake(true)
-            setUnstakeable(true)
+            setOpenUnstake(unstakeable)
+            setUnstakeable(unstakeable)
             return;
         } else {
-            setOpenUnstake(true)
-            setUnstakeable(true)
+            setOpenUnstake(unstakeable)
+            setUnstakeable(unstakeable)
             myNotification({
                 title: 'Unstake',
                 message: 'Please wait one day from latest staking date.Then You can unstake.',
