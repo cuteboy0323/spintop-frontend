@@ -539,7 +539,7 @@ const Pool = () => {
                                                                     return (
                                                                         <>
                                                                             <Typography className="value big" color="primary">
-                                                                                <span className="">{Earned}</span>
+                                                                                <span className="">{Earned}&nbsp;SPIN</span>
                                                                             </Typography>
                                                                         </>
                                                                     )
@@ -558,7 +558,7 @@ const Pool = () => {
                                                         <p className="spin-earned harvest-show-hide">SPIN STAKED</p>
                                                         <Box className="d-flex">
                                                             <Box className="d-flex harvest-show-hide">
-                                                                <span>{UserStakedToken}</span>
+                                                                <span>{UserStakedToken}&nbsp;SPIN</span>
                                                                 <span>~{floor(UserStakedToken * SpinPrice)} USD</span>
                                                             </Box>
                                                             <Box className="d-flex">
@@ -615,7 +615,7 @@ const Pool = () => {
                                                                 return (
                                                                     <>
                                                                         <Typography className="value big" color="primary">
-                                                                            <span className="">$&nbsp;{TotalStaked}&nbsp;<img src="./assets/images/Form.png" alt="" className=" form-p" /></span>
+                                                                            <span className="">{TotalStaked}&nbsp;SPIN&nbsp;<img src="./assets/images/Form.png" alt="" className=" form-p" /></span>
                                                                         </Typography>
                                                                     </>
                                                                 )
@@ -678,7 +678,7 @@ const Pool = () => {
                                         if (TotalToken != -1) {
                                             return (
                                                 <Typography className="value big" color="primary">
-                                                    <span className="stake-span">Blanace  &nbsp;${TotalToken}</span>
+                                                    <span className="stake-span">Blanace  {TotalToken}&nbsp;SPIN</span>
                                                 </Typography>
                                             )
                                         } else {
@@ -731,7 +731,7 @@ const Pool = () => {
                                         if (UserStakedToken != -1) {
                                             return (
                                                 <Typography className="value big" color="primary">
-                                                    <span className="stake-span">Blanace  &nbsp;${UserStakedToken}</span>
+                                                    <span className="stake-span">Blanace  {UserStakedToken}&nbsp;SPIN</span>
                                                 </Typography>
                                             )
                                         } else {

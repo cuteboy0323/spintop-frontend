@@ -541,7 +541,7 @@ const Farms = () => {
                                                     if (Earned != -1) {
                                                         return (
                                                             <Typography className="value big" color="primary">
-                                                                <span>$&nbsp;{Earned}</span>
+                                                                <span>{Earned}&nbsp;SPIN</span>
                                                             </Typography>
                                                         )
                                                     } else {
@@ -557,7 +557,7 @@ const Farms = () => {
                                                         <p className="spin-earned harvest-show-hide">SPIN-BNB STAKED</p>
                                                         <Box className="d-flex">
                                                             <Box className="d-flex harvest-show-hide">
-                                                                <span>{UserStakedToken}</span>
+                                                                <span>{UserStakedToken}&nbsp;SPIN</span>
                                                                 <span>~{floor(UserStakedToken * SpinPrice)} USD</span>
                                                             </Box>
                                                             <Box className="d-flex">
@@ -587,7 +587,7 @@ const Farms = () => {
                                                             if (Liquidity != -1) {
                                                                 return (
                                                                     <Typography className="value big" color="primary">
-                                                                        <span>$&nbsp;{Liquidity}</span>
+                                                                        <span>{Liquidity}&nbsp;SPIN</span>
                                                                     </Typography>
                                                                 )
                                                             } else {
@@ -640,7 +640,7 @@ const Farms = () => {
                                             if (LpToken != -1) {
                                                 return (
                                                     <Typography className="value big" color="primary">
-                                                        <span className="stake-span">Blanace  &nbsp;${LpToken}</span>
+                                                        <span className="stake-span">Blanace  {LpToken}&nbsp;SPIN-BNB</span>
                                                     </Typography>
                                                 )
                                             } else {
@@ -693,7 +693,7 @@ const Farms = () => {
                                             if (UserStakedToken != -1) {
                                                 return (
                                                     <Typography className="value big" color="primary">
-                                                        <span className="stake-span">Blanace  &nbsp;${UserStakedToken}</span>
+                                                        <span className="stake-span">Blanace  {UserStakedToken}&nbsp;SPIN-BNB</span>
                                                     </Typography>
                                                 )
                                             } else {
