@@ -629,7 +629,7 @@ const Pool = () => {
                                                     <img src="./assets/images/drop_hover.svg" alt="" />
                                                 </Box>
                                             </Box>
-                                            <Box className="collapse hide" id={`${item.id}`}>
+                                            <Box className="collapse show" id={`${item.id}`}>
                                                 <Box className="inner-card">
                                                     <Box className="d-flex justify-content-between align-content-center mb-2">
                                                         <span>Total staked</span>
