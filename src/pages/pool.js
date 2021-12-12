@@ -358,6 +358,7 @@ const Pool = () => {
                 Config.staking.address
             )
             const totalstaked = await ContractS.methods.totalStaked().call()
+            // const earned = await ContractS.methods.earned(account).call()
             const earned = await ContractS.methods.earned(account).call()
             const current_pool = await ContractS.methods.lastTimeRewardApplicable().call()
             const apr = (fromWei(web3, totalstaked) / current_pool) * (100 / 30)
@@ -373,7 +374,13 @@ const Pool = () => {
                 $(`.last-show-hide`).show()
                 setearndisable(false)
             }
-
+            if (earned != 0) {
+                $(".harvest-button").addClass("active")
+                setearndisable(false)
+            } else {
+                setearndisable(true)
+                $(".harvest-button").removeClass("active")
+            }
             await axios.get('https://api.coingecko.com/api/v3/coins/spintop').then(res => {
                 const CurrentP = res.data.market_data.current_price.usd
                 if (CurrentP) {

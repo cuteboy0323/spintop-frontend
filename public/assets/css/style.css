@@ -1062,8 +1062,8 @@ input:focus+.slider {
 }
 
 .harvest button:hover {
-  color: #fff;
-  background-color: #630BF11A;
+  /* color: #fff;
+  background-color: #630BF11A; */
 }
 
 .main-container .cust-card.steak-only .live-buttons .btns-lf:hover {

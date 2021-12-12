@@ -399,11 +399,13 @@ const Farms = () => {
             );
             const lptokenB = await spinL.methods.balanceOf(account).call()
             const liquidity = await spinL.methods.getReserves().call()
+            // const earnValue = 10
             const earnValue = await spinF.methods.earned(account).call()
             const totalstaked = await spinF.methods.totalStaked().call()
             const current_pool = await spinF.methods.lastTimeRewardApplicable().call()
             const stakedB = await spinF.methods.balanceOf(account).call()
             const apr = (fromWei(web3, totalstaked) / current_pool) * (100 / 30)
+
             setUserStakedToken(floor(fromWei(web3, stakedB)))
             setEarned(earnValue)
             setAPR(floor(apr))
@@ -411,8 +413,15 @@ const Farms = () => {
             setLpToken(fromWei(web3, lptokenB))
             if (stakedB > 0) {
                 $(`.last-show-hide`).show()
-                setearndisable(false)
             }
+            if (earnValue != 0) {
+                $(".harvest").addClass("active")
+                setearndisable(false)
+            } else {
+                setearndisable(true)
+                $(".harvest").removeClass("active")
+            }
+
             await axios.get('https://api.coingecko.com/api/v3/coins/spintop').then(res => {
                 const CurrentP = res.data.market_data.current_price.usd
                 if (CurrentP) {
@@ -557,7 +566,7 @@ const Farms = () => {
                                                         <p className="spin-earned harvest-show-hide">SPIN-BNB STAKED</p>
                                                         <Box className="d-flex">
                                                             <Box className="d-flex harvest-show-hide">
-                                                                <span>{UserStakedToken}&nbsp;SPIN</span>
+                                                                <span>{UserStakedToken}&nbsp;SPIN-BNB</span>
                                                                 <span>~{floor(UserStakedToken * SpinPrice)} USD</span>
                                                             </Box>
                                                             <Box className="d-flex">
