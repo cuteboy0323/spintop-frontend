@@ -88,10 +88,15 @@ const Header = () => {
             </div>
 
             <img src="./assets/images/logo.png" alt="" className="logo-mob" />
-            <div className="head-title">
-                <span>Network</span>
-                <span>DEX</span>
-                <span>Gamepedia</span>
+            <div className="head-title" style={{ display: "flex" }}>
+                {/* <span>Network</span> */}
+                <div className="pages-btn comming-soon" style={{ paddingRight: "50px" }}>
+                    <span className="tooltip-span">Network <span className="tool">Coming</span> </span>
+                </div>
+                <span style={{ paddingRight: "50px" }}>DEX</span>
+                <div className="pages-btn comming-soon">
+                    <span className="tooltip-span">Gamepedia <span className="tool">Coming</span> </span>
+                </div>
             </div>
             {
                 active ?

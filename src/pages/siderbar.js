@@ -15,6 +15,7 @@ const SiderBar = ({ Params }) => {
     }
 
     const selectSiderBar = (params) => {
+        console.log(params)
         $(".pages-btn").removeClass("active")
         $(`#${params}`).addClass("active")
         history.push(params)

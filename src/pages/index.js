@@ -3,8 +3,8 @@ import Fab from '@mui/material/Fab';
 import { Row, Col } from 'reactstrap'
 import { Button, Skeleton, Typography, Box } from "@mui/material"
 import LockIcon from '@mui/icons-material/Lock';
-import LockOpenIcon from '@mui/icons-material/LockOpen';
 import LanguageIcon from '@mui/icons-material/Language';
+import AccountBalanceWalletRoundedIcon from '@mui/icons-material/AccountBalanceWalletRounded';
 import KeyboardDoubleArrowRightIcon from '@mui/icons-material/KeyboardDoubleArrowRight';
 //web3
 import Web3 from "web3";
@@ -152,12 +152,12 @@ const Home = () => {
   }
 
   const clear = () => {
-    setWalletBalance(false)
-    setHarvestSpintop(false)
-    setTotalMinted(false)
-    setMarketCap(false)
-    setTotalBurned(false)
-    setTVL(false)
+    setWalletBalance(-1)
+    setHarvestSpintop(-1)
+    setTotalMinted(-1)
+    setMarketCap(-1)
+    setTotalBurned(-1)
+    setTVL(-1)
   }
 
   useEffect(() => {
@@ -238,7 +238,7 @@ const Home = () => {
                     <Button
                       variant="contained"
                       className="contract-btn2 contract-res"
-                      startIcon={<LockOpenIcon />}
+                      startIcon={<AccountBalanceWalletRoundedIcon />}
                       color="secondary"
                       onClick={onConnectWallet}
                     >
@@ -281,7 +281,7 @@ const Home = () => {
                   if (marketCap != -1) {
                     return (
                       <Typography className="value big" color="primary">
-                        <span className="sub-txt">$&nbsp;{marketCap}</span>
+                        <span className="sub-txt">$&nbsp;{floor(marketCap)}</span>
                       </Typography>
                     )
                   } else {
@@ -329,7 +329,7 @@ const Home = () => {
                   if (TVL != -1) {
                     return (
                       <Typography className="value big" color="primary">
-                        <span className="sub-txt">$&nbsp;{floor(TVL*SpinPrice)}</span>
+                        <span className="sub-txt">$&nbsp;{floor(TVL * SpinPrice)}</span>
                       </Typography>
                     )
                   } else {

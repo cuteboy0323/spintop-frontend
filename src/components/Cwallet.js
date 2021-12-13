@@ -206,7 +206,7 @@ const Cwallet = ({ isOpen, setIsOpen }) => {
                             />
                             <ListItemSecondaryAction className="action">
                                 <Link
-                                    href={`https://cchain.explorer.avax.network/address/${account}`}
+                                    href={`https://testnet.bscscan.com/address/${account}`}
                                     target="_blank"
                                     underline="none"
                                 >
@@ -305,11 +305,11 @@ const Cwallet = ({ isOpen, setIsOpen }) => {
                     })()
                 }
             </DialogContent>
-            {active && (
+            {/* {active && (
                 <Alert severity="info" style={{ background: "rgb(64 37 110)", color: "#B8C5EC" }}>
                     Your transaction detail will appear here.
                 </Alert>
-            )}
+            )} */}
         </Dialog>
     );
 };
