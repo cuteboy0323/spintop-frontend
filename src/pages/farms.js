@@ -560,14 +560,14 @@ const Farms = () => {
                                                     if (Earned != -1) {
                                                         return (
                                                             <Typography className="value big" color="primary">
-                                                                <span>{Earned}&nbsp;SPIN</span>
+                                                                <span>{floor(Earned)}&nbsp;SPIN</span>
                                                             </Typography>
                                                         )
                                                     } else {
                                                         return <Typography><Skeleton animation="wave" className="smallskelton" style={{ minWidth: "100px" }} /></Typography>
                                                     }
                                                 })()}
-                                                <button className={`harvest ${item.id}`} id={item.id} onClick={() => harvest(item.id)} disabled={earndisable}>Harvest</button>
+                                                <button className={`harvest ${item.id} active`} id={item.id} onClick={() => harvest(item.id)} disabled={earndisable}>Harvest</button>
                                                 <button className={`${item.id} active stake-lp`} onClick={() => stakeLp(item.id)}>Stake LP</button>
                                             </Box>
                                             {
