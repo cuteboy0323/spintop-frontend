@@ -626,7 +626,7 @@ const Farms = () => {
                                                     </Box>
                                                     <a href={item.getlink} target="_blank" rel="noreferrer">
                                                         <Box className="d-flex cursor-pointer">
-                                                            <p className="links first">Get SPINTOP-BNB LP</p>
+                                                            <p className="links first">Get SPIN-BNB LP</p>
                                                             <img src={item.linkimg} alt="" className="link-open first" />
                                                         </Box>
                                                     </a>

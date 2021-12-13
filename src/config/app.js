@@ -33,10 +33,10 @@ export default {
     Contracts: [
         {
             id: "spintop-bnb",
-            name: "Spintop-BNB",
+            name: "Spin-BNB",
             icon: "./assets/images/two-logos.svg",
             getlink: "https://pancake.kiemtienonline360.com/#/add/BNB/0xaB537Adc71f1a2A535b39b8847d4E9cA93AF7958",
-            earn: "SpinTop",
+            earn: "Spin",
             contractlink: "https://testnet.bscscan.com/address/0xA05a24D08C19bd9bE65F9AC7A2D6236FE10a347e#writeContract",
             linkimg: "./assets/images/link_open.svg",
         }
