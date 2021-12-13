@@ -398,6 +398,16 @@ const Farms = () => {
         }
     })
 
+    const floor4 = useCallback((val) => {
+        if (val) {
+            let data = Math.floor(val * 10000)
+            const res = data / 10000
+            return res
+        } else {
+            return 0
+        }
+    })
+
     const load = async () => {
         try {
             const web3 = new Web3(library.provider);
@@ -560,7 +570,7 @@ const Farms = () => {
                                                     if (Earned != -1) {
                                                         return (
                                                             <Typography className="value big" color="primary">
-                                                                <span>{floor(Earned)}&nbsp;SPIN</span>
+                                                                <span>{floor4(Earned)}&nbsp;SPIN</span>
                                                             </Typography>
                                                         )
                                                     } else {
@@ -576,8 +586,8 @@ const Farms = () => {
                                                         <p className="spin-earned harvest-show-hide">SPIN-BNB STAKED</p>
                                                         <Box className="d-flex">
                                                             <Box className="d-flex harvest-show-hide">
-                                                                <span>{UserStakedToken}&nbsp;SPIN-BNB</span>
-                                                                <span>~{floor(UserStakedToken * SpinPrice)} USD</span>
+                                                                <span>{floor4(UserStakedToken)}&nbsp;SPIN-BNB</span>
+                                                                <span>~{floor4(UserStakedToken * SpinPrice)} USD</span>
                                                             </Box>
                                                             <Box className="d-flex">
                                                                 <a onClick={() => unstakeable()}><img className="plus-minus-icon" src="./assets/images/minus.svg" alt="" /></a>
@@ -606,7 +616,7 @@ const Farms = () => {
                                                             if (Liquidity != -1) {
                                                                 return (
                                                                     <Typography className="value big" color="primary">
-                                                                        <span>{Liquidity}&nbsp;SPIN</span>
+                                                                        <span>{floor4(Liquidity)}&nbsp;SPIN</span>
                                                                     </Typography>
                                                                 )
                                                             } else {
