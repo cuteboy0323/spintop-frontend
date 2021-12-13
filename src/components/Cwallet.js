@@ -17,7 +17,6 @@ import Config from "../config/app"
 import Box from "@mui/material/Box";
 import List from "@mui/material/List";
 import Link from "@mui/material/Link";
-import Alert from "@mui/material/Alert";
 import Dialog from "@mui/material/Dialog";
 import Tooltip from "@mui/material/Tooltip";
 import ListItem from "@mui/material/ListItem";
@@ -62,7 +61,6 @@ const Cwallet = ({ isOpen, setIsOpen }) => {
     const [activatingConnector, setActivatingConnector] = useState(false);
     const [isSelectingWallet, setIsSelectingWallet] = useState(true);
     const cWallet = ConnectedWallet();
-
     // ** Effects
     useEffect(() => {
         if (activatingConnector && activatingConnector === connector) {
@@ -85,9 +83,11 @@ const Cwallet = ({ isOpen, setIsOpen }) => {
     const onConnectWallet = async (item) => {
         setActivatingConnector(item.connector);
         setIsSelectingWallet(false);
+        sessionStorage.close = false;
         await activate(item.connector);
     };
     const onDeactiveWallet = () => {
+        sessionStorage.close = "true";
         setIsSelectingWallet(true);
         deactivate(true);
     };
@@ -305,11 +305,6 @@ const Cwallet = ({ isOpen, setIsOpen }) => {
                     })()
                 }
             </DialogContent>
-            {/* {active && (
-                <Alert severity="info" style={{ background: "rgb(64 37 110)", color: "#B8C5EC" }}>
-                    Your transaction detail will appear here.
-                </Alert>
-            )} */}
         </Dialog>
     );
 };

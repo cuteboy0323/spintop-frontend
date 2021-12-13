@@ -9,15 +9,21 @@ export function useEagerConnect() {
     const [tried, setTried] = useState(false);
 
     useEffect(() => {
-        injected.isAuthorized().then((isAuthorized) => {
-            if (isAuthorized) {
-                activate(injected, undefined, true).catch(() => {
+        console.log(sessionStorage.close)
+        if (sessionStorage.close == "false") {
+            console.log(sessionStorage.close)
+            injected.isAuthorized().then((isAuthorized) => {
+                if (isAuthorized) {
+                    activate(injected, undefined, true).catch(() => {
+                        setTried(true);
+                    });
+                } else {
                     setTried(true);
-                });
-            } else {
-                setTried(true);
-            }
-        });
+                }
+            });
+        } else {
+            return;
+        }
     }, [activate]); // intentionally only running on mount (make sure it's only mounted once :))
 
     // if the connection worked, wait until we get confirmation of that to flip the flag

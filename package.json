@@ -29,6 +29,7 @@
         "reactstrap": "^9.0.1",
         "web-vitals": "^1.0.1",
         "web3": "^1.6.0",
+        "web3modal": "^1.9.4",
         "yarn": "^1.22.17"
     },
     "scripts": {
